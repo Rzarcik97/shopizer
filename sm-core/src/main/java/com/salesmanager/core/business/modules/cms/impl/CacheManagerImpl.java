@@ -4,8 +4,6 @@ import org.infinispan.Cache;
 import org.infinispan.configuration.cache.Configuration;
 import org.infinispan.configuration.cache.ConfigurationBuilder;
 import org.infinispan.manager.EmbeddedCacheManager;
-import org.infinispan.tree.TreeCache;
-import org.infinispan.tree.TreeCacheFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,11 +16,10 @@ public abstract class CacheManagerImpl implements CacheManager {
   protected String location = null;
 
   @SuppressWarnings("rawtypes")
-  private TreeCache treeCache = null;
+  private Cache<String, Object> cache;
 
   @SuppressWarnings("unchecked")
   protected void init(String namedCache, String locationFolder) {
-
 
     try {
 
@@ -35,37 +32,34 @@ public abstract class CacheManagerImpl implements CacheManager {
         LOGGER.error("CacheManager is null");
         return;
       }
-      
-      TreeCacheFactory f = null;
-      
-      
+
 /*      @SuppressWarnings("rawtypes")
       Cache c = manager.getManager().getCache(namedCache);
-      
+
       if(c != null) {
     	  f = new TreeCacheFactory();
     	  treeCache = f.createTreeCache(c);
     	  //this.treeCache = (TreeCache)c;
     	  return;
       }*/
-      
-      
+
+
       Configuration config = new ConfigurationBuilder()
-    		   .persistence().passivation(false)
-    		   .addSingleFileStore()
-    		   .segmented(false)
-    		   .location(location).async().enable()
-    		   .preload(false).shared(false)
-    		   .invocationBatching().enable()
-    		   .build();
-      
+              .persistence()
+              .passivation(false)
+              .addSoftIndexFileStore()
+              .dataLocation(location + "/data")     // Gdzie przechowywać dane
+              .indexLocation(location + "/index")   // Gdzie przechowywać indeks
+              .segmented(true)
+              .preload(false)
+              .shared(false)
+              .async()
+              .enable()
+              .build();
+
       manager.getManager().defineConfiguration(namedCache, config);
 
-      final Cache<String, String> cache = manager.getManager().getCache(namedCache);
-      
-      f = new TreeCacheFactory();
-      treeCache = f.createTreeCache(cache);
-      cache.start();
+      this.cache = manager.getManager().getCache(namedCache);
 
       LOGGER.debug("CMS started");
 
@@ -74,11 +68,7 @@ public abstract class CacheManagerImpl implements CacheManager {
     } catch (Exception e) {
       LOGGER.error("Error while instantiating CmsImageFileManager", e);
     } finally {
-
     }
-
-
-
   }
 
   public EmbeddedCacheManager getManager() {
@@ -86,10 +76,34 @@ public abstract class CacheManagerImpl implements CacheManager {
   }
 
   @SuppressWarnings("rawtypes")
-  public TreeCache getTreeCache() {
-    return treeCache;
+  public Cache<String, Object> getCache() {
+    return cache;
   }
 
+  // HELPER METHODS (zostaw je na razie, będą przydatne przy refaktoryzacji)
 
+  public String createKey(String path, String key) {
+    if (path == null || path.isEmpty()) {
+      return key;
+    }
+    String normalizedPath = path.replaceAll("/+", "/");
+    if (normalizedPath.endsWith("/")) {
+      return normalizedPath + key;
+    }
+    return normalizedPath + "/" + key;
+  }
 
+  public Object get(String path, String key) {
+    return cache != null ? cache.get(createKey(path, key)) : null;
+  }
+
+  public void put(String path, String key, Object value) {
+    if (cache != null) {
+      cache.put(createKey(path, key), value);
+    }
+  }
+
+  public Object remove(String path, String key) {
+    return cache != null ? cache.remove(createKey(path, key)) : null;
+  }
 }
