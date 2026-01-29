@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -56,6 +57,8 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 
 	ProductRepository productRepository;
 
+	//TODO: TECHNICAL DEBT - Remove @Lazy after refactoring
+	@Lazy
 	@Inject
 	CategoryService categoryService;
 
@@ -83,6 +86,8 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 	@Inject
 	CoreConfiguration configuration;
 
+	//TODO: TECHNICAL DEBT - Remove @Lazy after refactoring
+	@Lazy
 	@Inject
 	ProductReviewService productReviewService;
 
