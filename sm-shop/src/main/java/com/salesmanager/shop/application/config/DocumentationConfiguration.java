@@ -37,7 +37,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
-@EnableSwagger2
+// @EnableSwagger2
 public class DocumentationConfiguration {
 
 	public static final Contact DEFAULT_CONTACT = new Contact("Shopizer", "https://www.shopizer.com", "");
@@ -86,11 +86,13 @@ public class DocumentationConfiguration {
 	
 	final Predicate<RequestHandler> requestHandlers() {
 		
-		   Set<Predicate<RequestHandler>> matchers = new HashSet<Predicate<RequestHandler>>();
-		   matchers.add(RequestHandlerSelectors.basePackage("com.salesmanager.shop.store.api.v1"));
-		   matchers.add(RequestHandlerSelectors.basePackage("com.salesmanager.shop.store.api.v2"));
+		Set<Predicate<RequestHandler>> matchers = new HashSet<Predicate<RequestHandler>>();
+		//matchers.add(RequestHandlerSelectors.basePackage("com.salesmanager.shop.store.api.v1"));
+		//matchers.add(RequestHandlerSelectors.basePackage("com.salesmanager.shop.store.api.v2"));
+		matchers.add(input -> RequestHandlerSelectors.basePackage("com.salesmanager.shop.store.api.v1").test(input));
+		matchers.add(input -> RequestHandlerSelectors.basePackage("com.salesmanager.shop.store.api.v2").test(input));
 		   
-		   return Predicates.or(matchers);
+		return Predicates.or(matchers);
 
 	}
 

@@ -70,7 +70,7 @@
 
 
 		<!-- api documentation -->
-		<swagger.version>2.9.2</swagger.version>
+		<swagger.version>3.0.0</swagger.version>
 
 		<!-- jacoco coverage -->
 		<coverage.lines>.30</coverage.lines>
@@ -81,6 +81,12 @@
 	<!--BOM -->
 	<dependencyManagement>
 		<dependencies>
+
+			<dependency>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-ui</artifactId>
+				<version>1.7.0</version>
+			</dependency>
 
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
