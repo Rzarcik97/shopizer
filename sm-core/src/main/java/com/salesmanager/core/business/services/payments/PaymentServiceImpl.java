@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 
+import com.salesmanager.core.business.repositories.order.OrderRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -64,9 +65,12 @@ public class PaymentServiceImpl implements PaymentService {
 	
 	@Inject
 	private TransactionService transactionService;
-	
+
+	/***
+	 * Zamieniłem beana beana OrderService na OrderRepository
+	 */
 	@Inject
-	private OrderService orderService;
+	private OrderRepository orderRepository;
 	
 	@Inject
 	private CoreConfiguration coreConfiguration;
@@ -458,11 +462,11 @@ public class PaymentServiceImpl implements PaymentService {
 		orderHistory.setOrder(order);
 		orderHistory.setStatus(OrderStatus.PROCESSED);
 		orderHistory.setDateAdded(new Date());
-		
-		orderService.addOrderStatusHistory(order, orderHistory);
-		
+
+		order.getOrderHistory().add(orderHistory);
+		orderHistory.setOrder(order);
 		order.setStatus(OrderStatus.PROCESSED);
-		orderService.saveOrUpdate(order);
+		orderRepository.save(order);
 
 		return transaction;
 
