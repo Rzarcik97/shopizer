@@ -86,8 +86,10 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 	@Inject
 	CoreConfiguration configuration;
 
-	//TODO: TECHNICAL DEBT - Remove @Lazy after refactoring
-	@Lazy
+	/***
+	 * Zamieniłem beana ProductService w ProductReviewService na ProductRepository
+	 */
+
 	@Inject
 	ProductReviewService productReviewService;
 

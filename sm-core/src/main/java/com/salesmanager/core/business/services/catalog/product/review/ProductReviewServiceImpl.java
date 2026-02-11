@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import com.salesmanager.core.business.repositories.catalog.product.ProductRepository;
 import org.apache.commons.lang3.Validate;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class ProductReviewServiceImpl extends
 	private ProductReviewRepository productReviewRepository;
 	
 	@Inject
-	private ProductService productService;
+	private ProductRepository productRepository;
 	
 	@Inject
 	public ProductReviewServiceImpl(
@@ -64,9 +65,11 @@ public class ProductReviewServiceImpl extends
 		
 		
 		//refresh product
-		Product product = productService.getById(review.getProduct().getId());
+		Product product = productRepository.findById(review.getProduct().getId()).orElseThrow(
+				() -> new ServiceException("Product not found")
+		);
 		
-		//ajust product rating
+		//just product rating
 		Integer count = 0;
 		if(product.getProductReviewCount()!=null) {
 			count = product.getProductReviewCount();
@@ -92,7 +95,7 @@ public class ProductReviewServiceImpl extends
 		product.setProductReviewCount(count);
 		super.save(review);
 		
-		productService.update(product);
+		productRepository.save(product);
 		
 		review.setProduct(product);
 		
