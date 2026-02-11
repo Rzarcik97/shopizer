@@ -92,6 +92,10 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 	@Inject
 	CoreConfiguration configuration;
 
+	/***
+	 * Zamieniłem beana ProductService w ProductReviewService na ProductRepository
+	 */
+
 	@Inject
 	ProductReviewService productReviewService;
 
