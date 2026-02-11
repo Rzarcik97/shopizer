@@ -8,6 +8,8 @@ import java.util.Optional;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.salesmanager.core.business.services.merchant.MerchantStoreService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.logging.Log;
@@ -38,10 +40,8 @@ public class LanguageUtils {
   @Inject
   LanguageService languageService;
 
-  //TODO: TECHNICAL DEBT - Remove @Lazy after refactoring
-  @Lazy
-  @Autowired
-  private StoreFacade storeFacade;
+  @Inject
+  MerchantStoreService merchantStoreService;
 
   public Language getServiceLanguage(String lang) {
     Language l = null;
@@ -158,10 +158,10 @@ public class LanguageUtils {
     				.filter(StringUtils::isNotBlank).orElse(DEFAULT_STORE);
     	    if(!StringUtils.isBlank(storeValue)) {
     	      try {
-    	    	  MerchantStore storeModel = storeFacade.get(storeValue);
+    	    	  MerchantStore storeModel = merchantStoreService.getByCode(storeValue);
     	    	  language = storeModel.getDefaultLanguage();
     	      } catch (Exception e) {
-    	    	  logger.warn("Cannot get store with code [" + storeValue + "]");
+    	    	  logger.warn("Cannot get store with code [" + storeValue + "], Error while getiting Merchant Store", e);
     	      }
     	    	
     	    } else {
