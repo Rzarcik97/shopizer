@@ -39,6 +39,9 @@ public class LanguageUtils {
   @Inject
   LanguageService languageService;
 
+  /***
+   * Zamieniłem beana StoreFacade na MerchantStoreService
+   */
   @Inject
   MerchantStoreService merchantStoreService;
 
