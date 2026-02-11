@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import com.salesmanager.core.business.repositories.catalog.category.CategoryRepository;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,8 +57,16 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 
 	ProductRepository productRepository;
 
+
+	/***
+	 * Zamieniłęm beana CategoryService na CategoryRepository, CategoryService potrzebował
+	 * beana ProductService i na odwrót..
+	 * swoją drogą tylko metoda getListByLineage() korzysta z tgeo beana a ta metoda z kolei
+	 * jest nieużywana
+	 */
+
 	@Inject
-	CategoryService categoryService;
+	CategoryRepository categoryRepository;
 
 	@Inject
 	ProductAvailabilityService productAvailabilityService;
@@ -176,7 +185,7 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 
 		// Get the category list
 		StringBuilder lineage = new StringBuilder().append(category.getLineage()).append(category.getId()).append("/");
-		List<Category> categories = categoryService.getListByLineage(category.getMerchantStore(), lineage.toString());
+		List<Category> categories = categoryRepository.findByLineage(category.getMerchantStore().getId(), lineage.toString());
 		Set<Long> categoryIds = new HashSet<Long>();
 		for (Category c : categories) {
 
