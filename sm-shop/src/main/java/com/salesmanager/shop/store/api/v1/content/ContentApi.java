@@ -429,7 +429,7 @@ public class ContentApi {
 	@PostMapping(value = "/private/files", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	@ResponseStatus(HttpStatus.CREATED)
 	@Parameters({
-			// @ApiImplicitParam(name = "file[]", value = "File stream object",
+			// @Parameter(name = "file[]", value = "File stream object",
 			// required = true,dataType = "MultipartFile",allowMultiple = true),
 			@Parameter(name = "store", example = "DEFAULT"),
 			@Parameter(name = "lang", example = "en") })
@@ -484,13 +484,13 @@ public class ContentApi {
 			 *//*
 			 * @DeleteMapping(value = "/private/content/page/{id}")
 			 * 
-			 * @ApiOperation(httpMethod = "DELETE", value =
-			 * "Deletes a file from CMS", notes = "Delete a file from server",
+			 * @Operation(httpMethod = "DELETE", value =
+			 * "Deletes a file from CMS", description = "Delete a file from server",
 			 * response = Void.class)
 			 * 
-			 * @ApiImplicitParams({
+			 * @Parameters({
 			 * 
-			 * @ApiImplicitParam(name = "store", dataType = "String",
+			 * @Parameter(name = "store", dataType = "String",
 			 * defaultValue = "DEFAULT")}) public void deleteFile( Long id,
 			 * 
 			 * @Parameter(hidden = true) MerchantStore merchantStore) {
