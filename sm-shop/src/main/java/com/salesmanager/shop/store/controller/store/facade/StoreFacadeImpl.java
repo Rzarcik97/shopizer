@@ -71,8 +71,6 @@ public class StoreFacadeImpl implements StoreFacade {
 	@Qualifier("img")
 	private ImageFilePath imageUtils;
 
-	//TODO: TECHNICAL DEBT - Remove @Lazy after refactoring
-	@Lazy
 	@Inject
 	private LanguageUtils languageUtils;
 	
