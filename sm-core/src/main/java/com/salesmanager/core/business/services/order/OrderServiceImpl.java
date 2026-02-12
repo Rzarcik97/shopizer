@@ -78,8 +78,6 @@ public class OrderServiceImpl  extends SalesManagerEntityServiceImpl<Long, Order
     @Inject
     private ShippingService shippingService;
 
-    //TODO: TECHNICAL DEBT - Remove @Lazy after refactoring
-    @Lazy
     @Inject
     private PaymentService paymentService;
 
