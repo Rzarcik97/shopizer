@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import com.salesmanager.core.business.repositories.catalog.category.CategoryRepository;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,10 +58,11 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 
 	ProductRepository productRepository;
 
-	//TODO: TECHNICAL DEBT - Remove @Lazy after refactoring
-	@Lazy
+	/***
+	 * Zamiana CategoryService beana na CategoryRepository
+	 */
 	@Inject
-	CategoryService categoryService;
+	CategoryRepository categoryRepository;
 
 	@Inject
 	ProductAvailabilityService productAvailabilityService;
@@ -183,7 +185,7 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 
 		// Get the category list
 		StringBuilder lineage = new StringBuilder().append(category.getLineage()).append(category.getId()).append("/");
-		List<Category> categories = categoryService.getListByLineage(category.getMerchantStore(), lineage.toString());
+		List<Category> categories = categoryRepository.findByLineage(category.getMerchantStore().getId(), lineage.toString());
 		Set<Long> categoryIds = new HashSet<Long>();
 		for (Category c : categories) {
 

@@ -31,7 +31,6 @@ import com.salesmanager.core.model.reference.language.Language;
 @Service("categoryService")
 public class CategoryServiceImpl extends SalesManagerEntityServiceImpl<Long, Category> implements CategoryService {
 
-
   private CategoryRepository categoryRepository;
 
   @Inject
