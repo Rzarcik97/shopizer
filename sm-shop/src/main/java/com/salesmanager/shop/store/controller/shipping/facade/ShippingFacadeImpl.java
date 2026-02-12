@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.salesmanager.core.business.services.shipping.ShippingConfigurationProvider;
 import org.apache.commons.collections4.CollectionUtils;
 import org.jsoup.helper.Validate;
 import org.slf4j.Logger;
@@ -47,6 +48,9 @@ public class ShippingFacadeImpl implements ShippingFacade {
 	
 	@Autowired
 	ShippingService shippingService;
+
+	@Autowired
+	ShippingConfigurationProvider shippingConfigurationProvider;
 	
 	@Autowired
 	CountryService countryService;
@@ -180,7 +184,7 @@ public class ShippingFacadeImpl implements ShippingFacade {
 
 		try {
 			//get original configuration
-			ShippingConfiguration config = shippingService.getShippingConfiguration(store);
+			ShippingConfiguration config = shippingConfigurationProvider.getShippingConfiguration(store);
 			if(config==null) {
 				config = new ShippingConfiguration();
 				config.setShippingType(ShippingType.INTERNATIONAL);

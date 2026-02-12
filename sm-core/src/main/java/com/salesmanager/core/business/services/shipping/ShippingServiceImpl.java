@@ -63,7 +63,7 @@ import com.salesmanager.core.modules.utils.Encryption;
 
 
 @Service("shippingService")
-public class ShippingServiceImpl implements ShippingService {
+public class ShippingServiceImpl implements ShippingService, ShippingConfigurationProvider {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShippingServiceImpl.class);
 	
@@ -83,8 +83,6 @@ public class ShippingServiceImpl implements ShippingService {
 	@Inject
 	private ModuleConfigurationService moduleConfigurationService;
 
-	//TODO: TECHNICAL DEBT - Remove @Lazy after refactoring
-	@Lazy
 	@Inject
 	private Packaging packaging;
 	

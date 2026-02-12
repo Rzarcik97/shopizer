@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import com.salesmanager.core.business.services.shipping.ShippingConfigurationProvider;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -76,7 +77,7 @@ public class OrderServiceImpl  extends SalesManagerEntityServiceImpl<Long, Order
     private InvoiceModule invoiceModule;
 
     @Inject
-    private ShippingService shippingService;
+    private ShippingConfigurationProvider shippingConfigurationProvider;
 
     @Inject
     private PaymentService paymentService;
@@ -334,7 +335,7 @@ public class OrderServiceImpl  extends SalesManagerEntityServiceImpl<Long, Order
             }
 
             //check handling fees
-            shippingConfiguration = shippingService.getShippingConfiguration(store);
+            shippingConfiguration = shippingConfigurationProvider.getShippingConfiguration(store);
             if(summary.getShippingSummary().getHandling()!=null && summary.getShippingSummary().getHandling().doubleValue()>0) {
                 if(shippingConfiguration.getHandlingFees()!=null && shippingConfiguration.getHandlingFees().doubleValue()>0) {
                     OrderTotal handlingubTotal = new OrderTotal();

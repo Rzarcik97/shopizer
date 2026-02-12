@@ -67,18 +67,6 @@ public interface ShippingService {
 	void saveShippingQuoteModuleConfiguration(IntegrationConfiguration configuration,
 			MerchantStore store) throws ServiceException;
 
-	/**
-	 * ShippingType (NATIONAL, INTERNATIONSL)
-	 * ShippingBasisType (SHIPPING, BILLING)
-	 * ShippingPriceOptionType (ALL, LEAST, HIGHEST)
-	 * Packages
-	 * Handling
-	 * @param store
-	 * @return
-	 * @throws ServiceException
-	 */
-	ShippingConfiguration getShippingConfiguration(MerchantStore store)
-			throws ServiceException;
 
 	/**
 	 * Saves ShippingConfiguration for a given MerchantStore

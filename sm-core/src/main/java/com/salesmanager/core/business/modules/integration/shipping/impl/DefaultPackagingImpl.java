@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import com.salesmanager.core.business.exception.ServiceException;
+import com.salesmanager.core.business.services.shipping.ShippingConfigurationProvider;
 import com.salesmanager.core.business.services.shipping.ShippingService;
 import com.salesmanager.core.business.services.system.MerchantLogService;
 import com.salesmanager.core.model.catalog.product.Product;
@@ -23,7 +24,7 @@ public class DefaultPackagingImpl implements Packaging {
 
 	
 	@Inject
-	private ShippingService shippingService;
+	private ShippingConfigurationProvider shippingConfigurationProvider;
 	
 	@Inject
 	private MerchantLogService merchantLogService;
@@ -53,7 +54,7 @@ public class DefaultPackagingImpl implements Packaging {
 		//int treshold = 0;
 		
 		
-		ShippingConfiguration shippingConfiguration = shippingService.getShippingConfiguration(store);
+		ShippingConfiguration shippingConfiguration = shippingConfigurationProvider.getShippingConfiguration(store);
 		if(shippingConfiguration==null) {
 			throw new ServiceException("ShippingConfiguration not found for merchant " + store.getCode());
 		}
