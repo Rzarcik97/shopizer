@@ -49,8 +49,6 @@ public class CatalogFacadeImpl implements CatalogFacade {
     @Autowired
     private ReadableCatalogMapper readableCatalogMapper;
 
-    //TODO: TECHNICAL DEBT - Remove @Lazy after refactoring
-    @Lazy
     @Autowired
     private Mapper<PersistableCatalogCategoryEntry, CatalogCategoryEntry> persistableCatalogEntryMapper;
 
