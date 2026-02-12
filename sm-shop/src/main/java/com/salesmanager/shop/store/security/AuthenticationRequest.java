@@ -1,5 +1,7 @@
 package com.salesmanager.shop.store.security;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.io.Serializable;
 
 import javax.validation.constraints.NotEmpty;
@@ -15,8 +17,10 @@ public class AuthenticationRequest implements Serializable {
 	 * Username and password must be used when using normal system authentication
 	 * for a registered customer
 	 */
+    @Schema(example = "admin@shopizer.com")
 	@NotEmpty(message="{NotEmpty.customer.userName}")
     private String username;
+    @Schema(example = "password")
 	@NotEmpty(message="{message.password.required}")
     private String password;
     
