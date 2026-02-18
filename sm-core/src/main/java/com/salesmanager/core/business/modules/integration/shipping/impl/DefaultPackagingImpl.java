@@ -22,9 +22,9 @@ import com.salesmanager.core.modules.integration.shipping.model.Packaging;
 
 public class DefaultPackagingImpl implements Packaging {
 
-	
-	@Inject
-	private ShippingConfigurationProvider shippingConfigurationProvider;
+// 	passing config as a parameter
+//	@Inject
+//	private ShippingConfigurationProvider shippingConfigurationProvider;
 	
 	@Inject
 	private MerchantLogService merchantLogService;
@@ -37,7 +37,7 @@ public class DefaultPackagingImpl implements Packaging {
 	
 	@Override
 	public List<PackageDetails> getBoxPackagesDetails(
-			List<ShippingProduct> products, MerchantStore store)
+			List<ShippingProduct> products, MerchantStore store, ShippingConfiguration shippingConfiguration)
 			throws ServiceException {
 
 		
@@ -52,10 +52,8 @@ public class DefaultPackagingImpl implements Packaging {
 		double maxweight = 0;
 
 		//int treshold = 0;
-		
-		
-		ShippingConfiguration shippingConfiguration = shippingConfigurationProvider.getShippingConfiguration(store);
-		if(shippingConfiguration==null) {
+
+		if(shippingConfiguration == null) {
 			throw new ServiceException("ShippingConfiguration not found for merchant " + store.getCode());
 		}
 		

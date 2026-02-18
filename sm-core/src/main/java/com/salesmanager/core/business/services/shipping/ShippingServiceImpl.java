@@ -883,7 +883,7 @@
 			}
 			
 			if(shippingPackageType.name().equals(ShippingPackageType.BOX.name())){
-				packages = packaging.getBoxPackagesDetails(products, store);
+				packages = packaging.getBoxPackagesDetails(products, store, shippingConfiguration);
 			} else {
 				packages = packaging.getItemPackagesDetails(products, store);
 			}
