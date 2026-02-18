@@ -136,14 +136,14 @@ public class CatalogFacadeImpl implements CatalogFacade {
                 .orElseThrow(() -> new ResourceNotFoundException("Catalog with id [" + id + "] not found"));
         return readableCatalogMapper.convert(catalog, store, language);
     }
-
-    @Override
-    public Catalog getCatalog(String code, MerchantStore store) {
-        Validate.notNull(code, "Catalog code cannot be null");
-        Validate.notNull(store, "MerchantStore cannot be null");
-
-        return catalogService.getByCode(code, store).get();
-    }
+//    implemented in PersistableCatalogCategoryEntryMapper to delete circular dependency
+//    @Override
+//    public Catalog getCatalog(String code, MerchantStore store) {
+//        Validate.notNull(code, "Catalog code cannot be null");
+//        Validate.notNull(store, "MerchantStore cannot be null");
+//
+//        return catalogService.getByCode(code, store).get();
+//    }
 
     @Override
     public ReadableEntityList<ReadableCatalog> getListCatalogs(Optional<String> code, MerchantStore store, Language language, int page, int count) {

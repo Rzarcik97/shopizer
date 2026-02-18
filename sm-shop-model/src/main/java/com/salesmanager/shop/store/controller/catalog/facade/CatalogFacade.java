@@ -20,7 +20,7 @@ public interface CatalogFacade {
 
     ReadableCatalog getCatalog(String code, MerchantStore store, Language language);
 
-    Catalog getCatalog(String code, MerchantStore store);
+    //  Catalog getCatalog(String code, MerchantStore store);
 
     ReadableCatalog getCatalog(Long id, MerchantStore store, Language language);
 

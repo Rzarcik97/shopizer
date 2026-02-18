@@ -1,5 +1,6 @@
 package com.salesmanager.shop.mapper.catalog;
 
+import com.salesmanager.core.business.services.catalog.catalog.CatalogService;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,7 +24,7 @@ public class PersistableCatalogCategoryEntryMapper implements Mapper<Persistable
 	private CategoryFacade categoryFacade;
 	
 	@Autowired
-	private CatalogFacade catalogFacade;
+	private CatalogService catalogService;
 	
 	
 	@Override
@@ -54,8 +55,9 @@ public class PersistableCatalogCategoryEntryMapper implements Mapper<Persistable
 		try {
 			
 			String catalog = source.getCatalog();
-			
-			Catalog catalogModel = catalogFacade.getCatalog(catalog, store);
+			Validate.notNull(catalog, "Catalog code cannot be null");
+			Catalog catalogModel = catalogService.getByCode(catalog, store)
+					.orElseThrow(() -> new ConversionRuntimeException("Error while converting CatalogEntry product [" + catalog + "] not found"));
 			if(catalogModel == null) {
 				throw new ConversionRuntimeException("Error while converting CatalogEntry product [" + source.getCatalog() + "] not found");
 			}
