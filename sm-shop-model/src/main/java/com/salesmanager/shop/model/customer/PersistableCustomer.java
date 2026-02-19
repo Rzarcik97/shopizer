@@ -3,8 +3,6 @@ package com.salesmanager.shop.model.customer;
 import java.util.List;
 import com.salesmanager.shop.model.customer.attribute.PersistableCustomerAttribute;
 import com.salesmanager.shop.model.security.PersistableGroup;
-//import io.swagger.annotations.ApiModel;
-//import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 

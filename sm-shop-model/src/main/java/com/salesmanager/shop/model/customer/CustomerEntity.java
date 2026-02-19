@@ -11,8 +11,6 @@ import org.springframework.validation.annotation.Validated;
 
 import com.salesmanager.shop.model.customer.address.Address;
 
-//import io.swagger.annotations.ApiModelProperty;
-
 public class CustomerEntity extends Customer implements Serializable {
 
 	/**

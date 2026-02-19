@@ -2,7 +2,6 @@ package com.salesmanager.shop.model.customer.address;
 
 import java.io.Serializable;
 
-//import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 

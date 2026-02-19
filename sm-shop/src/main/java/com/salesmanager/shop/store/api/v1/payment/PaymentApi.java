@@ -28,14 +28,6 @@ import com.salesmanager.shop.model.system.IntegrationModuleSummaryEntity;
 import com.salesmanager.shop.store.api.exception.ResourceNotFoundException;
 import com.salesmanager.shop.store.api.exception.ServiceRuntimeException;
 
-//import io.swagger.annotations.Api;
-//import io.swagger.annotations.ApiImplicitParam;
-//import io.swagger.annotations.ApiImplicitParams;
-//import io.swagger.annotations.ApiOperation;
-//import io.swagger.annotations.SwaggerDefinition;
-//import io.swagger.annotations.Tag;
-//import springfox.documentation.annotations.ApiIgnore;
-
 /**
  * This API is for payment modules configurations. For payment of orders see
  * order
