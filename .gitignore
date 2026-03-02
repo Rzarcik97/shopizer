@@ -1,4 +1,5 @@
 # Ignored files
+.env
 *.class
 *.jar
 *.lst

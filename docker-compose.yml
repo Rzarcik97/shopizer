@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: shopizer-mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${DB_NAME:-shopizer}
+      MYSQL_USER: ${DB_USER:-shopizer}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-shopizer123}
+    ports:
+      - "${DB_EXTERNAL_PORT:-3307}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: always
+
+  shopizer:
+    build:
+      context: ./sm-shop
+    container_name: shopizer-backend
+    env_file:
+      - .env
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://${DB_HOST:-mysql}:${DB_PORT:-3306}/${DB_NAME:-shopizer}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: ${DB_USER:-shopizer}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-shopizer123}
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQL8Dialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SERVER_PORT: ${SHOPIZER_PORT:-8080}
+    ports:
+      - "${SHOPIZER_PORT:-8080}:${SHOPIZER_PORT:-8080}"
+    restart: always
+
+  shopizer-admin:
+    image: shopizerecomm/shopizer-admin:latest
+    container_name: shopizer-admin
+    environment:
+      - APP_BASE_URL=http://localhost:8080/api
+    ports:
+      - "4200:80"
+    depends_on:
+      - shopizer
+    restart: always
+
+volumes:
+  mysql_data:

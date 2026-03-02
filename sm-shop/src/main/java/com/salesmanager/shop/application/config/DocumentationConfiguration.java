@@ -10,6 +10,7 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.servers.Server;
 
 import org.springdoc.core.GroupedOpenApi;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,7 +19,8 @@ import java.util.List;
 @Configuration
 public class DocumentationConfiguration {
 
-    private static final String HOST = "http://localhost:8080";
+    @Value("${server.host}:${server.port}")
+    private String HOST;
 
     @Bean
     public OpenAPI customOpenAPI() {
