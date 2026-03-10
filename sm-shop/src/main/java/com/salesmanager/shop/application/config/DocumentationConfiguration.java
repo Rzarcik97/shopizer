@@ -19,7 +19,7 @@ import java.util.List;
 @Configuration
 public class DocumentationConfiguration {
 
-    @Value("${server.host}:${server.port}")
+    @Value("${server.host:http://localhost}:${server.port:8080}")
     private String HOST;
 
     @Bean

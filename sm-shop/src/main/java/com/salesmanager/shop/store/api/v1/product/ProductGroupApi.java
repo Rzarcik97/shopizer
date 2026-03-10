@@ -84,7 +84,7 @@ public class ProductGroupApi {
 
   }
   
-  @GetMapping("/private/product/groups")
+  @GetMapping("/private/products/groups")
   @Operation(summary = "Get products groups for a given merchant", description = "")
   @Parameters({
       @Parameter(name = "store", example = "DEFAULT"),
