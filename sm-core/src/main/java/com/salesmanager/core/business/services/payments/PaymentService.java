@@ -24,7 +24,8 @@ public interface PaymentService {
 
 	Map<String, IntegrationConfiguration> getPaymentModulesConfigured(
 			MerchantStore store) throws ServiceException;
-	
+
+	void processPrzelewy24Notification(Map<String, Object> notification, MerchantStore store) throws ServiceException;
 	Transaction processPayment(Customer customer, MerchantStore store, Payment payment, List<ShoppingCartItem> items, Order order) throws ServiceException;
 	Transaction processRefund(Order order, Customer customer, MerchantStore store, BigDecimal amount) throws ServiceException;
 

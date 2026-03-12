@@ -116,6 +116,27 @@ public class TransactionServiceImpl  extends SalesManagerEntityServiceImpl<Long,
 	}
 
 	@Override
+	public Transaction getBySessionId(String sessionId) throws ServiceException {
+		List<Transaction> transactions = transactionRepository.findBySessionId(sessionId);
+		if (transactions == null || transactions.isEmpty()) {
+			return null;
+		}
+
+		Transaction transaction = transactions.get(0);
+		if (!StringUtils.isBlank(transaction.getDetails())) {
+			try {
+				ObjectMapper mapper = new ObjectMapper();
+				@SuppressWarnings("unchecked")
+				Map<String, String> objects = mapper.readValue(transaction.getDetails(), Map.class);
+				transaction.setTransactionDetails(objects);
+			} catch (Exception e) {
+				throw new ServiceException(e);
+			}
+		}
+		return transaction;
+	}
+
+	@Override
 	public Transaction getCapturableTransaction(Order order)
 			throws ServiceException {
 		List<Transaction> transactions = transactionRepository.findByOrder(order.getId());

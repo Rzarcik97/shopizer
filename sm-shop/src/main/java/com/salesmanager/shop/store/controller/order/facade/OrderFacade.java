@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import com.salesmanager.core.model.order.orderstatus.OrderStatus;
+import com.salesmanager.shop.model.order.v1.PersistableOrder;
 import org.springframework.validation.BindingResult;
 
 import com.salesmanager.core.business.exception.ServiceException;
@@ -36,7 +37,6 @@ public interface OrderFacade {
 	OrderTotalSummary calculateOrderTotal(MerchantStore store, ShopOrder order, Language language) throws Exception;
 	/** used in the API **/
 	OrderTotalSummary calculateOrderTotal(MerchantStore store, com.salesmanager.shop.model.order.v0.PersistableOrder order, Language language) throws Exception;
-
 	/** process a valid order **/
 	Order processOrder(ShopOrder order, Customer customer, MerchantStore store, Language language) throws ServiceException;
 	/** process a valid order against an initial transaction **/

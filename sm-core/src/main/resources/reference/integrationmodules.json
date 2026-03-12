@@ -115,7 +115,30 @@
 		"image":"braintree.jpg",
 		"configuration":[{"env":"TEST","scheme":"https","host":"NOTREQUIRED","port":"NOTREQUIRED","uri":"NOTREQUIRED"},{"env":"PROD","scheme":"https","host":"NOTREQUIRED","port":"NOTREQUIRED","uri":"NOTREQUIRED"}]
 
+	},
+	{
+		"module": "PAYMENT",
+		"code": "przelewy24",
+		"type": "przelewy24",
+		"version": "1.0",
+		"regions": ["PL"],
+		"image": "przelewy24.png",
+		"configuration": [
+			{
+				"env": "TEST",
+				"scheme": "https",
+				"host": "sandbox.przelewy24.pl",
+				"port": "443",
+				"uri": "/api/v1"
+			},
+			{
+				"env": "PROD",
+				"scheme": "https",
+				"host": "secure.przelewy24.pl",
+				"port": "443",
+				"uri": "/api/v1"
+			}
+		]
 	}
-
 ]
 

@@ -45,6 +45,7 @@
 	<util:map id="paymentModules" map-class="java.util.HashMap"
 		key-type="java.lang.String"
 		value-type="com.salesmanager.core.business.modules.integration.payment.model.PaymentModule">
+		<beans:entry key="przelewy24" value-ref="przelewy24" />
 		<beans:entry key="beanstream" value-ref="beanstream" />
 		<beans:entry key="paypal-express-checkout" value-ref="paypal-ec" />
 		<beans:entry key="moneyorder" value-ref="moneyorder" />
@@ -74,6 +75,8 @@
 		class="com.salesmanager.core.business.modules.integration.shipping.impl.DefaultPackagingImpl" />
 
 	<!-- Payment -->
+	<beans:bean id="przelewy24"
+		class="com.salesmanager.core.business.modules.integration.payment.impl.Przelewy24Payment" />
 	<beans:bean id="beanstream"
 		class="com.salesmanager.core.business.modules.integration.payment.impl.BeanStreamPayment" />
 	<beans:bean id="moneyorder"

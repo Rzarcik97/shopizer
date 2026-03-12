@@ -97,6 +97,10 @@ public interface OrderService extends SalesManagerEntityService<Long, Order> {
 
     void saveOrUpdate(Order order) throws ServiceException;
 
+	Order processOrderWithPendingPayment(Order order, Customer customer,
+										 List<ShoppingCartItem> items, OrderTotalSummary summary,
+										 MerchantStore store) throws ServiceException;
+
 	Order processOrder(Order order, Customer customer,
 			List<ShoppingCartItem> items, OrderTotalSummary summary,
 			Payment payment, MerchantStore store) throws ServiceException;

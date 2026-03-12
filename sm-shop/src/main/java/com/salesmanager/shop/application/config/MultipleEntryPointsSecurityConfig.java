@@ -202,6 +202,21 @@ public class MultipleEntryPointsSecurityConfig {
 
 	}
 
+	@Configuration
+	@Order(3)
+	public static class PublicApiConfigurationAdapter extends WebSecurityConfigurerAdapter {
+
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+			http
+					.antMatcher(API_VERSION + "/public/**")
+					.authorizeRequests()
+					.antMatchers(API_VERSION + "/public/**").permitAll()
+					.and()
+					.csrf().disable();
+		}
+	}
+
 	/**
 	 * admin
 	 * 

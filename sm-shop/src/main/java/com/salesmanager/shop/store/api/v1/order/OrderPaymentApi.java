@@ -6,6 +6,7 @@ import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import com.salesmanager.core.model.order.Order;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -84,7 +87,8 @@ public class OrderPaymentApi {
 	@ResponseBody
 	@Parameters({ @Parameter(name = "store", example = "DEFAULT"),
 			@Parameter(name = "lang", example = "en") })
-	public ReadableTransaction init(@Valid @RequestBody PersistablePayment payment, @PathVariable String code,
+	public ReadableTransaction init(@Valid @RequestBody PersistablePayment payment,
+									@PathVariable String code,
 			@Parameter(hidden = true) MerchantStore merchantStore, @Parameter(hidden = true) Language language) throws Exception {
 
 		ShoppingCart cart = shoppingCartService.getByCode(code, merchantStore);
@@ -99,7 +103,18 @@ public class OrderPaymentApi {
 
 		populator.populate(payment, paymentModel, merchantStore, language);
 
-		Transaction transactionModel = paymentService.initTransaction(null, paymentModel, merchantStore);
+		Transaction transactionModel;
+
+		if ("przelewy24".equals(payment.getPaymentModule())) {
+			Long orderId = cart.getOrderId();
+			if (orderId == null) {
+				throw new ResourceNotFoundException("No order found for cart " + code + ", complete checkout first");
+			}
+			Order order = orderService.getById(orderId);
+			transactionModel = paymentService.initTransaction(order, null, paymentModel, merchantStore);
+		} else {
+			transactionModel = paymentService.initTransaction(null, paymentModel, merchantStore);
+		}
 
 		ReadableTransaction transaction = new ReadableTransaction();
 		ReadableTransactionPopulator trxPopulator = new ReadableTransactionPopulator();
@@ -110,6 +125,21 @@ public class OrderPaymentApi {
 
 		return transaction;
 
+	}
+
+	@RequestMapping(value = { "/public/orders/payment/przelewy24/notification" }, method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public ResponseEntity<String> przelewy24Notification(
+			@RequestBody Map<String, Object> notification,
+			@Parameter(hidden = true) MerchantStore merchantStore) {
+		try {
+			paymentService.processPrzelewy24Notification(notification, merchantStore);
+			return ResponseEntity.ok("OK");
+		} catch (Exception e) {
+			LOGGER.error("Error processing Przelewy24 notification", e);
+			return ResponseEntity.status(500).body("ERROR");
+		}
 	}
 
 	@RequestMapping(value = { "/auth/cart/{code}/payment/init" }, method = RequestMethod.POST)

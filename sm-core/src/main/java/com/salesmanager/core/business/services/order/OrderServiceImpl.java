@@ -115,6 +115,43 @@ public class OrderServiceImpl  extends SalesManagerEntityServiceImpl<Long, Order
         update(order);
     }
 
+    public Order processOrderWithPendingPayment(Order order, Customer customer,
+                                                List<ShoppingCartItem> items, OrderTotalSummary summary,
+                                                MerchantStore store) throws ServiceException {
+
+        // bez processPayment!
+        order.setStatus(OrderStatus.ORDERED);
+
+        Set<OrderStatusHistory> statusHistorySet = new HashSet<>();
+        OrderStatusHistory statusHistory = new OrderStatusHistory();
+        statusHistory.setStatus(OrderStatus.ORDERED);
+        statusHistory.setDateAdded(new Date());
+        statusHistory.setOrder(order);
+        statusHistorySet.add(statusHistory);
+        order.setOrderHistory(statusHistorySet);
+
+        if (customer.getId() == null || customer.getId() == 0) {
+            customerService.create(customer);
+        }
+
+        order.setCustomerId(customer.getId());
+        this.create(order);
+
+        // dekrementacja inventory
+        Set<OrderProduct> products = order.getOrderProducts();
+        for (OrderProduct orderProduct : products) {
+            Product p = productService.getById(orderProduct.getId());
+            if (p == null) throw new ServiceException(ServiceException.EXCEPTION_INVENTORY_MISMATCH);
+            for (ProductAvailability availability : p.getAvailabilities()) {
+                int qty = availability.getProductQuantity() - orderProduct.getProductQuantity();
+                availability.setProductQuantity(qty);
+            }
+            productService.update(p);
+        }
+
+        return order;
+    }
+
     @Override
     public Order processOrder(Order order, Customer customer, List<ShoppingCartItem> items, OrderTotalSummary summary, Payment payment, MerchantStore store) throws ServiceException {
 

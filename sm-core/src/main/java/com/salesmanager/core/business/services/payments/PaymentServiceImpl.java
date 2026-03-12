@@ -49,6 +49,8 @@ import com.salesmanager.core.modules.integration.IntegrationException;
 import com.salesmanager.core.modules.integration.payment.model.PaymentModule;
 import com.salesmanager.core.modules.utils.Encryption;
 
+import static com.salesmanager.core.business.modules.utils.Przelewy24Utils.sha384;
+
 
 @Service("paymentService")
 public class PaymentServiceImpl implements PaymentService {
@@ -295,10 +297,72 @@ public class PaymentServiceImpl implements PaymentService {
 		}
 	
 	}
-	
 
-	
+	@Override
+	public void processPrzelewy24Notification(Map<String, Object> notification, MerchantStore store) throws ServiceException {
+		try {
+			String sessionId = (String) notification.get("sessionId");
 
+			if (StringUtils.isBlank(sessionId)) {
+				throw new ServiceException("Missing sessionId in Przelewy24 notification");
+			}
+
+			Transaction initTransaction = transactionService.getBySessionId(sessionId);
+
+			if (initTransaction == null) {
+				throw new ServiceException("No transaction found for sessionId: " + sessionId);
+			}
+
+			Order order = initTransaction.getOrder();
+
+			if (order == null) {
+				throw new ServiceException("No order found for sessionId: " + sessionId);
+			}
+
+			// pobierz konfigurację P24
+			Map<String, IntegrationConfiguration> modules = this.getPaymentModulesConfigured(store);
+			IntegrationConfiguration configuration = modules.get("przelewy24");
+			if (configuration == null || !configuration.isActive()) {
+				throw new ServiceException("Przelewy24 module is not configured or not active");
+			}
+			String crcKey = configuration.getIntegrationKeys().get("crcKey");
+
+			// weryfikacja podpisu
+			String p24OrderId = String.valueOf(notification.get("orderId"));
+			int amount = (int) notification.get("amount");
+			String currency = (String) notification.get("currency");
+			String receivedSign = (String) notification.get("sign");
+
+			String payload = "{\"sessionId\":\"" + sessionId + "\",\"orderId\":" + p24OrderId + ",\"amount\":" + amount + ",\"currency\":\"" + currency + "\",\"crc\":\"" + crcKey + "\"}";
+			String expectedSign = sha384(payload);
+
+			if (!expectedSign.equals(receivedSign)) {
+				throw new ServiceException("Invalid Przelewy24 signature");
+			}
+
+			// zapisz transakcję AUTHORIZECAPTURE
+			Transaction transaction = new Transaction();
+			transaction.setOrder(order);
+			transaction.setTransactionDate(new Date());
+			transaction.setTransactionType(TransactionType.AUTHORIZECAPTURE);
+			transaction.setPaymentType(PaymentType.PRZELEWY24);
+			transaction.getTransactionDetails().put("P24_ORDER_ID", String.valueOf(notification.get("orderId")));
+			transaction.getTransactionDetails().put("SESSION_ID", sessionId);
+			transactionService.create(transaction);
+
+			// aktualizuj status zamówienia
+			OrderStatusHistory orderHistory = new OrderStatusHistory();
+			orderHistory.setOrder(order);
+			orderHistory.setStatus(OrderStatus.PROCESSED);
+			orderHistory.setDateAdded(new Date());
+			order.getOrderHistory().add(orderHistory);
+			order.setStatus(OrderStatus.PROCESSED);
+			orderRepository.save(order);
+
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
 
 	@Override
 	public Transaction processPayment(Customer customer,
@@ -736,7 +800,14 @@ public class PaymentServiceImpl implements PaymentService {
 		
 		IntegrationModule integrationModule = getPaymentMethodByCode(store,payment.getModuleName());
 
-		return module.initTransaction(store, customer, amount, payment, configuration, integrationModule);
+		Transaction transaction = module.initTransaction(store, customer, amount, payment, configuration, integrationModule);
+
+		if ("przelewy24".equals(payment.getModuleName())) {
+			transaction.setOrder(order);
+			transactionService.create(transaction);
+		}
+
+		return transaction;
 	}
 
 	@Override
@@ -775,7 +846,7 @@ public class PaymentServiceImpl implements PaymentService {
 		IntegrationModule integrationModule = getPaymentMethodByCode(store,payment.getModuleName());
 		
 		Transaction transaction = module.initTransaction(store, customer, amount, payment, configuration, integrationModule);
-		
+
 		transactionService.save(transaction);
 
 		return transaction;

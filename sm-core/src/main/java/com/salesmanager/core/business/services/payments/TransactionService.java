@@ -22,6 +22,8 @@ public interface TransactionService extends SalesManagerEntityService<Long, Tran
 	 */
 	Transaction getCapturableTransaction(Order order) throws ServiceException;
 
+	Transaction getBySessionId(String sessionId) throws ServiceException;
+
 	Transaction getRefundableTransaction(Order order) throws ServiceException;
 
 	List<Transaction> listTransactions(Order order) throws ServiceException;

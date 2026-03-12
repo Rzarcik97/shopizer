@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import com.salesmanager.shop.model.order.v1.PersistableOrder;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -1325,7 +1326,11 @@ public class OrderFacadeImpl implements OrderFacade {
 
 
 			//order service
-			modelOrder = orderService.processOrder(modelOrder, customer, items, orderTotalSummary, paymentModel, store);
+			if ("przelewy24".equals(order.getPayment().getPaymentModule())) {
+				modelOrder = orderService.processOrderWithPendingPayment(modelOrder, customer, items, orderTotalSummary, store);
+			} else {
+				modelOrder = orderService.processOrder(modelOrder, customer, items, orderTotalSummary, paymentModel, store);
+			}
 
 			// update cart
 			try {
