@@ -1,47 +1,48 @@
 package com.salesmanager.core.model.catalog.product;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+
 import java.math.BigDecimal;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 
 @Embeddable
 public class ProductDimensions {
-  
-  
-  @Column(name = "LENGTH")
-  private BigDecimal length;
 
-  @Column(name = "WIDTH")
-  private BigDecimal width;
 
-  @Column(name = "HEIGHT")
-  private BigDecimal height;
+    @Column(name = "LENGTH")
+    private BigDecimal length;
 
-  @Column(name = "WEIGHT")
-  private BigDecimal weight;
+    @Column(name = "WIDTH")
+    private BigDecimal width;
 
-  public BigDecimal getLength() {
-    return length;
-  }
+    @Column(name = "HEIGHT")
+    private BigDecimal height;
 
-  public void setLength(BigDecimal length) {
-    this.length = length;
-  }
+    @Column(name = "WEIGHT")
+    private BigDecimal weight;
 
-  public BigDecimal getWidth() {
-    return width;
-  }
+    public BigDecimal getLength() {
+        return length;
+    }
 
-  public void setWidth(BigDecimal width) {
-    this.width = width;
-  }
+    public void setLength(BigDecimal length) {
+        this.length = length;
+    }
 
-  public BigDecimal getWeight() {
-    return weight;
-  }
+    public BigDecimal getWidth() {
+        return width;
+    }
 
-  public void setWeight(BigDecimal weight) {
-    this.weight = weight;
-  }
+    public void setWidth(BigDecimal width) {
+        this.width = width;
+    }
+
+    public BigDecimal getWeight() {
+        return weight;
+    }
+
+    public void setWeight(BigDecimal weight) {
+        this.weight = weight;
+    }
 
 }

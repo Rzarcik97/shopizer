@@ -1,43 +1,43 @@
 package com.salesmanager.shop.model.content;
 
+import com.salesmanager.shop.model.entity.Entity;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import com.salesmanager.shop.model.entity.Entity;
 
 public class PersistableContent extends Entity implements Serializable {
-  
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 1L;
-  private String code;
-  private boolean isDisplayedInMenu;
 
-  public String getCode() {
-    return code;
-  }
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private String code;
+    private boolean isDisplayedInMenu;
+    private List<ObjectContent> descriptions = new ArrayList<ObjectContent>();
 
-  public void setCode(String code) {
-    this.code = code;
-  }
-  
-  public List<ObjectContent> getDescriptions() {
-    return descriptions;
-  }
+    public String getCode() {
+        return code;
+    }
 
-  public void setDescriptions(List<ObjectContent> descriptions) {
-    this.descriptions = descriptions;
-  }
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-  public boolean isDisplayedInMenu() {
-    return isDisplayedInMenu;
-  }
+    public List<ObjectContent> getDescriptions() {
+        return descriptions;
+    }
 
-  public void setDisplayedInMenu(boolean isDisplayedInMenu) {
-    this.isDisplayedInMenu = isDisplayedInMenu;
-  }
+    public void setDescriptions(List<ObjectContent> descriptions) {
+        this.descriptions = descriptions;
+    }
 
-  private List<ObjectContent> descriptions = new ArrayList<ObjectContent>();
+    public boolean isDisplayedInMenu() {
+        return isDisplayedInMenu;
+    }
+
+    public void setDisplayedInMenu(boolean isDisplayedInMenu) {
+        this.isDisplayedInMenu = isDisplayedInMenu;
+    }
 
 }

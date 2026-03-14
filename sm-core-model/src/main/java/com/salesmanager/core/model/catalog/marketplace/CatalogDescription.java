@@ -15,34 +15,32 @@ import com.salesmanager.core.model.reference.language.Language;
 )*/
 public class CatalogDescription extends Description {
 
-	
 
-/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	/*	@ManyToOne(targetEntity = Catalog.class)
-	@JoinColumn(name = "CATALOG_ID", nullable = false)*/
-	private Catalog catalog;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    /*	@ManyToOne(targetEntity = Catalog.class)
+    @JoinColumn(name = "CATALOG_ID", nullable = false)*/
+    private Catalog catalog;
 
 
-	
-	public CatalogDescription() {
-	}
-	
-	public CatalogDescription(String name, Language language) {
-		this.setName(name);
-		this.setLanguage(language);
-		super.setId(0L);
-	}
+    public CatalogDescription() {
+    }
 
-	public Catalog getCatalog() {
-		return catalog;
-	}
+    public CatalogDescription(String name, Language language) {
+        this.setName(name);
+        this.setLanguage(language);
+        super.setId(0L);
+    }
 
-	public void setCatalog(Catalog catalog) {
-		this.catalog = catalog;
-	}
-	
+    public Catalog getCatalog() {
+        return catalog;
+    }
+
+    public void setCatalog(Catalog catalog) {
+        this.catalog = catalog;
+    }
+
 
 }

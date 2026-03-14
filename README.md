@@ -2,14 +2,11 @@
 
 3.2.7
 
-
-
 [![last_version](https://img.shields.io/badge/last_version-v3.2.7-blue.svg?style=flat)](https://github.com/shopizer-ecommerce/shopizer/tree/3.2.7)
 [![Official site](https://img.shields.io/website-up-down-green-red/https/shields.io.svg?label=official%20site)](http://www.shopizer.com/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/shopizerecomm/shopizer.svg)](https://hub.docker.com/r/shopizerecomm/shopizer)
 [![stackoverflow](https://img.shields.io/badge/shopizer-stackoverflow-orange.svg?style=flat)](http://stackoverflow.com/questions/tagged/shopizer)
 [![CircleCI](https://circleci.com/gh/shopizer-ecommerce/shopizer.svg?style=svg)](https://circleci.com/gh/shopizer-ecommerce/shopizer)
-
 
 Java open source e-commerce software
 
@@ -25,7 +22,6 @@ Headless commerce and Rest api for ecommerce
 
 Shopizer Headless commerce consists of the following components:
 
-
 Access the headless api: http://localhost:8080/swagger-ui.html
 
 
@@ -33,14 +29,14 @@ See the demo: [**New demo on the way 2025]
 -------------------
 Headless demo Available soon
 
-1.  Run from Docker images:
+1. Run from Docker images:
 
 From the command line:
 
 ```
 docker run -p 8080:8080 shopizerecomm/shopizer:latest
 ```
-       
+
 2. Run the administration tool
 
 ⋅⋅⋅ Requires the java backend to be running
@@ -50,7 +46,6 @@ docker run \
  -e "APP_BASE_URL=http://localhost:8080/api" \
  -p 82:80 shopizerecomm/shopizer-admin
 ```
-
 
 3. Run react shop sample site
 
@@ -70,15 +65,13 @@ API documentation:
 Get the source code:
 -------------------
 Clone the repository:
-     
+
 	 $ git clone git://github.com/shopizer-ecommerce/shopizer.git
-	 
 
 To build the application:
 -------------------
 
 1. Shopizer backend
-
 
 From the command line:
 
@@ -101,7 +94,6 @@ Form compiling and running Shopizer admin consult the repo README file
 
 Access the headless web application at: http://localhost:8080/swagger-ui.html
 
-
 The instructions above will let you run the application with default settings and configurations.
 Please read the instructions on how to connect to MySQL, configure an email server and configure other subsystems
 
@@ -109,7 +101,8 @@ Please read the instructions on how to connect to MySQL, configure an email serv
 ### Documentation:
 -------------------
 
-Documentation available [<https://shopizer-ecommerce.github.io/documentation/>](http://localhost:8080/swagger-ui/index.html)
+Documentation
+available [<https://shopizer-ecommerce.github.io/documentation/>](http://localhost:8080/swagger-ui/index.html)
 
 ChatOps <https://shopizer.slack.com>  - Join our Slack channel <https://communityinviter.com/apps/shopizer/shopizer>
 
@@ -138,7 +131,6 @@ Create new branch in your repository
 -------------------
 
 	   $ git checkout -b branch-name
-
 
 Push your changes to Shopizer
 -------------------

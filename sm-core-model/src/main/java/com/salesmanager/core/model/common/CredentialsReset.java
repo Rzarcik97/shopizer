@@ -1,36 +1,36 @@
 package com.salesmanager.core.model.common;
 
-import java.util.Date;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import java.util.Date;
 
 @Embeddable
 public class CredentialsReset {
-	
-	@Column (name ="RESET_CREDENTIALS_REQ", length=256)
-	private String credentialsRequest;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name = "RESET_CREDENTIALS_EXP")
-	private Date credentialsRequestExpiry = new Date();
+    @Column(name = "RESET_CREDENTIALS_REQ", length = 256)
+    private String credentialsRequest;
 
-	public String getCredentialsRequest() {
-		return credentialsRequest;
-	}
+    @Temporal(TemporalType.DATE)
+    @Column(name = "RESET_CREDENTIALS_EXP")
+    private Date credentialsRequestExpiry = new Date();
 
-	public void setCredentialsRequest(String credentialsRequest) {
-		this.credentialsRequest = credentialsRequest;
-	}
+    public String getCredentialsRequest() {
+        return credentialsRequest;
+    }
 
-	public Date getCredentialsRequestExpiry() {
-		return credentialsRequestExpiry;
-	}
+    public void setCredentialsRequest(String credentialsRequest) {
+        this.credentialsRequest = credentialsRequest;
+    }
 
-	public void setCredentialsRequestExpiry(Date credentialsRequestExpiry) {
-		this.credentialsRequestExpiry = credentialsRequestExpiry;
-	}
+    public Date getCredentialsRequestExpiry() {
+        return credentialsRequestExpiry;
+    }
+
+    public void setCredentialsRequestExpiry(Date credentialsRequestExpiry) {
+        this.credentialsRequestExpiry = credentialsRequestExpiry;
+    }
 
 }

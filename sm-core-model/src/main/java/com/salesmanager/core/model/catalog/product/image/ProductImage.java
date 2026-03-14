@@ -1,160 +1,159 @@
 package com.salesmanager.core.model.catalog.product.image;
 
+import com.salesmanager.core.model.catalog.product.Product;
+import com.salesmanager.core.model.generic.SalesManagerEntity;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.TableGenerator;
+import jakarta.persistence.Transient;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-
-import com.salesmanager.core.model.catalog.product.Product;
-import com.salesmanager.core.model.generic.SalesManagerEntity;
-
 @Entity
 @Table(name = "PRODUCT_IMAGE")
 public class ProductImage extends SalesManagerEntity<Long, ProductImage> {
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@Column(name = "PRODUCT_IMAGE_ID")
-	@TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "PRODUCT_IMG_SEQ_NEXT_VAL")
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
-	private Long id;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "productImage", cascade = CascadeType.ALL)
-	private List<ProductImageDescription> descriptions = new ArrayList<ProductImageDescription>();
+    private static final long serialVersionUID = 1L;
 
-	
-	@Column(name = "PRODUCT_IMAGE")
-	private String productImage;
-	
-	@Column(name = "DEFAULT_IMAGE")
-	private boolean defaultImage = true;
-	
-	/**
-	 * default to 0 for images managed by the system
-	 */
-	@Column(name = "IMAGE_TYPE")
-	private int imageType;
-	
-	/**
-	 * Refers to images not accessible through the system. It may also be a video.
-	 */
-	@Column(name = "PRODUCT_IMAGE_URL")
-	private String productImageUrl;
-	
+    @Id
+    @Column(name = "PRODUCT_IMAGE_ID")
+    @TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "PRODUCT_IMG_SEQ_NEXT_VAL")
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
+    private Long id;
 
-	@Column(name = "IMAGE_CROP")
-	private boolean imageCrop;
-	
-	@ManyToOne(targetEntity = Product.class)
-	@JoinColumn(name = "PRODUCT_ID", nullable = false)
-	private Product product;
-	
-	@Column(name = "SORT_ORDER")
-	private Integer sortOrder = 0;
-	
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "productImage", cascade = CascadeType.ALL)
+    private List<ProductImageDescription> descriptions = new ArrayList<ProductImageDescription>();
 
-	@Transient
-	private InputStream image = null;
-	
-	//private MultiPartFile image
 
-	public ProductImage(){
-	}
+    @Column(name = "PRODUCT_IMAGE")
+    private String productImage;
 
-	public String getProductImage() {
-		return productImage;
-	}
+    @Column(name = "DEFAULT_IMAGE")
+    private boolean defaultImage = true;
 
-	public void setProductImage(String productImage) {
-		this.productImage = productImage;
-	}
+    /**
+     * default to 0 for images managed by the system
+     */
+    @Column(name = "IMAGE_TYPE")
+    private int imageType;
 
-	public boolean isDefaultImage() {
-		return defaultImage;
-	}
+    /**
+     * Refers to images not accessible through the system. It may also be a video.
+     */
+    @Column(name = "PRODUCT_IMAGE_URL")
+    private String productImageUrl;
 
-	public void setDefaultImage(boolean defaultImage) {
-		this.defaultImage = defaultImage;
-	}
-	
-	public Integer getSortOrder() {
-		return sortOrder;
-	}
 
-	public void setSortOrder(Integer sortOrder) {
-		this.sortOrder = sortOrder;
-	}
+    @Column(name = "IMAGE_CROP")
+    private boolean imageCrop;
 
-	public int getImageType() {
-		return imageType;
-	}
+    @ManyToOne(targetEntity = Product.class)
+    @JoinColumn(name = "PRODUCT_ID", nullable = false)
+    private Product product;
 
-	public void setImageType(int imageType) {
-		this.imageType = imageType;
-	}
+    @Column(name = "SORT_ORDER")
+    private Integer sortOrder = 0;
 
-	public boolean isImageCrop() {
-		return imageCrop;
-	}
 
-	public void setImageCrop(boolean imageCrop) {
-		this.imageCrop = imageCrop;
-	}
+    @Transient
+    private InputStream image = null;
 
-	@Override
-	public Long getId() {
-		return id;
-	}
+    //private MultiPartFile image
 
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public ProductImage() {
+    }
 
-	public Product getProduct() {
-		return product;
-	}
+    public String getProductImage() {
+        return productImage;
+    }
 
-	public void setProduct(Product product) {
-		this.product = product;
-	}
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
+    }
 
-	public void setDescriptions(List<ProductImageDescription> descriptions) {
-		this.descriptions = descriptions;
-	}
+    public boolean isDefaultImage() {
+        return defaultImage;
+    }
 
-	public List<ProductImageDescription> getDescriptions() {
-		return descriptions;
-	}
+    public void setDefaultImage(boolean defaultImage) {
+        this.defaultImage = defaultImage;
+    }
 
-	public InputStream getImage() {
-		return image;
-	}
+    public Integer getSortOrder() {
+        return sortOrder;
+    }
 
-	public void setImage(InputStream image) {
-		this.image = image;
-	}
+    public void setSortOrder(Integer sortOrder) {
+        this.sortOrder = sortOrder;
+    }
 
-	public String getProductImageUrl() {
-		return productImageUrl;
-	}
+    public int getImageType() {
+        return imageType;
+    }
 
-	public void setProductImageUrl(String productImageUrl) {
-		this.productImageUrl = productImageUrl;
-	}
+    public void setImageType(int imageType) {
+        this.imageType = imageType;
+    }
+
+    public boolean isImageCrop() {
+        return imageCrop;
+    }
+
+    public void setImageCrop(boolean imageCrop) {
+        this.imageCrop = imageCrop;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public List<ProductImageDescription> getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(List<ProductImageDescription> descriptions) {
+        this.descriptions = descriptions;
+    }
+
+    public InputStream getImage() {
+        return image;
+    }
+
+    public void setImage(InputStream image) {
+        this.image = image;
+    }
+
+    public String getProductImageUrl() {
+        return productImageUrl;
+    }
+
+    public void setProductImageUrl(String productImageUrl) {
+        this.productImageUrl = productImageUrl;
+    }
 
 
 }

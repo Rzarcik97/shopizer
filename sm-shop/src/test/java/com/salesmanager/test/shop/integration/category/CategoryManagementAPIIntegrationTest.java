@@ -1,24 +1,5 @@
 package com.salesmanager.test.shop.integration.category;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertThat;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
-import java.util.ArrayList;
-import java.util.List;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringRunner;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.salesmanager.core.business.constants.Constants;
@@ -33,6 +14,26 @@ import com.salesmanager.shop.model.catalog.manufacturer.ReadableManufacturer;
 import com.salesmanager.shop.model.catalog.product.product.PersistableProduct;
 import com.salesmanager.shop.model.catalog.product.product.ProductSpecification;
 import com.salesmanager.test.shop.common.ServicesTestSupport;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 
 @SpringBootTest(classes = ShopApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
@@ -40,7 +41,6 @@ public class CategoryManagementAPIIntegrationTest extends ServicesTestSupport {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
-
 
 
     /**
@@ -103,76 +103,75 @@ public class CategoryManagementAPIIntegrationTest extends ServicesTestSupport {
         assertNotNull(cat.getId());
 
     }
-    
+
     /**
-    @Test
-    public void putCategory() throws Exception {
-
-        //create
-        PersistableCategory newCategory = new PersistableCategory();
-        newCategory.setCode("angular");
-        newCategory.setSortOrder(1);
-        newCategory.setVisible(true);
-        newCategory.setDepth(4);
-
-
-        CategoryDescription description = new CategoryDescription();
-        description.setLanguage("en");
-        description.setName("angular");
-        description.setFriendlyUrl("angular");
-        description.setTitle("angular");
-
-        List<CategoryDescription> descriptions = new ArrayList<>();
-        descriptions.add(description);
-
-        newCategory.setDescriptions(descriptions);
-
-        final ObjectWriter writer = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        final String json = writer.writeValueAsString(newCategory);
-
-        final HttpEntity<String> entity = new HttpEntity<>(json, getHeader());
-        //create category
-        final ResponseEntity response = testRestTemplate.postForEntity("/api/v1/private/category", entity, PersistableCategory.class);
-        final PersistableCategory cat = (PersistableCategory) response.getBody();
-        assertThat(response.getStatusCode(), is(CREATED));
-        assertNotNull(cat.getId());
-        
-        HttpEntity<String> httpEntity = new HttpEntity<>(getHeader());
-
-
-        
-        final ResponseEntity<ReadableCategory> readableQuery = testRestTemplate.exchange(String.format("/api/v1//category/" +  description.getFriendlyUrl()), HttpMethod.GET,
-            httpEntity, ReadableCategory.class);
-        
-        assertThat(readableQuery.getStatusCode(), is(OK));
-        
-        ReadableCategory readableCategory = readableQuery.getBody();
-        
-        newCategory = new PersistableCategory();
-        newCategory.setCode("angular");
-        newCategory.setVisible(true);
-        newCategory.setDepth(4);
-        newCategory.setSortOrder(2);
-        description = new CategoryDescription();
-        description.setLanguage("en");
-        description.setName("angular");
-        description.setFriendlyUrl("angular");
-        description.setTitle("angular");
-
-        descriptions = new ArrayList<>();
-        descriptions.add(description);
-
-        newCategory.setDescriptions(descriptions);
-
-        
-        HttpEntity<PersistableCategory> requestUpdate = new HttpEntity<>(newCategory, getHeader());
-        
-        ResponseEntity resp = testRestTemplate.exchange("/api/v1/private/category/" + cat.getId(), HttpMethod.PUT,   requestUpdate, Void.class);
-        assertThat(resp.getStatusCode(), is(OK));
-        
-        //update
-
-    }
+     * @Test public void putCategory() throws Exception {
+     * <p>
+     * //create
+     * PersistableCategory newCategory = new PersistableCategory();
+     * newCategory.setCode("angular");
+     * newCategory.setSortOrder(1);
+     * newCategory.setVisible(true);
+     * newCategory.setDepth(4);
+     * <p>
+     * <p>
+     * CategoryDescription description = new CategoryDescription();
+     * description.setLanguage("en");
+     * description.setName("angular");
+     * description.setFriendlyUrl("angular");
+     * description.setTitle("angular");
+     * <p>
+     * List<CategoryDescription> descriptions = new ArrayList<>();
+     * descriptions.add(description);
+     * <p>
+     * newCategory.setDescriptions(descriptions);
+     * <p>
+     * final ObjectWriter writer = new ObjectMapper().writer().withDefaultPrettyPrinter();
+     * final String json = writer.writeValueAsString(newCategory);
+     * <p>
+     * final HttpEntity<String> entity = new HttpEntity<>(json, getHeader());
+     * //create category
+     * final ResponseEntity response = testRestTemplate.postForEntity("/api/v1/private/category", entity, PersistableCategory.class);
+     * final PersistableCategory cat = (PersistableCategory) response.getBody();
+     * assertThat(response.getStatusCode(), is(CREATED));
+     * assertNotNull(cat.getId());
+     * <p>
+     * HttpEntity<String> httpEntity = new HttpEntity<>(getHeader());
+     * <p>
+     * <p>
+     * <p>
+     * final ResponseEntity<ReadableCategory> readableQuery = testRestTemplate.exchange(String.format("/api/v1//category/" +  description.getFriendlyUrl()), HttpMethod.GET,
+     * httpEntity, ReadableCategory.class);
+     * <p>
+     * assertThat(readableQuery.getStatusCode(), is(OK));
+     * <p>
+     * ReadableCategory readableCategory = readableQuery.getBody();
+     * <p>
+     * newCategory = new PersistableCategory();
+     * newCategory.setCode("angular");
+     * newCategory.setVisible(true);
+     * newCategory.setDepth(4);
+     * newCategory.setSortOrder(2);
+     * description = new CategoryDescription();
+     * description.setLanguage("en");
+     * description.setName("angular");
+     * description.setFriendlyUrl("angular");
+     * description.setTitle("angular");
+     * <p>
+     * descriptions = new ArrayList<>();
+     * descriptions.add(description);
+     * <p>
+     * newCategory.setDescriptions(descriptions);
+     * <p>
+     * <p>
+     * HttpEntity<PersistableCategory> requestUpdate = new HttpEntity<>(newCategory, getHeader());
+     * <p>
+     * ResponseEntity resp = testRestTemplate.exchange("/api/v1/private/category/" + cat.getId(), HttpMethod.PUT,   requestUpdate, Void.class);
+     * assertThat(resp.getStatusCode(), is(OK));
+     * <p>
+     * //update
+     * <p>
+     * }
      **/
 
     @Test
@@ -329,7 +328,6 @@ public class CategoryManagementAPIIntegrationTest extends ServicesTestSupport {
         assertNotNull(cat.getId());
 
 
-
     }
 
     @Test
@@ -342,127 +340,124 @@ public class CategoryManagementAPIIntegrationTest extends ServicesTestSupport {
 
     @Test
     public void manufacturerForItemsInCategory() throws Exception {
-      
-      ObjectWriter writer = new ObjectMapper().writer().withDefaultPrettyPrinter();
-      
-      //create first manufacturer
-      PersistableManufacturer m1 = super.manufacturer("BRAND1");   
-      
-      String json = writer.writeValueAsString(m1);
-      HttpEntity<String> entity = new HttpEntity<>(json, getHeader());
 
-      @SuppressWarnings("rawtypes")
-      ResponseEntity response = testRestTemplate.postForEntity("/api/v1/private/manufacturer", entity, PersistableManufacturer.class);
-      assertThat(response.getStatusCode(), is(CREATED));
+        ObjectWriter writer = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
-      //create second manufacturer
-      PersistableManufacturer m2 = super.manufacturer("BRAND2");
-      json = writer.writeValueAsString(m2);
-      entity = new HttpEntity<>(json, getHeader());
+        //create first manufacturer
+        PersistableManufacturer m1 = super.manufacturer("BRAND1");
 
-      response = testRestTemplate.postForEntity("/api/v1/private/manufacturer", entity, PersistableManufacturer.class);
-      assertThat(response.getStatusCode(), is(CREATED));
-      
-      //create category
-      PersistableCategory category = super.category("TEST");
-      Category cat = new Category();//to be used in product
-      cat.setCode("TEST");
-      
-      json = writer.writeValueAsString(category);
-      entity = new HttpEntity<>(json, getHeader());
+        String json = writer.writeValueAsString(m1);
+        HttpEntity<String> entity = new HttpEntity<>(json, getHeader());
 
-      @SuppressWarnings("rawtypes")
-      ResponseEntity categoryResponse = testRestTemplate.postForEntity("/api/v1/private/category", entity, PersistableCategory.class);
-      assertThat(categoryResponse.getStatusCode(), is(CREATED));
-      final PersistableCategory persistable = (PersistableCategory) categoryResponse.getBody();
-      
-      Long id = persistable.getId();
-      
-      //create first item
-      
-      PersistableProduct product1 = super.product("PRODUCT1");
-      product1.getCategories().add(cat);
-      
-      
-      ProductSpecification specifications = new ProductSpecification();
-      specifications.setManufacturer("BRAND1");
-      product1.setProductSpecifications(specifications);
-      
-      json = writer.writeValueAsString(product1);
-      entity = new HttpEntity<>(json, getHeader());
+        @SuppressWarnings("rawtypes")
+        ResponseEntity response = testRestTemplate.postForEntity("/api/v1/private/manufacturer", entity, PersistableManufacturer.class);
+        assertThat(response.getStatusCode(), is(CREATED));
 
-      response = testRestTemplate.postForEntity("/api/v1/private/product?store=" + Constants.DEFAULT_STORE, entity, PersistableProduct.class);
-      assertThat(response.getStatusCode(), is(CREATED));
-            
-      //create second item      
-      
-      PersistableProduct product2 = super.product("PRODUCT2");
-      product2.getCategories().add(cat);
-      
-      
-      specifications = new ProductSpecification();
-      specifications.setManufacturer("BRAND2");
-      product2.setProductSpecifications(specifications);
-      
-      json = writer.writeValueAsString(product2);
-      entity = new HttpEntity<>(json, getHeader());
+        //create second manufacturer
+        PersistableManufacturer m2 = super.manufacturer("BRAND2");
+        json = writer.writeValueAsString(m2);
+        entity = new HttpEntity<>(json, getHeader());
 
-      response = testRestTemplate.postForEntity("/api/v1/private/product?store=" + Constants.DEFAULT_STORE, entity, PersistableProduct.class);
-      assertThat(response.getStatusCode(), is(CREATED));
-      
-      entity = new HttpEntity<>(getHeader());
-            
-      //get manufacturers in category
-      @SuppressWarnings("rawtypes")
-      ResponseEntity<List> manufacturers = testRestTemplate.exchange(String.format("/api/v1/category/" + id + "/manufacturer"), HttpMethod.GET, entity, List.class);  
-      assertThat(manufacturers.getStatusCode(), is(OK));
-      
-      @SuppressWarnings("unchecked")
-      List<ReadableManufacturer> manufacturerList = manufacturers.getBody();
+        response = testRestTemplate.postForEntity("/api/v1/private/manufacturer", entity, PersistableManufacturer.class);
+        assertThat(response.getStatusCode(), is(CREATED));
 
-      
-      //assertFalse(manufacturerList.isEmpty());
-      
+        //create category
+        PersistableCategory category = super.category("TEST");
+        Category cat = new Category();//to be used in product
+        cat.setCode("TEST");
 
-      
-      
+        json = writer.writeValueAsString(category);
+        entity = new HttpEntity<>(json, getHeader());
+
+        @SuppressWarnings("rawtypes")
+        ResponseEntity categoryResponse = testRestTemplate.postForEntity("/api/v1/private/category", entity, PersistableCategory.class);
+        assertThat(categoryResponse.getStatusCode(), is(CREATED));
+        final PersistableCategory persistable = (PersistableCategory) categoryResponse.getBody();
+
+        Long id = persistable.getId();
+
+        //create first item
+
+        PersistableProduct product1 = super.product("PRODUCT1");
+        product1.getCategories().add(cat);
+
+
+        ProductSpecification specifications = new ProductSpecification();
+        specifications.setManufacturer("BRAND1");
+        product1.setProductSpecifications(specifications);
+
+        json = writer.writeValueAsString(product1);
+        entity = new HttpEntity<>(json, getHeader());
+
+        response = testRestTemplate.postForEntity("/api/v1/private/product?store=" + Constants.DEFAULT_STORE, entity, PersistableProduct.class);
+        assertThat(response.getStatusCode(), is(CREATED));
+
+        //create second item
+
+        PersistableProduct product2 = super.product("PRODUCT2");
+        product2.getCategories().add(cat);
+
+
+        specifications = new ProductSpecification();
+        specifications.setManufacturer("BRAND2");
+        product2.setProductSpecifications(specifications);
+
+        json = writer.writeValueAsString(product2);
+        entity = new HttpEntity<>(json, getHeader());
+
+        response = testRestTemplate.postForEntity("/api/v1/private/product?store=" + Constants.DEFAULT_STORE, entity, PersistableProduct.class);
+        assertThat(response.getStatusCode(), is(CREATED));
+
+        entity = new HttpEntity<>(getHeader());
+
+        //get manufacturers in category
+        @SuppressWarnings("rawtypes")
+        ResponseEntity<List> manufacturers = testRestTemplate.exchange(String.format("/api/v1/category/" + id + "/manufacturer"), HttpMethod.GET, entity, List.class);
+        assertThat(manufacturers.getStatusCode(), is(OK));
+
+        @SuppressWarnings("unchecked")
+        List<ReadableManufacturer> manufacturerList = manufacturers.getBody();
+
+
+        //assertFalse(manufacturerList.isEmpty());
+
+
     }
-    
-    
+
+
     /**
      * Test category by name
      * @throws Exception
      */
 
-     /**
-    
-    @Test
-    public void getByCategoryFriendlyUrl() throws Exception {
-    	
-    	ObjectWriter writer = new ObjectMapper().writer().withDefaultPrettyPrinter();
-    	
-    	String categoryName = "running-shoes";
-    	String categoryCode = "runningshoes";
-    	PersistableCategory category = category(categoryCode,categoryName);
-        final String json = writer.writeValueAsString(category);
+    /**
 
-        HttpEntity<String> entity = new HttpEntity<>(json, getHeader());
+     @Test public void getByCategoryFriendlyUrl() throws Exception {
 
-        ResponseEntity response = testRestTemplate.postForEntity("/api/v1/private/category", entity, PersistableCategory.class);
-        PersistableCategory cat = (PersistableCategory) response.getBody();
-        assertThat(response.getStatusCode(), is(CREATED));
-        assertNotNull(cat.getId());
+     ObjectWriter writer = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
-        final ResponseEntity<ReadableCategory> readResponse = testRestTemplate.exchange(String.format("/api/v1/category/" + categoryName), HttpMethod.GET,
-        		entity, ReadableCategory.class);
-        if (readResponse.getStatusCode() != HttpStatus.OK) {
-            throw new Exception(response.toString());
-        } else {
-            final ReadableCategory categ = readResponse.getBody();
-            assertNotNull(readResponse);
-            assertTrue(categoryCode.equals(categ.getCode()));
-        }
-    }
-        **/
+     String categoryName = "running-shoes";
+     String categoryCode = "runningshoes";
+     PersistableCategory category = category(categoryCode,categoryName);
+     final String json = writer.writeValueAsString(category);
+
+     HttpEntity<String> entity = new HttpEntity<>(json, getHeader());
+
+     ResponseEntity response = testRestTemplate.postForEntity("/api/v1/private/category", entity, PersistableCategory.class);
+     PersistableCategory cat = (PersistableCategory) response.getBody();
+     assertThat(response.getStatusCode(), is(CREATED));
+     assertNotNull(cat.getId());
+
+     final ResponseEntity<ReadableCategory> readResponse = testRestTemplate.exchange(String.format("/api/v1/category/" + categoryName), HttpMethod.GET,
+     entity, ReadableCategory.class);
+     if (readResponse.getStatusCode() != HttpStatus.OK) {
+     throw new Exception(response.toString());
+     } else {
+     final ReadableCategory categ = readResponse.getBody();
+     assertNotNull(readResponse);
+     assertTrue(categoryCode.equals(categ.getCode()));
+     }
+     }
+     **/
 
 }

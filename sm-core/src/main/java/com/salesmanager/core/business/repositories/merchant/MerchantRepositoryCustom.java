@@ -7,8 +7,8 @@ import com.salesmanager.core.model.merchant.MerchantStoreCriteria;
 
 public interface MerchantRepositoryCustom {
 
-  GenericEntityList<MerchantStore> listByCriteria(MerchantStoreCriteria criteria)
-      throws ServiceException;
+    GenericEntityList<MerchantStore> listByCriteria(MerchantStoreCriteria criteria)
+            throws ServiceException;
 
 
 }

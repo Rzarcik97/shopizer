@@ -1,105 +1,105 @@
 package com.salesmanager.core.model.customer.connection;
 
-import java.io.Serializable;
+import jakarta.persistence.MappedSuperclass;
 
-import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
 
 
 @Deprecated
 @MappedSuperclass
 public abstract class AbstractUserConnection<P> implements RemoteUser,
-		Serializable {
+        Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	private String accessToken;
-	private String displayName;
-	private Long expireTime;
-	private String imageUrl;
-	private String profileUrl;
-	private int userRank;
-	private String refreshToken;
-	private String secret;
+    private String accessToken;
+    private String displayName;
+    private Long expireTime;
+    private String imageUrl;
+    private String profileUrl;
+    private int userRank;
+    private String refreshToken;
+    private String secret;
 
 
-	public String getAccessToken() {
-		return accessToken;
-	}
+    public String getAccessToken() {
+        return accessToken;
+    }
 
-	public void setAccessToken(String accessToken) {
-		this.accessToken = accessToken;
-	}
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
 
-	public String getDisplayName() {
-		return displayName;
-	}
+    public String getDisplayName() {
+        return displayName;
+    }
 
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
-	}
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
 
-	public Long getExpireTime() {
-		return expireTime;
-	}
+    public Long getExpireTime() {
+        return expireTime;
+    }
 
-	public void setExpireTime(Long expireTime) {
-		this.expireTime = expireTime;
-	}
+    public void setExpireTime(Long expireTime) {
+        this.expireTime = expireTime;
+    }
 
-	public String getImageUrl() {
-		return imageUrl;
-	}
+    public String getImageUrl() {
+        return imageUrl;
+    }
 
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
-	}
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
-	public String getProfileUrl() {
-		return profileUrl;
-	}
+    public String getProfileUrl() {
+        return profileUrl;
+    }
 
-	public void setProfileUrl(String profileUrl) {
-		this.profileUrl = profileUrl;
-	}
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
+    }
 
-	public abstract String getProviderId();
+    public abstract String getProviderId();
 
-	public abstract void setProviderId(String providerId);
+    public abstract void setProviderId(String providerId);
 
-	public abstract String getProviderUserId();
+    public abstract String getProviderUserId();
 
-	public abstract void setProviderUserId(String providerUserId);
+    public abstract void setProviderUserId(String providerUserId);
 
-	public int getRank() {
-		return userRank;
-	}
+    public int getRank() {
+        return userRank;
+    }
 
-	public void setRank(int userRank) {
-		this.userRank = userRank;
-	}
+    public void setRank(int userRank) {
+        this.userRank = userRank;
+    }
 
-	public String getRefreshToken() {
-		return refreshToken;
-	}
+    public String getRefreshToken() {
+        return refreshToken;
+    }
 
-	public void setRefreshToken(String refreshToken) {
-		this.refreshToken = refreshToken;
-	}
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 
-	public String getSecret() {
-		return secret;
-	}
+    public String getSecret() {
+        return secret;
+    }
 
-	public void setSecret(String secret) {
-		this.secret = secret;
-	}
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
 
-	public abstract String getUserId();
+    public abstract String getUserId();
 
-	public abstract void setUserId(String userId);
+    public abstract void setUserId(String userId);
 
-	protected abstract P getId();
+    protected abstract P getId();
 }

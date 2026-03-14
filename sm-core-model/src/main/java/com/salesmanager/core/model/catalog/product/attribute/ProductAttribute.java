@@ -1,34 +1,33 @@
 package com.salesmanager.core.model.catalog.product.attribute;
 
-import java.math.BigDecimal;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
-import javax.persistence.Index;
-
 import com.salesmanager.core.model.catalog.product.Product;
 import com.salesmanager.core.model.generic.SalesManagerEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.TableGenerator;
+import jakarta.persistence.Transient;
+import jakarta.persistence.UniqueConstraint;
+
+import java.math.BigDecimal;
 
 @Entity
-@Table(name="PRODUCT_ATTRIBUTE",
-    indexes = @Index(columnList = "PRODUCT_ID"),
-	uniqueConstraints={
-		@UniqueConstraint(columnNames={
-				"OPTION_ID",
-				"OPTION_VALUE_ID",
-				"PRODUCT_ID"
-			})
-	}
+@Table(name = "PRODUCT_ATTRIBUTE",
+        indexes = @Index(columnList = "PRODUCT_ID"),
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {
+                        "OPTION_ID",
+                        "OPTION_VALUE_ID",
+                        "PRODUCT_ID"
+                })
+        }
 )
 
 /**
@@ -38,213 +37,208 @@ import com.salesmanager.core.model.generic.SalesManagerEntity;
  */
 
 public class ProductAttribute extends SalesManagerEntity<Long, ProductAttribute> implements Optionable {
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@Column(name = "PRODUCT_ATTRIBUTE_ID", unique=true, nullable=false)
-	@TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "PRODUCT_ATTR_SEQ_NEXT_VAL")
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
-	private Long id;
+    private static final long serialVersionUID = 1L;
 
-	
-	@Column(name="PRODUCT_ATRIBUTE_PRICE")
-	private BigDecimal productAttributePrice;
+    @Id
+    @Column(name = "PRODUCT_ATTRIBUTE_ID", unique = true, nullable = false)
+    @TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "PRODUCT_ATTR_SEQ_NEXT_VAL")
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
+    private Long id;
 
 
-	@Column(name="PRODUCT_ATTRIBUTE_SORT_ORD")
-	private Integer productOptionSortOrder;
-	
-	@Column(name="PRODUCT_ATTRIBUTE_FREE")
-	private boolean productAttributeIsFree;
-	
-
-	@Column(name="PRODUCT_ATTRIBUTE_WEIGHT")
-	private BigDecimal productAttributeWeight;
-	
-	@Column(name="PRODUCT_ATTRIBUTE_DEFAULT")
-	private boolean attributeDefault=false;
-	
-	@Column(name="PRODUCT_ATTRIBUTE_REQUIRED")
-	private boolean attributeRequired=false;
-	
-	/**
-	 * a read only attribute is considered as a core attribute addition
-	 */
-	@Column(name="PRODUCT_ATTRIBUTE_FOR_DISP")
-	private boolean attributeDisplayOnly=false;
-	
-
-	@Column(name="PRODUCT_ATTRIBUTE_DISCOUNTED")
-	private boolean attributeDiscounted=false;
-	
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="OPTION_ID", nullable=false)
-	private ProductOption productOption;
-	
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="OPTION_VALUE_ID", nullable=false)
-	private ProductOptionValue productOptionValue;
-	
-	
-	/**
-	 * This transient object property
-	 * is a utility used only to submit from a free text
-	 */
-	@Transient
-	private String attributePrice = "0";
-	
-	
-	/**
-	 * This transient object property
-	 * is a utility used only to submit from a free text
-	 */
-	@Transient
-	private String attributeSortOrder = "0";
-	
+    @Column(name = "PRODUCT_ATRIBUTE_PRICE")
+    private BigDecimal productAttributePrice;
 
 
-	/**
-	 * This transient object property
-	 * is a utility used only to submit from a free text
-	 */
-	@Transient
-	private String attributeAdditionalWeight = "0";
-	
-	public String getAttributePrice() {
-		return attributePrice;
-	}
+    @Column(name = "PRODUCT_ATTRIBUTE_SORT_ORD")
+    private Integer productOptionSortOrder;
 
-	public void setAttributePrice(String attributePrice) {
-		this.attributePrice = attributePrice;
-	}
+    @Column(name = "PRODUCT_ATTRIBUTE_FREE")
+    private boolean productAttributeIsFree;
 
 
-	@ManyToOne(targetEntity = Product.class)
-	@JoinColumn(name = "PRODUCT_ID", nullable = false)
-	private Product product;
-	
-	public ProductAttribute() {
-	}
+    @Column(name = "PRODUCT_ATTRIBUTE_WEIGHT")
+    private BigDecimal productAttributeWeight;
 
-	@Override
-	public Long getId() {
-		return id;
-	}
+    @Column(name = "PRODUCT_ATTRIBUTE_DEFAULT")
+    private boolean attributeDefault = false;
 
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @Column(name = "PRODUCT_ATTRIBUTE_REQUIRED")
+    private boolean attributeRequired = false;
+
+    /**
+     * a read only attribute is considered as a core attribute addition
+     */
+    @Column(name = "PRODUCT_ATTRIBUTE_FOR_DISP")
+    private boolean attributeDisplayOnly = false;
 
 
+    @Column(name = "PRODUCT_ATTRIBUTE_DISCOUNTED")
+    private boolean attributeDiscounted = false;
 
-	public Integer getProductOptionSortOrder() {
-		return productOptionSortOrder;
-	}
 
-	public void setProductOptionSortOrder(Integer productOptionSortOrder) {
-		this.productOptionSortOrder = productOptionSortOrder;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "OPTION_ID", nullable = false)
+    private ProductOption productOption;
 
-	public boolean getProductAttributeIsFree() {
-		return productAttributeIsFree;
-	}
 
-	public void setProductAttributeIsFree(boolean productAttributeIsFree) {
-		this.productAttributeIsFree = productAttributeIsFree;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "OPTION_VALUE_ID", nullable = false)
+    private ProductOptionValue productOptionValue;
 
-	public BigDecimal getProductAttributeWeight() {
-		return productAttributeWeight;
-	}
 
-	public void setProductAttributeWeight(BigDecimal productAttributeWeight) {
-		this.productAttributeWeight = productAttributeWeight;
-	}
+    /**
+     * This transient object property
+     * is a utility used only to submit from a free text
+     */
+    @Transient
+    private String attributePrice = "0";
 
-	public boolean getAttributeDefault() {
-		return attributeDefault;
-	}
 
-	public void setAttributeDefault(boolean attributeDefault) {
-		this.attributeDefault = attributeDefault;
-	}
+    /**
+     * This transient object property
+     * is a utility used only to submit from a free text
+     */
+    @Transient
+    private String attributeSortOrder = "0";
 
-	public boolean getAttributeRequired() {
-		return attributeRequired;
-	}
 
-	public void setAttributeRequired(boolean attributeRequired) {
-		this.attributeRequired = attributeRequired;
-	}
+    /**
+     * This transient object property
+     * is a utility used only to submit from a free text
+     */
+    @Transient
+    private String attributeAdditionalWeight = "0";
+    @ManyToOne(targetEntity = Product.class)
+    @JoinColumn(name = "PRODUCT_ID", nullable = false)
+    private Product product;
 
-	public boolean getAttributeDisplayOnly() {
-		return attributeDisplayOnly;
-	}
+    public ProductAttribute() {
+    }
 
-	public void setAttributeDisplayOnly(boolean attributeDisplayOnly) {
-		this.attributeDisplayOnly = attributeDisplayOnly;
-	}
+    public String getAttributePrice() {
+        return attributePrice;
+    }
 
-	public boolean getAttributeDiscounted() {
-		return attributeDiscounted;
-	}
+    public void setAttributePrice(String attributePrice) {
+        this.attributePrice = attributePrice;
+    }
 
-	public void setAttributeDiscounted(boolean attributeDiscounted) {
-		this.attributeDiscounted = attributeDiscounted;
-	}
+    @Override
+    public Long getId() {
+        return id;
+    }
 
-	public ProductOption getProductOption() {
-		return productOption;
-	}
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setProductOption(ProductOption productOption) {
-		this.productOption = productOption;
-	}
 
-	public ProductOptionValue getProductOptionValue() {
-		return productOptionValue;
-	}
+    public Integer getProductOptionSortOrder() {
+        return productOptionSortOrder;
+    }
 
-	public void setProductOptionValue(ProductOptionValue productOptionValue) {
-		this.productOptionValue = productOptionValue;
-	}
+    public void setProductOptionSortOrder(Integer productOptionSortOrder) {
+        this.productOptionSortOrder = productOptionSortOrder;
+    }
 
-	public Product getProduct() {
-		return product;
-	}
+    public boolean getProductAttributeIsFree() {
+        return productAttributeIsFree;
+    }
 
-	public void setProduct(Product product) {
-		this.product = product;
-	}
-	
-	
-	public String getAttributeSortOrder() {
-		return attributeSortOrder;
-	}
+    public void setProductAttributeIsFree(boolean productAttributeIsFree) {
+        this.productAttributeIsFree = productAttributeIsFree;
+    }
 
-	public void setAttributeSortOrder(String attributeSortOrder) {
-		this.attributeSortOrder = attributeSortOrder;
-	}
+    public BigDecimal getProductAttributeWeight() {
+        return productAttributeWeight;
+    }
 
-	public String getAttributeAdditionalWeight() {
-		return attributeAdditionalWeight;
-	}
+    public void setProductAttributeWeight(BigDecimal productAttributeWeight) {
+        this.productAttributeWeight = productAttributeWeight;
+    }
 
-	public void setAttributeAdditionalWeight(String attributeAdditionalWeight) {
-		this.attributeAdditionalWeight = attributeAdditionalWeight;
-	}
-	
-	public BigDecimal getProductAttributePrice() {
-		return productAttributePrice;
-	}
+    public boolean getAttributeDefault() {
+        return attributeDefault;
+    }
 
-	public void setProductAttributePrice(BigDecimal productAttributePrice) {
-		this.productAttributePrice = productAttributePrice;
-	}
+    public void setAttributeDefault(boolean attributeDefault) {
+        this.attributeDefault = attributeDefault;
+    }
 
+    public boolean getAttributeRequired() {
+        return attributeRequired;
+    }
+
+    public void setAttributeRequired(boolean attributeRequired) {
+        this.attributeRequired = attributeRequired;
+    }
+
+    public boolean getAttributeDisplayOnly() {
+        return attributeDisplayOnly;
+    }
+
+    public void setAttributeDisplayOnly(boolean attributeDisplayOnly) {
+        this.attributeDisplayOnly = attributeDisplayOnly;
+    }
+
+    public boolean getAttributeDiscounted() {
+        return attributeDiscounted;
+    }
+
+    public void setAttributeDiscounted(boolean attributeDiscounted) {
+        this.attributeDiscounted = attributeDiscounted;
+    }
+
+    public ProductOption getProductOption() {
+        return productOption;
+    }
+
+    public void setProductOption(ProductOption productOption) {
+        this.productOption = productOption;
+    }
+
+    public ProductOptionValue getProductOptionValue() {
+        return productOptionValue;
+    }
+
+    public void setProductOptionValue(ProductOptionValue productOptionValue) {
+        this.productOptionValue = productOptionValue;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+
+    public String getAttributeSortOrder() {
+        return attributeSortOrder;
+    }
+
+    public void setAttributeSortOrder(String attributeSortOrder) {
+        this.attributeSortOrder = attributeSortOrder;
+    }
+
+    public String getAttributeAdditionalWeight() {
+        return attributeAdditionalWeight;
+    }
+
+    public void setAttributeAdditionalWeight(String attributeAdditionalWeight) {
+        this.attributeAdditionalWeight = attributeAdditionalWeight;
+    }
+
+    public BigDecimal getProductAttributePrice() {
+        return productAttributePrice;
+    }
+
+    public void setProductAttributePrice(BigDecimal productAttributePrice) {
+        this.productAttributePrice = productAttributePrice;
+    }
 
 
 }

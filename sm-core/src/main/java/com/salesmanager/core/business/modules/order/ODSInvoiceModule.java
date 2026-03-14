@@ -1,53 +1,48 @@
 package com.salesmanager.core.business.modules.order;
 
-import java.io.ByteArrayOutputStream;
-
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.salesmanager.core.business.services.reference.country.CountryService;
 import com.salesmanager.core.business.services.reference.zone.ZoneService;
 import com.salesmanager.core.business.utils.ProductPriceUtils;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.order.Order;
 import com.salesmanager.core.model.reference.language.Language;
+import jakarta.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-
-
+import java.io.ByteArrayOutputStream;
 
 
 public class ODSInvoiceModule implements InvoiceModule {
-	
-	private final static String INVOICE_TEMPLATE = "templates/invoice/Invoice";
-	private final static String INVOICE_TEMPLATE_EXTENSION = ".ods";
-	private final static String TEMP_INVOICE_SUFFIX_NAME = "_invoice.ods";
-	private final static int ADDRESS_ROW_START = 2;
-	private final static int ADDRESS_ROW_END = 5;
-	
-	private final static int BILLTO_ROW_START = 8;
-	private final static int BILLTO_ROW_END = 13;
-	
-	private final static int PRODUCT_ROW_START = 16;
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger( ODSInvoiceModule.class );
-	
-	@Inject
-	private ZoneService zoneService;
-	
-	@Inject
-	private CountryService countryService;
-	
-	@Inject
-	private ProductPriceUtils priceUtil;
 
-	@Deprecated
-	@Override
-	public ByteArrayOutputStream createInvoice(MerchantStore store, Order order, Language language) throws Exception {
-		// TODO Auto-generated method stub
-		throw new Exception("Not implemented");
-	}
+    private final static String INVOICE_TEMPLATE = "templates/invoice/Invoice";
+    private final static String INVOICE_TEMPLATE_EXTENSION = ".ods";
+    private final static String TEMP_INVOICE_SUFFIX_NAME = "_invoice.ods";
+    private final static int ADDRESS_ROW_START = 2;
+    private final static int ADDRESS_ROW_END = 5;
+
+    private final static int BILLTO_ROW_START = 8;
+    private final static int BILLTO_ROW_END = 13;
+
+    private final static int PRODUCT_ROW_START = 16;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ODSInvoiceModule.class);
+
+    @Inject
+    private ZoneService zoneService;
+
+    @Inject
+    private CountryService countryService;
+
+    @Inject
+    private ProductPriceUtils priceUtil;
+
+    @Deprecated
+    @Override
+    public ByteArrayOutputStream createInvoice(MerchantStore store, Order order, Language language) throws Exception {
+        // TODO Auto-generated method stub
+        throw new Exception("Not implemented");
+    }
 	
 
 /*	@Override

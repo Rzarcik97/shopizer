@@ -1,42 +1,42 @@
 package com.salesmanager.shop.model.store;
 
-import java.util.List;
-
 import com.salesmanager.shop.model.references.PersistableAddress;
 
+import java.util.List;
+
 public class PersistableMerchantStore extends MerchantStoreEntity {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private PersistableAddress address;
-	//code of parent store (can be null if retailer)
-	private String retailerStore;
-	private List<String> supportedLanguages;
 
-	public List<String> getSupportedLanguages() {
-		return supportedLanguages;
-	}
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private PersistableAddress address;
+    //code of parent store (can be null if retailer)
+    private String retailerStore;
+    private List<String> supportedLanguages;
 
-	public void setSupportedLanguages(List<String> supportedLanguages) {
-		this.supportedLanguages = supportedLanguages;
-	}
+    public List<String> getSupportedLanguages() {
+        return supportedLanguages;
+    }
 
-	public PersistableAddress getAddress() {
-		return address;
-	}
+    public void setSupportedLanguages(List<String> supportedLanguages) {
+        this.supportedLanguages = supportedLanguages;
+    }
 
-	public void setAddress(PersistableAddress address) {
-		this.address = address;
-	}
+    public PersistableAddress getAddress() {
+        return address;
+    }
 
-  public String getRetailerStore() {
-    return retailerStore;
-  }
+    public void setAddress(PersistableAddress address) {
+        this.address = address;
+    }
 
-  public void setRetailerStore(String retailerStore) {
-    this.retailerStore = retailerStore;
-  }
+    public String getRetailerStore() {
+        return retailerStore;
+    }
+
+    public void setRetailerStore(String retailerStore) {
+        this.retailerStore = retailerStore;
+    }
 
 }

@@ -4,25 +4,24 @@ import com.salesmanager.shop.model.content.common.Content;
 import com.salesmanager.shop.model.content.common.ContentDescription;
 
 public class ReadableContentBox extends Content {
-	
-	private ContentDescription description ;
-	private static final String BOX = "BOX";
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    private static final String BOX = "BOX";
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private ContentDescription description;
 
-	public ReadableContentBox() {
-		super.setContentType(BOX);
-	}
+    public ReadableContentBox() {
+        super.setContentType(BOX);
+    }
 
-	public ContentDescription getDescription() {
-		return description;
-	}
+    public ContentDescription getDescription() {
+        return description;
+    }
 
-	public void setDescription(ContentDescription description) {
-		this.description = description;
-	}
+    public void setDescription(ContentDescription description) {
+        this.description = description;
+    }
 
 }

@@ -5,19 +5,19 @@ import java.util.List;
 
 public class ReadableCategoryFull extends ReadableCategory {
 
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 1L;
-  
-  private List<CategoryDescription> descriptions = new ArrayList<CategoryDescription>();
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-  public List<CategoryDescription> getDescriptions() {
-    return descriptions;
-  }
+    private List<CategoryDescription> descriptions = new ArrayList<CategoryDescription>();
 
-  public void setDescriptions(List<CategoryDescription> descriptions) {
-    this.descriptions = descriptions;
-  }
+    public List<CategoryDescription> getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(List<CategoryDescription> descriptions) {
+        this.descriptions = descriptions;
+    }
 
 }

@@ -1,47 +1,46 @@
 package com.salesmanager.core.model.catalog.category;
 
+import com.salesmanager.core.model.common.audit.AuditSection;
+import com.salesmanager.core.model.common.audit.Auditable;
+import com.salesmanager.core.model.generic.SalesManagerEntity;
+import com.salesmanager.core.model.merchant.MerchantStore;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.TableGenerator;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.UniqueConstraint;
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-
-import com.salesmanager.core.model.common.audit.AuditSection;
-import com.salesmanager.core.model.common.audit.Auditable;
-import com.salesmanager.core.model.generic.SalesManagerEntity;
-import com.salesmanager.core.model.merchant.MerchantStore;
-
 @Entity
 @EntityListeners(value = com.salesmanager.core.model.common.audit.AuditListener.class)
 @Table(name = "CATEGORY",
-	indexes = @Index(columnList = "LINEAGE"),
-	uniqueConstraints=
-    @UniqueConstraint(columnNames = {"MERCHANT_ID", "CODE"}) )
+        indexes = @Index(columnList = "LINEAGE"),
+        uniqueConstraints =
+        @UniqueConstraint(columnNames = {"MERCHANT_ID", "CODE"}))
 
 
 public class Category extends SalesManagerEntity<Long, Category> implements Auditable {
     private static final long serialVersionUID = 1L;
-    
+
     @Id
-    @Column(name = "CATEGORY_ID", unique=true, nullable=false)
+    @Column(name = "CATEGORY_ID", unique = true, nullable = false)
     @TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "CATEGORY_SEQ_NEXT_VAL")
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
     private Long id;
@@ -50,21 +49,21 @@ public class Category extends SalesManagerEntity<Long, Category> implements Audi
     private AuditSection auditSection = new AuditSection();
 
     @Valid
-    @OneToMany(mappedBy="category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<CategoryDescription> descriptions = new HashSet<CategoryDescription>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="MERCHANT_ID", nullable=false)
+    @JoinColumn(name = "MERCHANT_ID", nullable = false)
     private MerchantStore merchantStore;
-    
+
     @ManyToOne
     @JoinColumn(name = "PARENT_ID")
     private Category parent;
-    
+
     @OneToMany(mappedBy = "parent", cascade = CascadeType.REMOVE)
     private List<Category> categories = new ArrayList<Category>();
-    
-    @Column(name = "CATEGORY_IMAGE", length=100)
+
+    @Column(name = "CATEGORY_IMAGE", length = 100)
     private String categoryImage;
 
     @Column(name = "SORT_ORDER")
@@ -81,13 +80,21 @@ public class Category extends SalesManagerEntity<Long, Category> implements Audi
 
     @Column(name = "LINEAGE")
     private String lineage;
-    
-    @Column(name="FEATURED")
+
+    @Column(name = "FEATURED")
     private boolean featured;
-    
+
     @NotEmpty
-    @Column(name="CODE", length=100, nullable=false)
+    @Column(name = "CODE", length = 100, nullable = false)
     private String code;
+
+    public Category() {
+    }
+
+    public Category(MerchantStore store) {
+        this.merchantStore = store;
+        this.id = 0L;
+    }
 
     public String getCode() {
         return code;
@@ -97,14 +104,6 @@ public class Category extends SalesManagerEntity<Long, Category> implements Audi
         this.code = code;
     }
 
-    public Category() {
-    }
-    
-    public Category(MerchantStore store) {
-        this.merchantStore = store;
-        this.id = 0L;
-    }
-    
     @Override
     public Long getId() {
         return this.id;
@@ -114,12 +113,12 @@ public class Category extends SalesManagerEntity<Long, Category> implements Audi
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     @Override
     public AuditSection getAuditSection() {
         return auditSection;
     }
-    
+
     @Override
     public void setAuditSection(AuditSection auditSection) {
         this.auditSection = auditSection;
@@ -181,8 +180,6 @@ public class Category extends SalesManagerEntity<Long, Category> implements Audi
     public void setParent(Category parent) {
         this.parent = parent;
     }
-    
-
 
 
     public MerchantStore getMerchantStore() {
@@ -200,12 +197,12 @@ public class Category extends SalesManagerEntity<Long, Category> implements Audi
     public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
-    
+
     public CategoryDescription getDescription() {
-        if(descriptions!=null && descriptions.size()>0) {
+        if (descriptions != null && descriptions.size() > 0) {
             return descriptions.iterator().next();
         }
-        
+
         return null;
     }
 
@@ -218,11 +215,11 @@ public class Category extends SalesManagerEntity<Long, Category> implements Audi
     }
 
     public Set<CategoryDescription> getDescriptions() {
-      return descriptions;
+        return descriptions;
     }
 
     public void setDescriptions(Set<CategoryDescription> descriptions) {
-      this.descriptions = descriptions;
+        this.descriptions = descriptions;
     }
 
 }

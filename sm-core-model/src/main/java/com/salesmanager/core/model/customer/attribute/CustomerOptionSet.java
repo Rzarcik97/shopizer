@@ -1,92 +1,88 @@
 package com.salesmanager.core.model.customer.attribute;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.UniqueConstraint;
-
-import com.salesmanager.core.constants.SchemaConstant;
 import com.salesmanager.core.model.generic.SalesManagerEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.TableGenerator;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="CUSTOMER_OPTION_SET",
-	uniqueConstraints={
-		@UniqueConstraint(columnNames={
-				"CUSTOMER_OPTION_ID",
-				"CUSTOMER_OPTION_VALUE_ID"
-			})
-	}
+@Table(name = "CUSTOMER_OPTION_SET",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {
+                        "CUSTOMER_OPTION_ID",
+                        "CUSTOMER_OPTION_VALUE_ID"
+                })
+        }
 )
 public class CustomerOptionSet extends SalesManagerEntity<Long, CustomerOptionSet> {
 
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name = "CUSTOMER_OPTIONSET_ID", unique=true, nullable=false)
-	@TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "CUST_OPTSET_SEQ_NEXT_VAL")
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
-	private Long id;
-	
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="CUSTOMER_OPTION_ID", nullable=false)
-	private CustomerOption customerOption = null;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="CUSTOMER_OPTION_VALUE_ID", nullable=false)
-	private CustomerOptionValue customerOptionValue = null;
-	
+    @Id
+    @Column(name = "CUSTOMER_OPTIONSET_ID", unique = true, nullable = false)
+    @TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "CUST_OPTSET_SEQ_NEXT_VAL")
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
+    private Long id;
 
 
-	@Column(name="SORT_ORDER")
-	private Integer sortOrder = new Integer(0);
-	
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CUSTOMER_OPTION_ID", nullable = false)
+    private CustomerOption customerOption = null;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CUSTOMER_OPTION_VALUE_ID", nullable = false)
+    private CustomerOptionValue customerOptionValue = null;
 
 
-	public int getSortOrder() {
-		return sortOrder;
-	}
+    @Column(name = "SORT_ORDER")
+    private Integer sortOrder = new Integer(0);
 
-	public void setSortOrder(int sortOrder) {
-		this.sortOrder = sortOrder;
-	}
 
-	public void setCustomerOptionValue(CustomerOptionValue customerOptionValue) {
-		this.customerOptionValue = customerOptionValue;
-	}
+    public int getSortOrder() {
+        return sortOrder;
+    }
 
-	public CustomerOptionValue getCustomerOptionValue() {
-		return customerOptionValue;
-	}
+    public void setSortOrder(int sortOrder) {
+        this.sortOrder = sortOrder;
+    }
 
-	public void setCustomerOption(CustomerOption customerOption) {
-		this.customerOption = customerOption;
-	}
+    public CustomerOptionValue getCustomerOptionValue() {
+        return customerOptionValue;
+    }
 
-	public CustomerOption getCustomerOption() {
-		return customerOption;
-	}
+    public void setCustomerOptionValue(CustomerOptionValue customerOptionValue) {
+        this.customerOptionValue = customerOptionValue;
+    }
 
-	@Override
-	public Long getId() {
-		return id;
-	}
+    public CustomerOption getCustomerOption() {
+        return customerOption;
+    }
 
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setCustomerOption(CustomerOption customerOption) {
+        this.customerOption = customerOption;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
 
 
 }

@@ -1,15 +1,10 @@
 package com.salesmanager.test.shop.integration.cart;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.NO_CONTENT;
-import static org.springframework.http.HttpStatus.OK;
-
+import com.salesmanager.shop.application.ShopApplication;
+import com.salesmanager.shop.model.catalog.product.ReadableProduct;
+import com.salesmanager.shop.model.shoppingcart.PersistableShoppingCartItem;
+import com.salesmanager.shop.model.shoppingcart.ReadableShoppingCart;
+import com.salesmanager.test.shop.common.ServicesTestSupport;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -24,22 +19,18 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.salesmanager.shop.application.ShopApplication;
-import com.salesmanager.shop.model.catalog.product.ReadableProduct;
-import com.salesmanager.shop.model.shoppingcart.PersistableShoppingCartItem;
-import com.salesmanager.shop.model.shoppingcart.ReadableShoppingCart;
-import com.salesmanager.test.shop.common.ServicesTestSupport;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.*;
+import static org.springframework.http.HttpStatus.*;
 
 @SpringBootTest(classes = ShopApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ShoppingCartAPIIntegrationTest extends ServicesTestSupport {
 
+    private static CartTestBean data = new CartTestBean();
     @Autowired
     private TestRestTemplate testRestTemplate;
-
-    private static CartTestBean data = new CartTestBean();
-
 
     /**
      * Add an Item & Create cart, would give HTTP 201 & 1 qty
@@ -50,9 +41,9 @@ public class ShoppingCartAPIIntegrationTest extends ServicesTestSupport {
     @Order(1)
     public void addToCart() throws Exception {
 
-    	ReadableProduct product = sampleProduct("addToCart");
-    	assertNotNull(product);
-    	data.getProducts().add(product);
+        ReadableProduct product = sampleProduct("addToCart");
+        assertNotNull(product);
+        data.getProducts().add(product);
 
         PersistableShoppingCartItem cartItem = new PersistableShoppingCartItem();
         cartItem.setProduct(product.getSku());
@@ -198,9 +189,9 @@ public class ShoppingCartAPIIntegrationTest extends ServicesTestSupport {
 
         final ResponseEntity<ReadableShoppingCart> response =
                 testRestTemplate.exchange(String.format("/api/v1/cart/" + data.getCartId() + "/product/" + String.valueOf(data.getProducts().get(1).getId())),
-                HttpMethod.DELETE,
-                null,
-                ReadableShoppingCart.class);
+                        HttpMethod.DELETE,
+                        null,
+                        ReadableShoppingCart.class);
 
         assertNotNull(response);
         assertThat(response.getStatusCode(), is(NO_CONTENT));

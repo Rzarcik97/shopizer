@@ -5,18 +5,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PersistableProductOption extends ProductOptionEntity implements
-		Serializable {
+        Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private List<ProductOptionDescription> descriptions = new ArrayList<ProductOptionDescription>();
-	public void setDescriptions(List<ProductOptionDescription> descriptions) {
-		this.descriptions = descriptions;
-	}
-	public List<ProductOptionDescription> getDescriptions() {
-		return descriptions;
-	}
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private List<ProductOptionDescription> descriptions = new ArrayList<ProductOptionDescription>();
+
+    public List<ProductOptionDescription> getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(List<ProductOptionDescription> descriptions) {
+        this.descriptions = descriptions;
+    }
 
 }

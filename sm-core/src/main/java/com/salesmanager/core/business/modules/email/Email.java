@@ -5,66 +5,66 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Email implements Serializable {
-	
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6481794982612826257L;
-	private String from;
-	private String fromEmail;
-	private String to;
-	private String subject;
-	private String templateName;
-	
-	private Map<String,String> templateTokens = new HashMap<String,String>();
 
-	public String getFrom() {
-		return from;
-	}
 
-	public void setFrom(String from) {
-		this.from = from;
-	}
+    /**
+     *
+     */
+    private static final long serialVersionUID = 6481794982612826257L;
+    private String from;
+    private String fromEmail;
+    private String to;
+    private String subject;
+    private String templateName;
 
-	public String getTo() {
-		return to;
-	}
+    private Map<String, String> templateTokens = new HashMap<String, String>();
 
-	public void setTo(String to) {
-		this.to = to;
-	}
+    public String getFrom() {
+        return from;
+    }
 
-	public String getSubject() {
-		return subject;
-	}
+    public void setFrom(String from) {
+        this.from = from;
+    }
 
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
+    public String getTo() {
+        return to;
+    }
 
-	public String getTemplateName() {
-		return templateName;
-	}
+    public void setTo(String to) {
+        this.to = to;
+    }
 
-	public void setTemplateName(String templateName) {
-		this.templateName = templateName;
-	}
+    public String getSubject() {
+        return subject;
+    }
 
-	public Map<String, String> getTemplateTokens() {
-		return templateTokens;
-	}
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
 
-	public void setTemplateTokens(Map<String, String> templateTokens) {
-		this.templateTokens = templateTokens;
-	}
+    public String getTemplateName() {
+        return templateName;
+    }
 
-	public void setFromEmail(String fromEmail) {
-		this.fromEmail = fromEmail;
-	}
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
+    }
 
-	public String getFromEmail() {
-		return fromEmail;
-	}
+    public Map<String, String> getTemplateTokens() {
+        return templateTokens;
+    }
+
+    public void setTemplateTokens(Map<String, String> templateTokens) {
+        this.templateTokens = templateTokens;
+    }
+
+    public String getFromEmail() {
+        return fromEmail;
+    }
+
+    public void setFromEmail(String fromEmail) {
+        this.fromEmail = fromEmail;
+    }
 
 }

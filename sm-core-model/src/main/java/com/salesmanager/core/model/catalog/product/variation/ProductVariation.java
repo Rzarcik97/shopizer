@@ -1,20 +1,5 @@
 package com.salesmanager.core.model.catalog.product.variation;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotEmpty;
-
 import com.salesmanager.core.model.catalog.product.attribute.Optionable;
 import com.salesmanager.core.model.catalog.product.attribute.ProductOption;
 import com.salesmanager.core.model.catalog.product.attribute.ProductOptionValue;
@@ -23,128 +8,144 @@ import com.salesmanager.core.model.common.audit.AuditSection;
 import com.salesmanager.core.model.common.audit.Auditable;
 import com.salesmanager.core.model.generic.SalesManagerEntity;
 import com.salesmanager.core.model.merchant.MerchantStore;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.TableGenerator;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotEmpty;
 
 
 /**
  * Product configuration pre 3.0
  * Contains possible product variations
- * 
+ * <p>
  * color - red
  * size - small
- * @author carlsamson
  *
+ * @author carlsamson
  */
 @Entity
 @EntityListeners(value = AuditListener.class)
-@Table(name = "PRODUCT_VARIATION", uniqueConstraints=
+@Table(name = "PRODUCT_VARIATION", uniqueConstraints =
 @UniqueConstraint(columnNames = {"MERCHANT_ID", "PRODUCT_OPTION_ID", "OPTION_VALUE_ID"}))
 public class ProductVariation extends SalesManagerEntity<Long, ProductVariation> implements Optionable, Auditable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Embedded
-	private AuditSection auditSection = new AuditSection();
-	
-	@Id
-	@Column(name = "PRODUCT_VARIATION_ID", unique=true, nullable=false)
-	@TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "PRODUCT_VARIN_SEQ_NEXT_VAL")
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
-	private Long id;
-	
-	/** can exist detached **/
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="MERCHANT_ID", nullable=false)
-	private MerchantStore merchantStore;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="PRODUCT_OPTION_ID", nullable=false)
-	private ProductOption productOption;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="OPTION_VALUE_ID", nullable=false)
-	private ProductOptionValue productOptionValue;
-	
+    @Embedded
+    private AuditSection auditSection = new AuditSection();
+
+    @Id
+    @Column(name = "PRODUCT_VARIATION_ID", unique = true, nullable = false)
+    @TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "PRODUCT_VARIN_SEQ_NEXT_VAL")
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
+    private Long id;
+
+    /**
+     * can exist detached
+     **/
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MERCHANT_ID", nullable = false)
+    private MerchantStore merchantStore;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PRODUCT_OPTION_ID", nullable = false)
+    private ProductOption productOption;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "OPTION_VALUE_ID", nullable = false)
+    private ProductOptionValue productOptionValue;
+
     @NotEmpty
-    @Column(name="CODE", length=100, nullable=false)
+    @Column(name = "CODE", length = 100, nullable = false)
     private String code;
-    
-	@Column(name="SORT_ORDER")
-	private Integer sortOrder;	
-	
-	@Column(name="VARIANT_DEFAULT")
-	private boolean variantDefault=false;
 
-	
-	@Override
-	public AuditSection getAuditSection() {
-		return auditSection;
-	}
+    @Column(name = "SORT_ORDER")
+    private Integer sortOrder;
 
-	@Override
-	public void setAuditSection(AuditSection audit) {
-		this.auditSection = audit;
-		
-	}
+    @Column(name = "VARIANT_DEFAULT")
+    private boolean variantDefault = false;
 
-	@Override
-	public Long getId() {
-		return id;
-	}
 
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-		
-	}
+    @Override
+    public AuditSection getAuditSection() {
+        return auditSection;
+    }
 
-	public MerchantStore getMerchantStore() {
-		return merchantStore;
-	}
+    @Override
+    public void setAuditSection(AuditSection audit) {
+        this.auditSection = audit;
 
-	public void setMerchantStore(MerchantStore merchantStore) {
-		this.merchantStore = merchantStore;
-	}
+    }
 
-	public ProductOption getProductOption() {
-		return productOption;
-	}
+    @Override
+    public Long getId() {
+        return id;
+    }
 
-	public void setProductOption(ProductOption productOption) {
-		this.productOption = productOption;
-	}
+    @Override
+    public void setId(Long id) {
+        this.id = id;
 
-	public ProductOptionValue getProductOptionValue() {
-		return productOptionValue;
-	}
+    }
 
-	public void setProductOptionValue(ProductOptionValue productOptionValue) {
-		this.productOptionValue = productOptionValue;
-	}
+    public MerchantStore getMerchantStore() {
+        return merchantStore;
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public void setMerchantStore(MerchantStore merchantStore) {
+        this.merchantStore = merchantStore;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public ProductOption getProductOption() {
+        return productOption;
+    }
 
-	public Integer getSortOrder() {
-		return sortOrder;
-	}
+    public void setProductOption(ProductOption productOption) {
+        this.productOption = productOption;
+    }
 
-	public void setSortOrder(Integer sortOrder) {
-		this.sortOrder = sortOrder;
-	}
+    public ProductOptionValue getProductOptionValue() {
+        return productOptionValue;
+    }
 
-	public boolean isVariantDefault() {
-		return variantDefault;
-	}
+    public void setProductOptionValue(ProductOptionValue productOptionValue) {
+        this.productOptionValue = productOptionValue;
+    }
 
-	public void setVariantDefault(boolean variantDefault) {
-		this.variantDefault = variantDefault;
-	}
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public Integer getSortOrder() {
+        return sortOrder;
+    }
+
+    public void setSortOrder(Integer sortOrder) {
+        this.sortOrder = sortOrder;
+    }
+
+    public boolean isVariantDefault() {
+        return variantDefault;
+    }
+
+    public void setVariantDefault(boolean variantDefault) {
+        this.variantDefault = variantDefault;
+    }
 }

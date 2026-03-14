@@ -2,24 +2,24 @@ package com.salesmanager.shop.model.content;
 
 /**
  * A simple piece of content
- * @author carlsamson
  *
+ * @author carlsamson
  */
 @Deprecated
 public class ReadableContent extends Content {
-  
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 1L;
-  private String content;
 
-  public String getContent() {
-    return content;
-  }
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private String content;
 
-  public void setContent(String content) {
-    this.content = content;
-  }
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
 }

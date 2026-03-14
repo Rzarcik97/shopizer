@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.salesmanager.core.business.modules.cms.content;
 
@@ -8,11 +8,11 @@ package com.salesmanager.core.business.modules.cms.content;
  *
  */
 public abstract class StaticContentFileManager
-    implements ContentAssetsManager {
+        implements ContentAssetsManager {
 
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
 }

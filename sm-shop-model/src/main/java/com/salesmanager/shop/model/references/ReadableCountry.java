@@ -5,28 +5,28 @@ import java.util.List;
 
 public class ReadableCountry extends CountryEntity {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private String name;
-	private List<ReadableZone> zones = new ArrayList<ReadableZone>();
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	public String getName() {
-		return name;
-	}
+    private String name;
+    private List<ReadableZone> zones = new ArrayList<ReadableZone>();
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public List<ReadableZone> getZones() {
-		return zones;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setZones(List<ReadableZone> zones) {
-		this.zones = zones;
-	}
+    public List<ReadableZone> getZones() {
+        return zones;
+    }
+
+    public void setZones(List<ReadableZone> zones) {
+        this.zones = zones;
+    }
 
 }

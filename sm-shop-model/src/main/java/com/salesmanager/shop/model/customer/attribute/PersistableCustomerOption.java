@@ -4,20 +4,20 @@ import java.io.Serializable;
 import java.util.List;
 
 public class PersistableCustomerOption extends CustomerOptionEntity
-		implements Serializable {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private List<CustomerOptionDescription> descriptions;
+        implements Serializable {
 
-	public void setDescriptions(List<CustomerOptionDescription> descriptions) {
-		this.descriptions = descriptions;
-	}
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private List<CustomerOptionDescription> descriptions;
 
-	public List<CustomerOptionDescription> getDescriptions() {
-		return descriptions;
-	}
+    public List<CustomerOptionDescription> getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(List<CustomerOptionDescription> descriptions) {
+        this.descriptions = descriptions;
+    }
 
 }

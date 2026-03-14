@@ -4,36 +4,35 @@ import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 
 public class CustomShippingQuoteWeightItem extends CustomShippingQuoteItem implements JSONAware {
-	
-	private int maximumWeight;
-	
-	private String priceText;
 
-	public String getPriceText() {
-		return priceText;
-	}
+    private int maximumWeight;
 
-	public void setPriceText(String priceText) {
-		this.priceText = priceText;
-	}
+    private String priceText;
 
-	public void setMaximumWeight(int maximumWeight) {
-		this.maximumWeight = maximumWeight;
-	}
+    public String getPriceText() {
+        return priceText;
+    }
 
-	public int getMaximumWeight() {
-		return maximumWeight;
-	}
+    public void setPriceText(String priceText) {
+        this.priceText = priceText;
+    }
 
-	@SuppressWarnings("unchecked")
-	public String toJSONString() {
-		JSONObject data = new JSONObject();
-		data.put("price", super.getPrice());
-		data.put("maximumWeight", this.getMaximumWeight());
-		
-		return data.toJSONString();
-	}
+    public int getMaximumWeight() {
+        return maximumWeight;
+    }
 
+    public void setMaximumWeight(int maximumWeight) {
+        this.maximumWeight = maximumWeight;
+    }
+
+    @SuppressWarnings("unchecked")
+    public String toJSONString() {
+        JSONObject data = new JSONObject();
+        data.put("price", super.getPrice());
+        data.put("maximumWeight", this.getMaximumWeight());
+
+        return data.toJSONString();
+    }
 
 
 }

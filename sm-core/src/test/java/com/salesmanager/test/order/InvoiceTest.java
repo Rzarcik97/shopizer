@@ -5,8 +5,8 @@ import org.junit.Ignore;
 
 /**
  * This test has to be completed
- * @author c.samson
  *
+ * @author c.samson
  */
 @Ignore
 public class InvoiceTest extends com.salesmanager.test.common.AbstractSalesManagerCoreTestCase {
@@ -28,9 +28,9 @@ public class InvoiceTest extends com.salesmanager.test.common.AbstractSalesManag
 	    
 	    
 	    *//**
-	     * 1) Create an order
-	     * 
-	     *//*
+     * 1) Create an order
+     *
+     *//*
 	    
 	    //1.1 create a product
 	    
@@ -317,8 +317,8 @@ public class InvoiceTest extends com.salesmanager.test.common.AbstractSalesManag
 		order = orderService.getById(order.getId());
 		
 		*//**
-		 * 2 Create an invoice
-		 *//*
+     * 2 Create an invoice
+     *//*
 		try {
 			URL resource = getClass().getResource("/templates/invoice/invoice.ods");
 			File file = new File(resource.toURI());
@@ -636,7 +636,6 @@ public class InvoiceTest extends com.salesmanager.test.common.AbstractSalesManag
 		
 		
 	}*/
-	
-	
+
 
 }

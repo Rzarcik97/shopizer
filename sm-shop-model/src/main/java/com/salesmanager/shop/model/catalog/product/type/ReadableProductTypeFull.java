@@ -4,19 +4,19 @@ import java.util.List;
 
 public class ReadableProductTypeFull extends ReadableProductType {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private List<ProductTypeDescription> descriptions;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	public List<ProductTypeDescription> getDescriptions() {
-		return descriptions;
-	}
+    private List<ProductTypeDescription> descriptions;
 
-	public void setDescriptions(List<ProductTypeDescription> descriptions) {
-		this.descriptions = descriptions;
-	}
+    public List<ProductTypeDescription> getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(List<ProductTypeDescription> descriptions) {
+        this.descriptions = descriptions;
+    }
 
 }

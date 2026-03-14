@@ -8,13 +8,14 @@ import com.salesmanager.core.model.system.optin.OptinType;
 
 /**
  * Registers Optin events
- * @author carlsamson
  *
+ * @author carlsamson
  */
 public interface OptinService extends SalesManagerEntityService<Long, Optin> {
-	
-	
-	Optin getOptinByMerchantAndType(MerchantStore store, OptinType type) throws ServiceException;
-	Optin getOptinByCode(MerchantStore store, String code) throws ServiceException;
+
+
+    Optin getOptinByMerchantAndType(MerchantStore store, OptinType type) throws ServiceException;
+
+    Optin getOptinByCode(MerchantStore store, String code) throws ServiceException;
 
 }

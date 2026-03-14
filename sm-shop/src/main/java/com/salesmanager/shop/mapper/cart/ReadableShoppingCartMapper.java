@@ -1,27 +1,5 @@
 package com.salesmanager.shop.mapper.cart;
 
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
-
 import com.salesmanager.core.business.constants.Constants;
 import com.salesmanager.core.business.services.catalog.pricing.PricingService;
 import com.salesmanager.core.business.services.catalog.product.attribute.ProductAttributeService;
@@ -32,8 +10,8 @@ import com.salesmanager.core.model.catalog.product.attribute.ProductOption;
 import com.salesmanager.core.model.catalog.product.attribute.ProductOptionDescription;
 import com.salesmanager.core.model.catalog.product.attribute.ProductOptionValue;
 import com.salesmanager.core.model.catalog.product.attribute.ProductOptionValueDescription;
-import com.salesmanager.core.model.catalog.product.variant.ProductVariantImage;
 import com.salesmanager.core.model.catalog.product.variant.ProductVariant;
+import com.salesmanager.core.model.catalog.product.variant.ProductVariantImage;
 import com.salesmanager.core.model.content.FileContentType;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.order.OrderSummary;
@@ -52,252 +30,270 @@ import com.salesmanager.shop.model.shoppingcart.ReadableShoppingCartAttributeOpt
 import com.salesmanager.shop.model.shoppingcart.ReadableShoppingCartItem;
 import com.salesmanager.shop.store.api.exception.ConversionRuntimeException;
 import com.salesmanager.shop.utils.ImageFilePath;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class ReadableShoppingCartMapper implements Mapper<ShoppingCart, ReadableShoppingCart> {
 
-	private static final Logger LOG = LoggerFactory.getLogger(ReadableShoppingCartMapper.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ReadableShoppingCartMapper.class);
 
-	@Autowired
-	private ShoppingCartCalculationService shoppingCartCalculationService;
+    @Autowired
+    private ShoppingCartCalculationService shoppingCartCalculationService;
 
-	@Autowired
-	private PricingService pricingService;
+    @Autowired
+    private PricingService pricingService;
 
-	@Autowired
-	private ProductAttributeService productAttributeService;
-	
-	@Autowired
-	private ProductVariantService productVariantService;
+    @Autowired
+    private ProductAttributeService productAttributeService;
 
-	@Autowired
-	private ReadableMinimalProductMapper readableMinimalProductMapper;
-	
-	@Autowired
-	private ReadableProductVariationMapper readableProductVariationMapper;
+    @Autowired
+    private ProductVariantService productVariantService;
 
-	@Autowired
-	@Qualifier("img")
-	private ImageFilePath imageUtils;
+    @Autowired
+    private ReadableMinimalProductMapper readableMinimalProductMapper;
 
-	@Override
-	public ReadableShoppingCart convert(ShoppingCart source, MerchantStore store, Language language) {
-		ReadableShoppingCart destination = new ReadableShoppingCart();
-		return this.merge(source, destination, store, language);
-	}
-	
-	private ReadableImage image(ProductVariantImage instanceImage, MerchantStore store, Language language) {
-		ReadableImage img = new ReadableImage();
-		img.setDefaultImage(instanceImage.isDefaultImage());
-		img.setId(instanceImage.getId());
-		img.setImageName(instanceImage.getProductImage());
-		img.setImageUrl(imageUtils.buildCustomTypeImageUtils(store, img.getImageName(), FileContentType.VARIANT));
-		return img;
-	}
+    @Autowired
+    private ReadableProductVariationMapper readableProductVariationMapper;
 
-	@Override
-	public ReadableShoppingCart merge(ShoppingCart source, ReadableShoppingCart destination, MerchantStore store,
-			Language language) {
-		Validate.notNull(source, "ShoppingCart cannot be null");
-		Validate.notNull(destination, "ReadableShoppingCart cannot be null");
-		Validate.notNull(store, "MerchantStore cannot be null");
-		Validate.notNull(language, "Language cannot be null");
+    @Autowired
+    @Qualifier("img")
+    private ImageFilePath imageUtils;
 
-		destination.setCode(source.getShoppingCartCode());
-		int cartQuantity = 0;
+    @Override
+    public ReadableShoppingCart convert(ShoppingCart source, MerchantStore store, Language language) {
+        ReadableShoppingCart destination = new ReadableShoppingCart();
+        return this.merge(source, destination, store, language);
+    }
 
-		destination.setCustomer(source.getCustomerId());
+    private ReadableImage image(ProductVariantImage instanceImage, MerchantStore store, Language language) {
+        ReadableImage img = new ReadableImage();
+        img.setDefaultImage(instanceImage.isDefaultImage());
+        img.setId(instanceImage.getId());
+        img.setImageName(instanceImage.getProductImage());
+        img.setImageUrl(imageUtils.buildCustomTypeImageUtils(store, img.getImageName(), FileContentType.VARIANT));
+        return img;
+    }
 
-		try {
+    @Override
+    public ReadableShoppingCart merge(ShoppingCart source, ReadableShoppingCart destination, MerchantStore store,
+                                      Language language) {
+        Validate.notNull(source, "ShoppingCart cannot be null");
+        Validate.notNull(destination, "ReadableShoppingCart cannot be null");
+        Validate.notNull(store, "MerchantStore cannot be null");
+        Validate.notNull(language, "Language cannot be null");
 
-			if (!StringUtils.isBlank(source.getPromoCode())) {
-				Date promoDateAdded = source.getPromoAdded();// promo valid 1 day
-				if (promoDateAdded == null) {
-					promoDateAdded = new Date();
-				}
-				Instant instant = promoDateAdded.toInstant();
-				ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
-				LocalDate date = zdt.toLocalDate();
-				// date added < date + 1 day
-				LocalDate tomorrow = LocalDate.now().plusDays(1);
-				if (date.isBefore(tomorrow)) {
-					destination.setPromoCode(source.getPromoCode());
-				}
-			}
+        destination.setCode(source.getShoppingCartCode());
+        int cartQuantity = 0;
 
-			Set<com.salesmanager.core.model.shoppingcart.ShoppingCartItem> items = source.getLineItems();
+        destination.setCustomer(source.getCustomerId());
 
-			if (items != null) {
+        try {
 
-				for (com.salesmanager.core.model.shoppingcart.ShoppingCartItem item : items) {
-					ReadableShoppingCartItem shoppingCartItem = new ReadableShoppingCartItem();
-					readableMinimalProductMapper.merge(item.getProduct(), shoppingCartItem, store, language);
-					
-					//variation
-					if(item.getVariant() != null) {
-						Optional<ProductVariant> productVariant = productVariantService.getById(item.getVariant(), store);
-						if(productVariant.isEmpty()) {
-							throw new ConversionRuntimeException("An error occured during shopping cart [" + source.getShoppingCartCode() + "] conversion, productVariant [" + item.getVariant() + "] not found");
-						}
-						shoppingCartItem.setVariant(readableProductVariationMapper.convert(productVariant.get().getVariation(), store, language));
-						if(productVariant.get().getVariationValue() != null) {
-							shoppingCartItem.setVariantValue(readableProductVariationMapper.convert(productVariant.get().getVariationValue(), store, language));
-						}
-						
-						if(productVariant.get().getProductVariantGroup() != null) {
-							Set<String> nameSet = new HashSet<>();
-							List<ReadableImage> instanceImages = productVariant.get().getProductVariantGroup().getImages()
-									.stream().map(i -> this.image(i, store, language))
-									.filter(e -> nameSet.add(e.getImageUrl()))
-									.collect(Collectors.toList());
-							shoppingCartItem.setImages(instanceImages);
-						}
-					}
-					
-					
-					
+            if (!StringUtils.isBlank(source.getPromoCode())) {
+                Date promoDateAdded = source.getPromoAdded();// promo valid 1 day
+                if (promoDateAdded == null) {
+                    promoDateAdded = new Date();
+                }
+                Instant instant = promoDateAdded.toInstant();
+                ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
+                LocalDate date = zdt.toLocalDate();
+                // date added < date + 1 day
+                LocalDate tomorrow = LocalDate.now().plusDays(1);
+                if (date.isBefore(tomorrow)) {
+                    destination.setPromoCode(source.getPromoCode());
+                }
+            }
 
-					shoppingCartItem.setPrice(item.getItemPrice());
-					shoppingCartItem.setFinalPrice(pricingService.getDisplayAmount(item.getItemPrice(), store));
+            Set<com.salesmanager.core.model.shoppingcart.ShoppingCartItem> items = source.getLineItems();
 
-					shoppingCartItem.setQuantity(item.getQuantity());
+            if (items != null) {
 
-					cartQuantity = cartQuantity + item.getQuantity();
+                for (com.salesmanager.core.model.shoppingcart.ShoppingCartItem item : items) {
+                    ReadableShoppingCartItem shoppingCartItem = new ReadableShoppingCartItem();
+                    readableMinimalProductMapper.merge(item.getProduct(), shoppingCartItem, store, language);
 
-					BigDecimal subTotal = pricingService.calculatePriceQuantity(item.getItemPrice(),
-							item.getQuantity());
+                    //variation
+                    if (item.getVariant() != null) {
+                        Optional<ProductVariant> productVariant = productVariantService.getById(item.getVariant(), store);
+                        if (productVariant.isEmpty()) {
+                            throw new ConversionRuntimeException("An error occured during shopping cart [" + source.getShoppingCartCode() + "] conversion, productVariant [" + item.getVariant() + "] not found");
+                        }
+                        shoppingCartItem.setVariant(readableProductVariationMapper.convert(productVariant.get().getVariation(), store, language));
+                        if (productVariant.get().getVariationValue() != null) {
+                            shoppingCartItem.setVariantValue(readableProductVariationMapper.convert(productVariant.get().getVariationValue(), store, language));
+                        }
 
-					// calculate sub total (price * quantity)
-					shoppingCartItem.setSubTotal(subTotal);
+                        if (productVariant.get().getProductVariantGroup() != null) {
+                            Set<String> nameSet = new HashSet<>();
+                            List<ReadableImage> instanceImages = productVariant.get().getProductVariantGroup().getImages()
+                                    .stream().map(i -> this.image(i, store, language))
+                                    .filter(e -> nameSet.add(e.getImageUrl()))
+                                    .collect(Collectors.toList());
+                            shoppingCartItem.setImages(instanceImages);
+                        }
+                    }
 
-					shoppingCartItem.setDisplaySubTotal(pricingService.getDisplayAmount(subTotal, store));
 
-					Set<com.salesmanager.core.model.shoppingcart.ShoppingCartAttributeItem> attributes = item
-							.getAttributes();
-					if (attributes != null) {
-						for (com.salesmanager.core.model.shoppingcart.ShoppingCartAttributeItem attribute : attributes) {
+                    shoppingCartItem.setPrice(item.getItemPrice());
+                    shoppingCartItem.setFinalPrice(pricingService.getDisplayAmount(item.getItemPrice(), store));
 
-							ProductAttribute productAttribute = productAttributeService
-									.getById(attribute.getProductAttributeId());
+                    shoppingCartItem.setQuantity(item.getQuantity());
 
-							if (productAttribute == null) {
-								LOG.warn("Product attribute with ID " + attribute.getId()
-										+ " not found, skipping cart attribute " + attribute.getId());
-								continue;
-							}
+                    cartQuantity = cartQuantity + item.getQuantity();
 
-							ReadableShoppingCartAttribute cartAttribute = new ReadableShoppingCartAttribute();
+                    BigDecimal subTotal = pricingService.calculatePriceQuantity(item.getItemPrice(),
+                            item.getQuantity());
 
-							cartAttribute.setId(attribute.getId());
+                    // calculate sub total (price * quantity)
+                    shoppingCartItem.setSubTotal(subTotal);
 
-							ProductOption option = productAttribute.getProductOption();
-							ProductOptionValue optionValue = productAttribute.getProductOptionValue();
+                    shoppingCartItem.setDisplaySubTotal(pricingService.getDisplayAmount(subTotal, store));
 
-							List<ProductOptionDescription> optionDescriptions = option.getDescriptionsSettoList();
-							List<ProductOptionValueDescription> optionValueDescriptions = optionValue
-									.getDescriptionsSettoList();
+                    Set<com.salesmanager.core.model.shoppingcart.ShoppingCartAttributeItem> attributes = item
+                            .getAttributes();
+                    if (attributes != null) {
+                        for (com.salesmanager.core.model.shoppingcart.ShoppingCartAttributeItem attribute : attributes) {
 
-							String optName = null;
-							String optValue = null;
-							if (!CollectionUtils.isEmpty(optionDescriptions)
-									&& !CollectionUtils.isEmpty(optionValueDescriptions)) {
+                            ProductAttribute productAttribute = productAttributeService
+                                    .getById(attribute.getProductAttributeId());
 
-								optName = optionDescriptions.get(0).getName();
-								optValue = optionValueDescriptions.get(0).getName();
+                            if (productAttribute == null) {
+                                LOG.warn("Product attribute with ID " + attribute.getId()
+                                        + " not found, skipping cart attribute " + attribute.getId());
+                                continue;
+                            }
 
-								for (ProductOptionDescription optionDescription : optionDescriptions) {
-									if (optionDescription.getLanguage() != null && optionDescription.getLanguage()
-											.getId().intValue() == language.getId().intValue()) {
-										optName = optionDescription.getName();
-										break;
-									}
-								}
+                            ReadableShoppingCartAttribute cartAttribute = new ReadableShoppingCartAttribute();
 
-								for (ProductOptionValueDescription optionValueDescription : optionValueDescriptions) {
-									if (optionValueDescription.getLanguage() != null && optionValueDescription
-											.getLanguage().getId().intValue() == language.getId().intValue()) {
-										optValue = optionValueDescription.getName();
-										break;
-									}
-								}
+                            cartAttribute.setId(attribute.getId());
 
-							}
+                            ProductOption option = productAttribute.getProductOption();
+                            ProductOptionValue optionValue = productAttribute.getProductOptionValue();
 
-							if (optName != null) {
-								ReadableShoppingCartAttributeOption attributeOption = new ReadableShoppingCartAttributeOption();
-								attributeOption.setCode(option.getCode());
-								attributeOption.setId(option.getId());
-								attributeOption.setName(optName);
-								cartAttribute.setOption(attributeOption);
-							}
+                            List<ProductOptionDescription> optionDescriptions = option.getDescriptionsSettoList();
+                            List<ProductOptionValueDescription> optionValueDescriptions = optionValue
+                                    .getDescriptionsSettoList();
 
-							if (optValue != null) {
-								ReadableShoppingCartAttributeOptionValue attributeOptionValue = new ReadableShoppingCartAttributeOptionValue();
-								attributeOptionValue.setCode(optionValue.getCode());
-								attributeOptionValue.setId(optionValue.getId());
-								attributeOptionValue.setName(optValue);
-								cartAttribute.setOptionValue(attributeOptionValue);
-							}
-							shoppingCartItem.getCartItemattributes().add(cartAttribute);
-						}
+                            String optName = null;
+                            String optValue = null;
+                            if (!CollectionUtils.isEmpty(optionDescriptions)
+                                    && !CollectionUtils.isEmpty(optionValueDescriptions)) {
 
-					}
-					destination.getProducts().add(shoppingCartItem);
-				}
-			}
+                                optName = optionDescriptions.get(0).getName();
+                                optValue = optionValueDescriptions.get(0).getName();
 
-			// Calculate totals using shoppingCartService
-			// OrderSummary contains ShoppingCart items
+                                for (ProductOptionDescription optionDescription : optionDescriptions) {
+                                    if (optionDescription.getLanguage() != null && optionDescription.getLanguage()
+                                            .getId().intValue() == language.getId().intValue()) {
+                                        optName = optionDescription.getName();
+                                        break;
+                                    }
+                                }
 
-			OrderSummary summary = new OrderSummary();
-			List<com.salesmanager.core.model.shoppingcart.ShoppingCartItem> productsList = new ArrayList<com.salesmanager.core.model.shoppingcart.ShoppingCartItem>();
-			productsList.addAll(source.getLineItems());
-			summary.setProducts(productsList);
+                                for (ProductOptionValueDescription optionValueDescription : optionValueDescriptions) {
+                                    if (optionValueDescription.getLanguage() != null && optionValueDescription
+                                            .getLanguage().getId().intValue() == language.getId().intValue()) {
+                                        optValue = optionValueDescription.getName();
+                                        break;
+                                    }
+                                }
 
-			// OrdetTotalSummary contains all calculations
+                            }
 
-			OrderTotalSummary orderSummary = shoppingCartCalculationService.calculate(source, store, language);
+                            if (optName != null) {
+                                ReadableShoppingCartAttributeOption attributeOption = new ReadableShoppingCartAttributeOption();
+                                attributeOption.setCode(option.getCode());
+                                attributeOption.setId(option.getId());
+                                attributeOption.setName(optName);
+                                cartAttribute.setOption(attributeOption);
+                            }
 
-			if (CollectionUtils.isNotEmpty(orderSummary.getTotals())) {
+                            if (optValue != null) {
+                                ReadableShoppingCartAttributeOptionValue attributeOptionValue = new ReadableShoppingCartAttributeOptionValue();
+                                attributeOptionValue.setCode(optionValue.getCode());
+                                attributeOptionValue.setId(optionValue.getId());
+                                attributeOptionValue.setName(optValue);
+                                cartAttribute.setOptionValue(attributeOptionValue);
+                            }
+                            shoppingCartItem.getCartItemattributes().add(cartAttribute);
+                        }
 
-				if (orderSummary.getTotals().stream()
-						.filter(t -> Constants.OT_DISCOUNT_TITLE.equals(t.getOrderTotalCode())).count() == 0) {
-					// no promo coupon applied
-					destination.setPromoCode(null);
+                    }
+                    destination.getProducts().add(shoppingCartItem);
+                }
+            }
 
-				}
+            // Calculate totals using shoppingCartService
+            // OrderSummary contains ShoppingCart items
 
-				List<ReadableOrderTotal> totals = new ArrayList<ReadableOrderTotal>();
-				for (com.salesmanager.core.model.order.OrderTotal t : orderSummary.getTotals()) {
-					ReadableOrderTotal total = new ReadableOrderTotal();
-					total.setCode(t.getOrderTotalCode());
-					total.setValue(t.getValue());
-					total.setText(t.getText());
-					totals.add(total);
-				}
-				destination.setTotals(totals);
-			}
+            OrderSummary summary = new OrderSummary();
+            List<com.salesmanager.core.model.shoppingcart.ShoppingCartItem> productsList = new ArrayList<com.salesmanager.core.model.shoppingcart.ShoppingCartItem>();
+            productsList.addAll(source.getLineItems());
+            summary.setProducts(productsList);
 
-			destination.setSubtotal(orderSummary.getSubTotal());
-			destination.setDisplaySubTotal(pricingService.getDisplayAmount(orderSummary.getSubTotal(), store));
+            // OrdetTotalSummary contains all calculations
 
-			destination.setTotal(orderSummary.getTotal());
-			destination.setDisplayTotal(pricingService.getDisplayAmount(orderSummary.getTotal(), store));
+            OrderTotalSummary orderSummary = shoppingCartCalculationService.calculate(source, store, language);
 
-			destination.setQuantity(cartQuantity);
-			destination.setId(source.getId());
+            if (CollectionUtils.isNotEmpty(orderSummary.getTotals())) {
 
-			if (source.getOrderId() != null) {
-				destination.setOrder(source.getOrderId());
-			}
+                if (orderSummary.getTotals().stream()
+                        .filter(t -> Constants.OT_DISCOUNT_TITLE.equals(t.getOrderTotalCode())).count() == 0) {
+                    // no promo coupon applied
+                    destination.setPromoCode(null);
 
-		} catch (Exception e) {
-			throw new ConversionRuntimeException("An error occured while converting ReadableShoppingCart", e);
-		}
+                }
 
-		return destination;
-	}
-	
+                List<ReadableOrderTotal> totals = new ArrayList<ReadableOrderTotal>();
+                for (com.salesmanager.core.model.order.OrderTotal t : orderSummary.getTotals()) {
+                    ReadableOrderTotal total = new ReadableOrderTotal();
+                    total.setCode(t.getOrderTotalCode());
+                    total.setValue(t.getValue());
+                    total.setText(t.getText());
+                    totals.add(total);
+                }
+                destination.setTotals(totals);
+            }
+
+            destination.setSubtotal(orderSummary.getSubTotal());
+            destination.setDisplaySubTotal(pricingService.getDisplayAmount(orderSummary.getSubTotal(), store));
+
+            destination.setTotal(orderSummary.getTotal());
+            destination.setDisplayTotal(pricingService.getDisplayAmount(orderSummary.getTotal(), store));
+
+            destination.setQuantity(cartQuantity);
+            destination.setId(source.getId());
+
+            if (source.getOrderId() != null) {
+                destination.setOrder(source.getOrderId());
+            }
+
+        } catch (Exception e) {
+            throw new ConversionRuntimeException("An error occured while converting ReadableShoppingCart", e);
+        }
+
+        return destination;
+    }
 
 
 }

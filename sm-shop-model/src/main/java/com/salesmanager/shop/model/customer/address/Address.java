@@ -1,168 +1,157 @@
 package com.salesmanager.shop.model.customer.address;
 
-import java.io.Serializable;
-
 import io.swagger.annotations.ApiModelProperty;
+
+import java.io.Serializable;
 
 
 /**
  * Customer or someone address
- * @author carlsamson
  *
+ * @author carlsamson
  */
 public class Address extends AddressLocation implements Serializable {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty(notes = "Customer billing first name")
-	//@NotEmpty(message="{NotEmpty.customer.firstName}")
-	private String firstName;
-	
-	@ApiModelProperty(notes = "Customer billing last name")
-	//@NotEmpty(message="{NotEmpty.customer.lastName}")
-	private String lastName;
-	
-	private String bilstateOther;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	private String company;
+    @ApiModelProperty(notes = "Customer billing first name")
+    //@NotEmpty(message="{NotEmpty.customer.firstName}")
+    private String firstName;
 
-	private String phone;
-	@ApiModelProperty(notes = "Customer billing or shipping address")
-	private String address;
-	@ApiModelProperty(notes = "Customer billing or shipping city")
-	private String city;
-	
+    @ApiModelProperty(notes = "Customer billing last name")
+    //@NotEmpty(message="{NotEmpty.customer.lastName}")
+    private String lastName;
 
-	
-	@ApiModelProperty(notes = "Customer billing or shipping state / province (if no 2 letter codes, example: North estate)")
-	private String stateProvince;
-	private boolean billingAddress;
-	
-	private String latitude;
-	private String longitude;
-	
-	@ApiModelProperty(notes = "Customer billing or shipping state / province (2 letter code CA, ON...)")
-	private String zone;//code
-	
-	@ApiModelProperty(notes = "Customer billing or shipping country code (2 letter code US, CA, UK, IT, IN, CN...)")
-	//@NotEmpty(message="{NotEmpty.customer.billing.country}")
-	private String country;//code
-	
+    private String bilstateOther;
+
+    private String company;
+
+    private String phone;
+    @ApiModelProperty(notes = "Customer billing or shipping address")
+    private String address;
+    @ApiModelProperty(notes = "Customer billing or shipping city")
+    private String city;
 
 
-	public void setStateProvince(String stateProvince) {
-		this.stateProvince = stateProvince;
-	}
+    @ApiModelProperty(notes = "Customer billing or shipping state / province (if no 2 letter codes, example: North estate)")
+    private String stateProvince;
+    private boolean billingAddress;
 
-	public void setCountry(String country) {
-		this.country = country;
-	}
+    private String latitude;
+    private String longitude;
 
+    @ApiModelProperty(notes = "Customer billing or shipping state / province (2 letter code CA, ON...)")
+    private String zone;//code
 
+    @ApiModelProperty(notes = "Customer billing or shipping country code (2 letter code US, CA, UK, IT, IN, CN...)")
+    //@NotEmpty(message="{NotEmpty.customer.billing.country}")
+    private String country;//code
 
-	public String getCompany() {
-		return company;
-	}
+    public String getCompany() {
+        return company;
+    }
 
-	public void setCompany(String company) {
-		this.company = company;
-	}
+    public void setCompany(String company) {
+        this.company = company;
+    }
 
-	public String getAddress() {
-		return address;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public String getCity() {
-		return city;
-	}
+    public String getCity() {
+        return city;
+    }
 
-	public void setCity(String city) {
-		this.city = city;
-	}
+    public void setCity(String city) {
+        this.city = city;
+    }
 
+    public String getStateProvince() {
+        return stateProvince;
+    }
 
+    public void setStateProvince(String stateProvince) {
+        this.stateProvince = stateProvince;
+    }
 
-	public String getStateProvince() {
-		return stateProvince;
-	}
+    public String getCountry() {
+        return country;
+    }
 
-	public String getCountry() {
-		return country;
-	}
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
-	public void setZone(String zone) {
-		this.zone = zone;
-	}
+    public String getZone() {
+        return zone;
+    }
 
-	public String getZone() {
-		return zone;
-	}
+    public void setZone(String zone) {
+        this.zone = zone;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    public String getPhone() {
+        return phone;
+    }
 
-	public String getPhone() {
-		return phone;
-	}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-   public boolean isBillingAddress()
-    {
+    public boolean isBillingAddress() {
         return billingAddress;
     }
 
-    public void setBillingAddress( boolean billingAddress )
-    {
+    public void setBillingAddress(boolean billingAddress) {
         this.billingAddress = billingAddress;
     }
 
-    public String getBilstateOther()
-    {
+    public String getBilstateOther() {
         return bilstateOther;
     }
 
-    public void setBilstateOther( String bilstateOther )
-    {
+    public void setBilstateOther(String bilstateOther) {
         this.bilstateOther = bilstateOther;
     }
 
-	public String getLatitude() {
-		return latitude;
-	}
+    public String getLatitude() {
+        return latitude;
+    }
 
-	public void setLatitude(String latitude) {
-		this.latitude = latitude;
-	}
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
 
-	public String getLongitude() {
-		return longitude;
-	}
+    public String getLongitude() {
+        return longitude;
+    }
 
-	public void setLongitude(String longitude) {
-		this.longitude = longitude;
-	}
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
 
 }

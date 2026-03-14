@@ -1,26 +1,26 @@
 package com.salesmanager.shop.model.catalog.product.attribute;
 
+import com.salesmanager.shop.model.catalog.product.attribute.api.ProductOptionValueEntity;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.salesmanager.shop.model.catalog.product.attribute.api.ProductOptionValueEntity;
-
 public class PersistableProductOptionValue extends ProductOptionValueEntity
-		implements Serializable {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private List<ProductOptionValueDescription> descriptions = new ArrayList<ProductOptionValueDescription>();
+        implements Serializable {
 
-	public void setDescriptions(List<ProductOptionValueDescription> descriptions) {
-		this.descriptions = descriptions;
-	}
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private List<ProductOptionValueDescription> descriptions = new ArrayList<ProductOptionValueDescription>();
 
-	public List<ProductOptionValueDescription> getDescriptions() {
-		return descriptions;
-	}
+    public List<ProductOptionValueDescription> getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(List<ProductOptionValueDescription> descriptions) {
+        this.descriptions = descriptions;
+    }
 
 }

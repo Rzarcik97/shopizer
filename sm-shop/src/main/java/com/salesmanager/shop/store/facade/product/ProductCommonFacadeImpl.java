@@ -1,18 +1,5 @@
 package com.salesmanager.shop.store.facade.product;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.inject.Inject;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
-
 import com.salesmanager.core.business.exception.ConversionException;
 import com.salesmanager.core.business.exception.ServiceException;
 import com.salesmanager.core.business.services.catalog.pricing.PricingService;
@@ -47,431 +34,441 @@ import com.salesmanager.shop.store.api.exception.ServiceRuntimeException;
 import com.salesmanager.shop.store.controller.product.facade.ProductCommonFacade;
 import com.salesmanager.shop.utils.DateUtil;
 import com.salesmanager.shop.utils.ImageFilePath;
+import jakarta.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
  * Version 1 Product management
  * Version 2 Recommends using productVariant
- * @author carlsamson
  *
+ * @author carlsamson
  */
 @Service("productCommonFacade")
 public class ProductCommonFacadeImpl implements ProductCommonFacade {
 
 
-	@Inject
-	private LanguageService languageService;
+    @Inject
+    private LanguageService languageService;
 
-	@Inject
-	private ProductService productService;
+    @Inject
+    private ProductService productService;
 
-	@Inject
-	private PricingService pricingService;
+    @Inject
+    private PricingService pricingService;
 
-	@Inject
-	private CustomerService customerService;
-
-	@Inject
-	private ProductReviewService productReviewService;
-	
-	@Autowired
-	private PersistableProductMapper persistableProductMapper;
-
-	@Inject
-	@Qualifier("img")
-	private ImageFilePath imageUtils;
-
-	@Override
-	public Long saveProduct(MerchantStore store, PersistableProduct product, Language language) {
+    @Inject
+    private CustomerService customerService;
 
-		String manufacturer = Manufacturer.DEFAULT_MANUFACTURER;
-		if (product.getProductSpecifications() != null) {
-			manufacturer = product.getProductSpecifications().getManufacturer();
-		} else {
-			ProductSpecification specifications = new ProductSpecification();
-			specifications.setManufacturer(manufacturer);
-		}
+    @Inject
+    private ProductReviewService productReviewService;
 
-		Product target = null;
-		if (product.getId() != null && product.getId().longValue() > 0) {
-			target = productService.getById(product.getId());
-		} else {
-			target = new Product();
-		}
+    @Autowired
+    private PersistableProductMapper persistableProductMapper;
 
-		try {
-			
-			target = persistableProductMapper.merge(product, target, store, language);
-			target = productService.saveProduct(target);
+    @Inject
+    @Qualifier("img")
+    private ImageFilePath imageUtils;
 
+    @Override
+    public Long saveProduct(MerchantStore store, PersistableProduct product, Language language) {
 
-			return target.getId();
-		} catch (Exception e) {
-			throw new ServiceRuntimeException(e);
-		}
+        String manufacturer = Manufacturer.DEFAULT_MANUFACTURER;
+        if (product.getProductSpecifications() != null) {
+            manufacturer = product.getProductSpecifications().getManufacturer();
+        } else {
+            ProductSpecification specifications = new ProductSpecification();
+            specifications.setManufacturer(manufacturer);
+        }
 
-	}
+        Product target = null;
+        if (product.getId() != null && product.getId().longValue() > 0) {
+            target = productService.getById(product.getId());
+        } else {
+            target = new Product();
+        }
 
-	public void updateProduct(MerchantStore store, PersistableProduct product, Language language) {
+        try {
 
-		Validate.notNull(product, "Product must not be null");
-		Validate.notNull(product.getId(), "Product id must not be null");
+            target = persistableProductMapper.merge(product, target, store, language);
+            target = productService.saveProduct(target);
 
-		// get original product
-		Product productModel = productService.getById(product.getId());
 
+            return target.getId();
+        } catch (Exception e) {
+            throw new ServiceRuntimeException(e);
+        }
 
-	}
+    }
 
-	@Override
-	public ReadableProduct getProduct(MerchantStore store, Long id, Language language) {
+    public void updateProduct(MerchantStore store, PersistableProduct product, Language language) {
 
-		Product product = productService.findOne(id, store);
-		if (product == null) {
-			throw new ResourceNotFoundException("Product [" + id + "] not found");
-		}
+        Validate.notNull(product, "Product must not be null");
+        Validate.notNull(product.getId(), "Product id must not be null");
 
-		if (product.getMerchantStore().getId() != store.getId()) {
-			throw new ResourceNotFoundException("Product [" + id + "] not found for store [" + store.getId() + "]");
-		}
+        // get original product
+        Product productModel = productService.getById(product.getId());
 
-		ReadableProduct readableProduct = new ReadableProduct();
-		ReadableProductPopulator populator = new ReadableProductPopulator();
-		populator.setPricingService(pricingService);
-		populator.setimageUtils(imageUtils);
-		try {
-			readableProduct = populator.populate(product, readableProduct, store, language);
-		} catch (ConversionException e) {
-			throw new ConversionRuntimeException("Error converting product [" + id + "]",e);
-		}
 
-		return readableProduct;
-	}
+    }
 
+    @Override
+    public ReadableProduct getProduct(MerchantStore store, Long id, Language language) {
 
-	@Override
-	public ReadableProduct updateProductPrice(ReadableProduct product, ProductPriceEntity price, Language language)
-			throws Exception {
+        Product product = productService.findOne(id, store);
+        if (product == null) {
+            throw new ResourceNotFoundException("Product [" + id + "] not found");
+        }
 
-		Product persistable = productService.getById(product.getId());
+        if (product.getMerchantStore().getId() != store.getId()) {
+            throw new ResourceNotFoundException("Product [" + id + "] not found for store [" + store.getId() + "]");
+        }
 
-		if (persistable == null) {
-			throw new Exception("product is null for id " + product.getId());
-		}
+        ReadableProduct readableProduct = new ReadableProduct();
+        ReadableProductPopulator populator = new ReadableProductPopulator();
+        populator.setPricingService(pricingService);
+        populator.setimageUtils(imageUtils);
+        try {
+            readableProduct = populator.populate(product, readableProduct, store, language);
+        } catch (ConversionException e) {
+            throw new ConversionRuntimeException("Error converting product [" + id + "]", e);
+        }
 
-		java.util.Set<ProductAvailability> availabilities = persistable.getAvailabilities();
-		for (ProductAvailability availability : availabilities) {
-			ProductPrice productPrice = availability.defaultPrice();
-			productPrice.setProductPriceAmount(price.getPrice());
-			if (price.isDiscounted()) {
-				productPrice.setProductPriceSpecialAmount(price.getDiscountedPrice());
-				if (!StringUtils.isBlank(price.getDiscountStartDate())) {
-					Date startDate = DateUtil.getDate(price.getDiscountStartDate());
-					productPrice.setProductPriceSpecialStartDate(startDate);
-				}
-				if (!StringUtils.isBlank(price.getDiscountEndDate())) {
-					Date endDate = DateUtil.getDate(price.getDiscountEndDate());
-					productPrice.setProductPriceSpecialEndDate(endDate);
-				}
-			}
+        return readableProduct;
+    }
 
-		}
 
-		productService.update(persistable);
+    @Override
+    public ReadableProduct updateProductPrice(ReadableProduct product, ProductPriceEntity price, Language language)
+            throws Exception {
 
-		ReadableProduct readableProduct = new ReadableProduct();
+        Product persistable = productService.getById(product.getId());
 
-		ReadableProductPopulator populator = new ReadableProductPopulator();
+        if (persistable == null) {
+            throw new Exception("product is null for id " + product.getId());
+        }
 
-		populator.setPricingService(pricingService);
-		populator.setimageUtils(imageUtils);
-		populator.populate(persistable, readableProduct, persistable.getMerchantStore(), language);
+        java.util.Set<ProductAvailability> availabilities = persistable.getAvailabilities();
+        for (ProductAvailability availability : availabilities) {
+            ProductPrice productPrice = availability.defaultPrice();
+            productPrice.setProductPriceAmount(price.getPrice());
+            if (price.isDiscounted()) {
+                productPrice.setProductPriceSpecialAmount(price.getDiscountedPrice());
+                if (!StringUtils.isBlank(price.getDiscountStartDate())) {
+                    Date startDate = DateUtil.getDate(price.getDiscountStartDate());
+                    productPrice.setProductPriceSpecialStartDate(startDate);
+                }
+                if (!StringUtils.isBlank(price.getDiscountEndDate())) {
+                    Date endDate = DateUtil.getDate(price.getDiscountEndDate());
+                    productPrice.setProductPriceSpecialEndDate(endDate);
+                }
+            }
 
-		return readableProduct;
-	}
+        }
 
-	@Override
-	public ReadableProduct updateProductQuantity(ReadableProduct product, int quantity, Language language)
-			throws Exception {
-		Product persistable = productService.getById(product.getId());
+        productService.update(persistable);
 
-		if (persistable == null) {
-			throw new Exception("product is null for id " + product.getId());
-		}
+        ReadableProduct readableProduct = new ReadableProduct();
 
-		java.util.Set<ProductAvailability> availabilities = persistable.getAvailabilities();
-		for (ProductAvailability availability : availabilities) {
-			availability.setProductQuantity(quantity);
-		}
+        ReadableProductPopulator populator = new ReadableProductPopulator();
 
-		productService.saveProduct(persistable);
+        populator.setPricingService(pricingService);
+        populator.setimageUtils(imageUtils);
+        populator.populate(persistable, readableProduct, persistable.getMerchantStore(), language);
 
-		ReadableProduct readableProduct = new ReadableProduct();
+        return readableProduct;
+    }
 
-		ReadableProductPopulator populator = new ReadableProductPopulator();
+    @Override
+    public ReadableProduct updateProductQuantity(ReadableProduct product, int quantity, Language language)
+            throws Exception {
+        Product persistable = productService.getById(product.getId());
 
-		populator.setPricingService(pricingService);
-		populator.setimageUtils(imageUtils);
-		populator.populate(persistable, readableProduct, persistable.getMerchantStore(), language);
+        if (persistable == null) {
+            throw new Exception("product is null for id " + product.getId());
+        }
 
-		return readableProduct;
-	}
+        java.util.Set<ProductAvailability> availabilities = persistable.getAvailabilities();
+        for (ProductAvailability availability : availabilities) {
+            availability.setProductQuantity(quantity);
+        }
 
-	@Override
-	public void deleteProduct(Product product) throws Exception {
-		productService.delete(product);
+        productService.saveProduct(persistable);
 
-	}
+        ReadableProduct readableProduct = new ReadableProduct();
 
+        ReadableProductPopulator populator = new ReadableProductPopulator();
 
-	@Override
-	public ReadableProduct addProductToCategory(Category category, Product product, Language language) {
+        populator.setPricingService(pricingService);
+        populator.setimageUtils(imageUtils);
+        populator.populate(persistable, readableProduct, persistable.getMerchantStore(), language);
 
-		Validate.notNull(category, "Category cannot be null");
-		Validate.notNull(product, "Product cannot be null");
+        return readableProduct;
+    }
 
-		// not alloweed if category already attached
-		List<Category> assigned = product.getCategories().stream()
-				.filter(cat -> cat.getId().longValue() == category.getId().longValue()).collect(Collectors.toList());
+    @Override
+    public void deleteProduct(Product product) throws Exception {
+        productService.delete(product);
 
-		if (assigned.size() > 0) {
-			throw new OperationNotAllowedException("Category with id [" + category.getId()
-					+ "] already attached to product [" + product.getId() + "]");
-		}
+    }
 
-		product.getCategories().add(category);
-		ReadableProduct readableProduct = new ReadableProduct();
-		
-		try {
 
-			productService.saveProduct(product);
-	
-			ReadableProductPopulator populator = new ReadableProductPopulator();
-	
-			populator.setPricingService(pricingService);
-			populator.setimageUtils(imageUtils);
-			populator.populate(product, readableProduct, product.getMerchantStore(), language);
-		
-		} catch(Exception e) {
-			throw new RuntimeException("Exception when adding product [" + product.getId() + "] to category [" + category.getId() + "]",e);
-		}
+    @Override
+    public ReadableProduct addProductToCategory(Category category, Product product, Language language) {
 
-		return readableProduct;
+        Validate.notNull(category, "Category cannot be null");
+        Validate.notNull(product, "Product cannot be null");
 
-	}
+        // not alloweed if category already attached
+        List<Category> assigned = product.getCategories().stream()
+                .filter(cat -> cat.getId().longValue() == category.getId().longValue()).collect(Collectors.toList());
 
-	@Override
-	public ReadableProduct removeProductFromCategory(Category category, Product product, Language language)
-			throws Exception {
+        if (assigned.size() > 0) {
+            throw new OperationNotAllowedException("Category with id [" + category.getId()
+                    + "] already attached to product [" + product.getId() + "]");
+        }
 
-		Validate.notNull(category, "Category cannot be null");
-		Validate.notNull(product, "Product cannot be null");
+        product.getCategories().add(category);
+        ReadableProduct readableProduct = new ReadableProduct();
 
-		product.getCategories().remove(category);
-		productService.saveProduct(product);
+        try {
 
-		ReadableProduct readableProduct = new ReadableProduct();
+            productService.saveProduct(product);
 
-		ReadableProductPopulator populator = new ReadableProductPopulator();
+            ReadableProductPopulator populator = new ReadableProductPopulator();
 
-		populator.setPricingService(pricingService);
-		populator.setimageUtils(imageUtils);
-		populator.populate(product, readableProduct, product.getMerchantStore(), language);
+            populator.setPricingService(pricingService);
+            populator.setimageUtils(imageUtils);
+            populator.populate(product, readableProduct, product.getMerchantStore(), language);
 
-		return readableProduct;
-	}
+        } catch (Exception e) {
+            throw new RuntimeException("Exception when adding product [" + product.getId() + "] to category [" + category.getId() + "]", e);
+        }
 
-	@Override
-	public ReadableProduct getProductByCode(MerchantStore store, String uniqueCode, Language language)
-			throws Exception {
+        return readableProduct;
 
-		Product product = productService.getBySku(uniqueCode, store, language);
+    }
 
-		ReadableProduct readableProduct = new ReadableProduct();
+    @Override
+    public ReadableProduct removeProductFromCategory(Category category, Product product, Language language)
+            throws Exception {
 
-		ReadableProductPopulator populator = new ReadableProductPopulator();
+        Validate.notNull(category, "Category cannot be null");
+        Validate.notNull(product, "Product cannot be null");
 
-		populator.setPricingService(pricingService);
-		populator.setimageUtils(imageUtils);
-		populator.populate(product, readableProduct, product.getMerchantStore(), language);
+        product.getCategories().remove(category);
+        productService.saveProduct(product);
 
-		return readableProduct;
-	}
+        ReadableProduct readableProduct = new ReadableProduct();
 
-	@Override
-	public void saveOrUpdateReview(PersistableProductReview review, MerchantStore store, Language language)
-			throws Exception {
-		PersistableProductReviewPopulator populator = new PersistableProductReviewPopulator();
-		populator.setLanguageService(languageService);
-		populator.setCustomerService(customerService);
-		populator.setProductService(productService);
+        ReadableProductPopulator populator = new ReadableProductPopulator();
 
-		com.salesmanager.core.model.catalog.product.review.ProductReview rev = new com.salesmanager.core.model.catalog.product.review.ProductReview();
-		populator.populate(review, rev, store, language);
+        populator.setPricingService(pricingService);
+        populator.setimageUtils(imageUtils);
+        populator.populate(product, readableProduct, product.getMerchantStore(), language);
 
-		if (review.getId() == null) {
-			productReviewService.create(rev);
-		} else {
-			productReviewService.update(rev);
-		}
+        return readableProduct;
+    }
 
-		review.setId(rev.getId());
+    @Override
+    public ReadableProduct getProductByCode(MerchantStore store, String uniqueCode, Language language)
+            throws Exception {
 
-	}
+        Product product = productService.getBySku(uniqueCode, store, language);
 
-	@Override
-	public void deleteReview(ProductReview review, MerchantStore store, Language language) throws Exception {
-		productReviewService.delete(review);
+        ReadableProduct readableProduct = new ReadableProduct();
 
-	}
+        ReadableProductPopulator populator = new ReadableProductPopulator();
 
-	@Override
-	public List<ReadableProductReview> getProductReviews(Product product, MerchantStore store, Language language)
-			throws Exception {
+        populator.setPricingService(pricingService);
+        populator.setimageUtils(imageUtils);
+        populator.populate(product, readableProduct, product.getMerchantStore(), language);
 
-		List<ProductReview> reviews = productReviewService.getByProduct(product);
+        return readableProduct;
+    }
 
-		ReadableProductReviewPopulator populator = new ReadableProductReviewPopulator();
+    @Override
+    public void saveOrUpdateReview(PersistableProductReview review, MerchantStore store, Language language)
+            throws Exception {
+        PersistableProductReviewPopulator populator = new PersistableProductReviewPopulator();
+        populator.setLanguageService(languageService);
+        populator.setCustomerService(customerService);
+        populator.setProductService(productService);
 
-		List<ReadableProductReview> productReviews = new ArrayList<ReadableProductReview>();
+        com.salesmanager.core.model.catalog.product.review.ProductReview rev = new com.salesmanager.core.model.catalog.product.review.ProductReview();
+        populator.populate(review, rev, store, language);
 
-		for (ProductReview review : reviews) {
-			ReadableProductReview readableReview = new ReadableProductReview();
-			populator.populate(review, readableReview, store, language);
-			productReviews.add(readableReview);
-		}
+        if (review.getId() == null) {
+            productReviewService.create(rev);
+        } else {
+            productReviewService.update(rev);
+        }
 
-		return productReviews;
-	}
+        review.setId(rev.getId());
 
-
-	@Override
-	public void update(Long productId, LightPersistableProduct product, MerchantStore merchant, Language language) {
-		// Get product
-		Product modified = productService.findOne(productId, merchant);
-
-		// Update product with minimal set
-		modified.setAvailable(product.isAvailable());
-
-		for (ProductAvailability availability : modified.getAvailabilities()) {
-			availability.setProductQuantity(product.getQuantity());
-			if (!StringUtils.isBlank(product.getPrice())) {
-				// set default price
-				for (ProductPrice price : availability.getPrices()) {
-					if (price.isDefaultPrice()) {
-						try {
-							price.setProductPriceAmount(pricingService.getAmount(product.getPrice()));
-						} catch (ServiceException e) {
-							throw new ServiceRuntimeException("Invalid product price format");
-						}
-					}
-				}
-			}
-		}
-
-		try {
-			productService.save(modified);
-		} catch (ServiceException e) {
-			throw new ServiceRuntimeException("Cannot update product ", e);
-		}
-
-	}
-
-	@Override
-	public boolean exists(String sku, MerchantStore store) {
-
-		return productService.exists(sku, store);
-	}
-
-
-	@Override
-	public void deleteProduct(Long id, MerchantStore store) {
-
-		Validate.notNull(id, "Product id cannot be null");
-		Validate.notNull(store, "store cannot be null");
-
-		Product p = productService.getById(id);
-
-		if (p == null) {
-			throw new ResourceNotFoundException("Product with id [" + id + " not found");
-		}
-
-		if (p.getMerchantStore().getId().intValue() != store.getId().intValue()) {
-			throw new ResourceNotFoundException(
-					"Product with id [" + id + " not found for store [" + store.getCode() + "]");
-		}
-
-		try {
-			productService.delete(p);
-		} catch (ServiceException e) {
-			throw new ServiceRuntimeException("Error while deleting ptoduct with id [" + id + "]", e);
-		}
-
-	}
-
-
-
-	@Override
-	public Product getProduct(Long id, MerchantStore store) {
-		return productService.findOne(id, store);
-	}
-
-	@Override
-	public void update(String sku, LightPersistableProduct product, MerchantStore merchant, Language language) {
-		// Get product
-		Product modified = null;
-		try {
-			modified = productService.getBySku(sku, merchant, language);
-		} catch (ServiceException e) {
-			throw new ServiceRuntimeException(e);
-		}
-		
-		ProductVariant instance = modified.getVariants().stream()
-				  .filter(inst -> sku.equals(inst.getSku()))
-				  .findAny()
-				  .orElse(null);
-		
-		if(instance!=null) {
-			instance.setAvailable(product.isAvailable());
-			
-			for (ProductAvailability availability : instance.getAvailabilities()) {
-				this.setAvailability(availability, product);
-			}
-		} else {
-			// Update product with minimal set
-			modified.setAvailable(product.isAvailable());
-			
-			for (ProductAvailability availability : modified.getAvailabilities()) {
-				this.setAvailability(availability, product);
-			}
-		}
-
-		try {
-			productService.saveProduct(modified);
-		} catch (ServiceException e) {
-			throw new ServiceRuntimeException("Cannot update product ", e);
-		}
-		
-	}
-	
-	/**
-	 * edit availability
-	 */
-	private void setAvailability(ProductAvailability availability, LightPersistableProduct product) {
-		availability.setProductQuantity(product.getQuantity());
-		if (!StringUtils.isBlank(product.getPrice())) {
-			// set default price
-			for (ProductPrice price : availability.getPrices()) {
-				if (price.isDefaultPrice()) {
-					try {
-						price.setProductPriceAmount(pricingService.getAmount(product.getPrice()));
-					} catch (ServiceException e) {
-						throw new ServiceRuntimeException("Invalid product price format");
-					}
-				}
-			}
-		}
-	}
+    }
+
+    @Override
+    public void deleteReview(ProductReview review, MerchantStore store, Language language) throws Exception {
+        productReviewService.delete(review);
+
+    }
+
+    @Override
+    public List<ReadableProductReview> getProductReviews(Product product, MerchantStore store, Language language)
+            throws Exception {
+
+        List<ProductReview> reviews = productReviewService.getByProduct(product);
+
+        ReadableProductReviewPopulator populator = new ReadableProductReviewPopulator();
+
+        List<ReadableProductReview> productReviews = new ArrayList<ReadableProductReview>();
+
+        for (ProductReview review : reviews) {
+            ReadableProductReview readableReview = new ReadableProductReview();
+            populator.populate(review, readableReview, store, language);
+            productReviews.add(readableReview);
+        }
+
+        return productReviews;
+    }
+
+
+    @Override
+    public void update(Long productId, LightPersistableProduct product, MerchantStore merchant, Language language) {
+        // Get product
+        Product modified = productService.findOne(productId, merchant);
+
+        // Update product with minimal set
+        modified.setAvailable(product.isAvailable());
+
+        for (ProductAvailability availability : modified.getAvailabilities()) {
+            availability.setProductQuantity(product.getQuantity());
+            if (!StringUtils.isBlank(product.getPrice())) {
+                // set default price
+                for (ProductPrice price : availability.getPrices()) {
+                    if (price.isDefaultPrice()) {
+                        try {
+                            price.setProductPriceAmount(pricingService.getAmount(product.getPrice()));
+                        } catch (ServiceException e) {
+                            throw new ServiceRuntimeException("Invalid product price format");
+                        }
+                    }
+                }
+            }
+        }
+
+        try {
+            productService.save(modified);
+        } catch (ServiceException e) {
+            throw new ServiceRuntimeException("Cannot update product ", e);
+        }
+
+    }
+
+    @Override
+    public boolean exists(String sku, MerchantStore store) {
+
+        return productService.exists(sku, store);
+    }
+
+
+    @Override
+    public void deleteProduct(Long id, MerchantStore store) {
+
+        Validate.notNull(id, "Product id cannot be null");
+        Validate.notNull(store, "store cannot be null");
+
+        Product p = productService.getById(id);
+
+        if (p == null) {
+            throw new ResourceNotFoundException("Product with id [" + id + " not found");
+        }
+
+        if (p.getMerchantStore().getId().intValue() != store.getId().intValue()) {
+            throw new ResourceNotFoundException(
+                    "Product with id [" + id + " not found for store [" + store.getCode() + "]");
+        }
+
+        try {
+            productService.delete(p);
+        } catch (ServiceException e) {
+            throw new ServiceRuntimeException("Error while deleting ptoduct with id [" + id + "]", e);
+        }
+
+    }
+
+
+    @Override
+    public Product getProduct(Long id, MerchantStore store) {
+        return productService.findOne(id, store);
+    }
+
+    @Override
+    public void update(String sku, LightPersistableProduct product, MerchantStore merchant, Language language) {
+        // Get product
+        Product modified = null;
+        try {
+            modified = productService.getBySku(sku, merchant, language);
+        } catch (ServiceException e) {
+            throw new ServiceRuntimeException(e);
+        }
+
+        ProductVariant instance = modified.getVariants().stream()
+                .filter(inst -> sku.equals(inst.getSku()))
+                .findAny()
+                .orElse(null);
+
+        if (instance != null) {
+            instance.setAvailable(product.isAvailable());
+
+            for (ProductAvailability availability : instance.getAvailabilities()) {
+                this.setAvailability(availability, product);
+            }
+        } else {
+            // Update product with minimal set
+            modified.setAvailable(product.isAvailable());
+
+            for (ProductAvailability availability : modified.getAvailabilities()) {
+                this.setAvailability(availability, product);
+            }
+        }
+
+        try {
+            productService.saveProduct(modified);
+        } catch (ServiceException e) {
+            throw new ServiceRuntimeException("Cannot update product ", e);
+        }
+
+    }
+
+    /**
+     * edit availability
+     */
+    private void setAvailability(ProductAvailability availability, LightPersistableProduct product) {
+        availability.setProductQuantity(product.getQuantity());
+        if (!StringUtils.isBlank(product.getPrice())) {
+            // set default price
+            for (ProductPrice price : availability.getPrices()) {
+                if (price.isDefaultPrice()) {
+                    try {
+                        price.setProductPriceAmount(pricingService.getAmount(product.getPrice()));
+                    } catch (ServiceException e) {
+                        throw new ServiceRuntimeException("Invalid product price format");
+                    }
+                }
+            }
+        }
+    }
 
 
 }

@@ -1,69 +1,68 @@
 package com.salesmanager.core.model.order.payment;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
 import com.salesmanager.core.model.payments.CreditCardType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 @Embeddable
 public class CreditCard {
-	
-	@Column (name ="CARD_TYPE")
-	@Enumerated(value = EnumType.STRING)
-	private CreditCardType cardType;
-	
-	@Column (name ="CC_OWNER")
-	private String ccOwner;
-	
-	@Column (name ="CC_NUMBER")
-	private String ccNumber;
-	
-	@Column (name ="CC_EXPIRES")
-	private String ccExpires;
-	
-	@Column (name ="CC_CVV")
-	private String ccCvv;
 
-	public String getCcOwner() {
-		return ccOwner;
-	}
+    @Column(name = "CARD_TYPE")
+    @Enumerated(value = EnumType.STRING)
+    private CreditCardType cardType;
 
-	public void setCcOwner(String ccOwner) {
-		this.ccOwner = ccOwner;
-	}
+    @Column(name = "CC_OWNER")
+    private String ccOwner;
 
-	public String getCcNumber() {
-		return ccNumber;
-	}
+    @Column(name = "CC_NUMBER")
+    private String ccNumber;
 
-	public void setCcNumber(String ccNumber) {
-		this.ccNumber = ccNumber;
-	}
+    @Column(name = "CC_EXPIRES")
+    private String ccExpires;
 
-	public String getCcExpires() {
-		return ccExpires;
-	}
+    @Column(name = "CC_CVV")
+    private String ccCvv;
 
-	public void setCcExpires(String ccExpires) {
-		this.ccExpires = ccExpires;
-	}
+    public String getCcOwner() {
+        return ccOwner;
+    }
 
-	public String getCcCvv() {
-		return ccCvv;
-	}
+    public void setCcOwner(String ccOwner) {
+        this.ccOwner = ccOwner;
+    }
 
-	public void setCcCvv(String ccCvv) {
-		this.ccCvv = ccCvv;
-	}
+    public String getCcNumber() {
+        return ccNumber;
+    }
 
-	public void setCardType(CreditCardType cardType) {
-		this.cardType = cardType;
-	}
+    public void setCcNumber(String ccNumber) {
+        this.ccNumber = ccNumber;
+    }
 
-	public CreditCardType getCardType() {
-		return cardType;
-	}
+    public String getCcExpires() {
+        return ccExpires;
+    }
+
+    public void setCcExpires(String ccExpires) {
+        this.ccExpires = ccExpires;
+    }
+
+    public String getCcCvv() {
+        return ccCvv;
+    }
+
+    public void setCcCvv(String ccCvv) {
+        this.ccCvv = ccCvv;
+    }
+
+    public CreditCardType getCardType() {
+        return cardType;
+    }
+
+    public void setCardType(CreditCardType cardType) {
+        this.cardType = cardType;
+    }
 
 }

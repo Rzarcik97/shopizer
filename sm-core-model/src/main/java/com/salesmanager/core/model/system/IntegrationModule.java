@@ -1,221 +1,220 @@
 package com.salesmanager.core.model.system;
 
+import com.salesmanager.core.model.common.audit.AuditListener;
+import com.salesmanager.core.model.common.audit.AuditSection;
+import com.salesmanager.core.model.common.audit.Auditable;
+import com.salesmanager.core.model.generic.SalesManagerEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.Table;
+import jakarta.persistence.TableGenerator;
+import jakarta.persistence.Transient;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.Type;
-
-import com.salesmanager.core.model.common.audit.AuditListener;
-import com.salesmanager.core.model.common.audit.AuditSection;
-import com.salesmanager.core.model.common.audit.Auditable;
-import com.salesmanager.core.model.generic.SalesManagerEntity;
-
 @Entity
 @EntityListeners(value = AuditListener.class)
 @Table(name = "MODULE_CONFIGURATION", indexes = {
-		@Index(name = "MODULE_CONFIGURATION_MODULE", columnList = "MODULE") })
+        @Index(name = "MODULE_CONFIGURATION_MODULE", columnList = "MODULE")})
 
 public class IntegrationModule extends SalesManagerEntity<Long, IntegrationModule> implements Serializable, Auditable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name = "MODULE_CONF_ID")
-	@TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "MOD_CONF_SEQ_NEXT_VAL")
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
-	private Long id;
+    @Id
+    @Column(name = "MODULE_CONF_ID")
+    @TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "MOD_CONF_SEQ_NEXT_VAL")
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
+    private Long id;
 
-	@Column(name = "MODULE")
-	private String module;
+    @Column(name = "MODULE")
+    private String module;
 
-	@Column(name = "CODE", nullable = false)
-	private String code;
+    @Column(name = "CODE", nullable = false)
+    private String code;
 
-	@Column(name = "REGIONS")
-	private String regions;
+    @Column(name = "REGIONS")
+    private String regions;
 
-	@Column(name = "CONFIGURATION", length=4000)
-	private String configuration;
+    @Column(name = "CONFIGURATION", length = 4000)
+    private String configuration;
 
-	@Column(name = "DETAILS")
-	@Type(type = "org.hibernate.type.TextType")
-	private String configDetails;
+    @Column(name = "DETAILS")
+    @JdbcTypeCode(SqlTypes.LONGVARCHAR)
+    private String configDetails;
 
-	@Column(name = "TYPE")
-	private String type;
+    @Column(name = "TYPE")
+    private String type;
 
-	@Column(name = "IMAGE")
-	private String image;
+    @Column(name = "IMAGE")
+    private String image;
 
-	@Column(name = "CUSTOM_IND")
-	private boolean customModule = false;
+    @Column(name = "CUSTOM_IND")
+    private boolean customModule = false;
 
-	@Transient
-	private Set<String> regionsSet = new HashSet<String>();
-	
-	@Transient
-	private String binaryImage = null;
+    @Transient
+    private Set<String> regionsSet = new HashSet<String>();
 
-	/**
-	 * Contains a map of module config by environment (DEV,PROD)
-	 */
-	@Transient
-	private Map<String, ModuleConfig> moduleConfigs = new HashMap<String, ModuleConfig>();
+    @Transient
+    private String binaryImage = null;
 
-	@Transient
-	private Map<String, String> details = new HashMap<String, String>();
-	
-	/**
-	 * A json tructure decribing how the module must be built
-	 */
-	@Transient
-	private String configurable = null;
+    /**
+     * Contains a map of module config by environment (DEV,PROD)
+     */
+    @Transient
+    private Map<String, ModuleConfig> moduleConfigs = new HashMap<String, ModuleConfig>();
+
+    @Transient
+    private Map<String, String> details = new HashMap<String, String>();
+
+    /**
+     * A json tructure decribing how the module must be built
+     */
+    @Transient
+    private String configurable = null;
 
 
-	@Embedded
-	private AuditSection auditSection = new AuditSection();
+    @Embedded
+    private AuditSection auditSection = new AuditSection();
 
-	@Override
-	public AuditSection getAuditSection() {
-		return auditSection;
-	}
+    @Override
+    public AuditSection getAuditSection() {
+        return auditSection;
+    }
 
-	@Override
-	public void setAuditSection(AuditSection audit) {
-		this.auditSection = audit;
+    @Override
+    public void setAuditSection(AuditSection audit) {
+        this.auditSection = audit;
 
-	}
+    }
 
-	@Override
-	public Long getId() {
-		return id;
-	}
+    @Override
+    public Long getId() {
+        return id;
+    }
 
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getModule() {
-		return module;
-	}
+    public String getModule() {
+        return module;
+    }
 
-	public void setModule(String module) {
-		this.module = module;
-	}
+    public void setModule(String module) {
+        this.module = module;
+    }
 
-	public String getRegions() {
-		return regions;
-	}
+    public String getRegions() {
+        return regions;
+    }
 
-	public void setRegions(String regions) {
-		this.regions = regions;
-	}
+    public void setRegions(String regions) {
+        this.regions = regions;
+    }
 
-	public String getConfiguration() {
-		return configuration;
-	}
+    public String getConfiguration() {
+        return configuration;
+    }
 
-	public void setConfiguration(String configuration) {
-		this.configuration = configuration;
-	}
+    public void setConfiguration(String configuration) {
+        this.configuration = configuration;
+    }
 
-	public void setRegionsSet(Set<String> regionsSet) {
-		this.regionsSet = regionsSet;
-	}
+    public Set<String> getRegionsSet() {
+        return regionsSet;
+    }
 
-	public Set<String> getRegionsSet() {
-		return regionsSet;
-	}
+    public void setRegionsSet(Set<String> regionsSet) {
+        this.regionsSet = regionsSet;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public void setModuleConfigs(Map<String, ModuleConfig> moduleConfigs) {
-		this.moduleConfigs = moduleConfigs;
-	}
+    public Map<String, ModuleConfig> getModuleConfigs() {
+        return moduleConfigs;
+    }
 
-	public Map<String, ModuleConfig> getModuleConfigs() {
-		return moduleConfigs;
-	}
+    public void setModuleConfigs(Map<String, ModuleConfig> moduleConfigs) {
+        this.moduleConfigs = moduleConfigs;
+    }
 
-	public void setImage(String image) {
-		this.image = image;
-	}
+    public String getImage() {
+        return image;
+    }
 
-	public String getImage() {
-		return image;
-	}
+    public void setImage(String image) {
+        this.image = image;
+    }
 
-	public void setCustomModule(boolean customModule) {
-		this.customModule = customModule;
-	}
+    public boolean isCustomModule() {
+        return customModule;
+    }
 
-	public boolean isCustomModule() {
-		return customModule;
-	}
+    public void setCustomModule(boolean customModule) {
+        this.customModule = customModule;
+    }
 
-	public String getConfigDetails() {
-		return configDetails;
-	}
+    public String getConfigDetails() {
+        return configDetails;
+    }
 
-	public void setConfigDetails(String configDetails) {
-		this.configDetails = configDetails;
-	}
+    public void setConfigDetails(String configDetails) {
+        this.configDetails = configDetails;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public String getType() {
-		return type;
-	}
-	
-	public String getBinaryImage() {
-		return binaryImage;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public void setBinaryImage(String binaryImage) {
-		this.binaryImage = binaryImage;
-	}
-	
-	public String getConfigurable() {
-		return configurable;
-	}
+    public String getBinaryImage() {
+        return binaryImage;
+    }
 
-	public void setConfigurable(String configurable) {
-		this.configurable = configurable;
-	}
+    public void setBinaryImage(String binaryImage) {
+        this.binaryImage = binaryImage;
+    }
 
-	public Map<String, String> getDetails() {
-		return details;
-	}
+    public String getConfigurable() {
+        return configurable;
+    }
 
-	public void setDetails(Map<String, String> details) {
-		this.details = details;
-	}
+    public void setConfigurable(String configurable) {
+        this.configurable = configurable;
+    }
+
+    public Map<String, String> getDetails() {
+        return details;
+    }
+
+    public void setDetails(Map<String, String> details) {
+        this.details = details;
+    }
 
 }

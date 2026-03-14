@@ -1,54 +1,54 @@
 package com.salesmanager.core.model.user;
 
+import com.salesmanager.core.model.common.Criteria;
+
 import java.util.List;
 import java.util.Set;
 
-import com.salesmanager.core.model.common.Criteria;
-
 public class PermissionCriteria extends Criteria {
-	
-	
-	private String permissionName;
-
-	
-	private Boolean available = null;
-	
-	private Set<Integer> groupIds;
-	
-	private List<String> availabilities;
 
 
-	public List<String> getAvailabilities() {
-		return availabilities;
-	}
+    private String permissionName;
 
-	public void setAvailabilities(List<String> availabilities) {
-		this.availabilities = availabilities;
-	}
 
-	public Boolean getAvailable() {
-		return available;
-	}
+    private Boolean available = null;
 
-	public void setAvailable(Boolean available) {
-		this.available = available;
-	}
+    private Set<Integer> groupIds;
 
-	public String getPermissionName() {
-		return permissionName;
-	}
+    private List<String> availabilities;
 
-	public void setPermissionName(String permissionName) {
-		this.permissionName = permissionName;
-	}
 
-	public Set<Integer> getGroupIds() {
-		return groupIds;
-	}
+    public List<String> getAvailabilities() {
+        return availabilities;
+    }
 
-	public void setGroupIds(Set<Integer> groupIds) {
-		this.groupIds = groupIds;
-	}
+    public void setAvailabilities(List<String> availabilities) {
+        this.availabilities = availabilities;
+    }
+
+    public Boolean getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(Boolean available) {
+        this.available = available;
+    }
+
+    public String getPermissionName() {
+        return permissionName;
+    }
+
+    public void setPermissionName(String permissionName) {
+        this.permissionName = permissionName;
+    }
+
+    public Set<Integer> getGroupIds() {
+        return groupIds;
+    }
+
+    public void setGroupIds(Set<Integer> groupIds) {
+        this.groupIds = groupIds;
+    }
 
 
 }

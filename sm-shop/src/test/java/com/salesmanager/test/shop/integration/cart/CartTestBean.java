@@ -19,12 +19,12 @@ public class CartTestBean {
         this.cartId = cartId;
     }
 
-    public void setProducts(List<ReadableProduct> products) {
-        this.products = products;
-    }
-
     public List<ReadableProduct> getProducts() {
         return products;
+    }
+
+    public void setProducts(List<ReadableProduct> products) {
+        this.products = products;
     }
 
 }

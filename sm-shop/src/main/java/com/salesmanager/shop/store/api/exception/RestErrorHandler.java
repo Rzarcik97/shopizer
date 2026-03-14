@@ -1,8 +1,5 @@
 package com.salesmanager.shop.store.api.exception;
 
-import java.util.Objects;
-import java.util.Optional;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,10 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.util.Objects;
+import java.util.Optional;
+
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice({"com.salesmanager.shop.store.api"})
 public class RestErrorHandler {
-  
+
     private static final Logger log = LoggerFactory.getLogger(RestErrorHandler.class);
 
     @RequestMapping(produces = "application/json")
@@ -32,7 +32,7 @@ public class RestErrorHandler {
             rootCause = rootCause.getCause();
         }
         ErrorEntity errorEntity = createErrorEntity("500", exception.getMessage(),
-        		rootCause.getMessage());
+                rootCause.getMessage());
         return errorEntity;
     }
 
@@ -49,8 +49,8 @@ public class RestErrorHandler {
         while (rootCause.getCause() != null && rootCause.getCause() != rootCause) {
             rootCause = rootCause.getCause();
         }
-        ErrorEntity errorEntity = createErrorEntity(exception.getErrorCode()!=null?exception.getErrorCode():"500", exception.getErrorMessage(),
-        		rootCause.getMessage());
+        ErrorEntity errorEntity = createErrorEntity(exception.getErrorCode() != null ? exception.getErrorCode() : "500", exception.getErrorMessage(),
+                rootCause.getMessage());
         return errorEntity;
     }
 
@@ -60,7 +60,7 @@ public class RestErrorHandler {
     public @ResponseBody ErrorEntity handleServiceException(ConversionRuntimeException exception) {
         log.error(exception.getErrorMessage(), exception);
         ErrorEntity errorEntity = createErrorEntity(exception.getErrorCode(), exception.getErrorMessage(),
-            exception.getLocalizedMessage());
+                exception.getLocalizedMessage());
         return errorEntity;
     }
 
@@ -74,7 +74,7 @@ public class RestErrorHandler {
                 exception.getLocalizedMessage());
         return errorEntity;
     }
-    
+
     @RequestMapping(produces = "application/json")
     @ExceptionHandler(UnauthorizedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
@@ -102,9 +102,9 @@ public class RestErrorHandler {
         Optional.ofNullable(errorCode)
                 .ifPresent(errorEntity::setErrorCode);
 
-        String resultMessage = (message != null && detailMessage !=null)  ? new StringBuilder().append(message).append(", ").append(detailMessage).toString() : detailMessage;
-        if(StringUtils.isBlank(resultMessage)) {
-        	resultMessage = message;
+        String resultMessage = (message != null && detailMessage != null) ? new StringBuilder().append(message).append(", ").append(detailMessage).toString() : detailMessage;
+        if (StringUtils.isBlank(resultMessage)) {
+            resultMessage = message;
         }
         Optional.ofNullable(resultMessage)
                 .ifPresent(errorEntity::setMessage);

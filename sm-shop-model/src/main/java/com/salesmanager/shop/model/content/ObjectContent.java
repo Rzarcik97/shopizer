@@ -5,52 +5,56 @@ import com.salesmanager.shop.model.entity.ResourceUrlAccess;
 @Deprecated
 public class ObjectContent extends ContentPath implements ResourceUrlAccess {
 
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-  private String slug;
-  private String metaDetails;
-  private String title;
-  private String pageContent;
-  private String language;
-  public String getPageContent() {
-      return pageContent;
-  }
-  public void setPageContent(String pageContent) {
-      this.pageContent = pageContent;
-  }
+    private String slug;
+    private String metaDetails;
+    private String title;
+    private String pageContent;
+    private String language;
 
-  public String getSlug() {
-    return slug;
-  }
+    public String getPageContent() {
+        return pageContent;
+    }
 
-  public void setSlug(String slug) {
-    this.slug = slug;
-  }
+    public void setPageContent(String pageContent) {
+        this.pageContent = pageContent;
+    }
 
-  public String getMetaDetails() {
-    return metaDetails;
-  }
+    public String getSlug() {
+        return slug;
+    }
 
-  public void setMetaDetails(String metaDetails) {
-    this.metaDetails = metaDetails;
-  }
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
 
-  public String getTitle() {
-    return title;
-  }
+    public String getMetaDetails() {
+        return metaDetails;
+    }
 
-  public void setTitle(String title) {
-    this.title = title;
-  }
-  public String getLanguage() {
-    return language;
-  }
-  public void setLanguage(String language) {
-    this.language = language;
-  }
+    public void setMetaDetails(String metaDetails) {
+        this.metaDetails = metaDetails;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
 
 
 }

@@ -1,168 +1,165 @@
 package com.salesmanager.core.model.catalog.product.price;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.salesmanager.core.model.catalog.product.availability.ProductAvailability;
+import com.salesmanager.core.model.generic.SalesManagerEntity;
+import com.salesmanager.core.utils.CloneUtils;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.TableGenerator;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.salesmanager.core.model.catalog.product.availability.ProductAvailability;
-import com.salesmanager.core.model.generic.SalesManagerEntity;
-import com.salesmanager.core.utils.CloneUtils;
-
 @Entity
 @Table(name = "PRODUCT_PRICE")
 public class ProductPrice extends SalesManagerEntity<Long, ProductPrice> {
-	private static final long serialVersionUID = 1L;
+    public final static String DEFAULT_PRICE_CODE = "base";
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Column(name = "PRODUCT_PRICE_ID")
+    @TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "PRODUCT_PRICE_SEQ_NEXT_VAL")
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
+    private Long id;
 
-	public final static String DEFAULT_PRICE_CODE = "base";
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "productPrice", cascade = CascadeType.ALL)
+    private Set<ProductPriceDescription> descriptions = new HashSet<ProductPriceDescription>();
 
-	@Id
-	@Column(name = "PRODUCT_PRICE_ID")
-	@TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "PRODUCT_PRICE_SEQ_NEXT_VAL")
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
-	private Long id;
+    @NotEmpty
+    @Pattern(regexp = "^[a-zA-Z0-9_]*$")
+    @Column(name = "PRODUCT_PRICE_CODE", nullable = false)
+    private String code = DEFAULT_PRICE_CODE;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "productPrice", cascade = CascadeType.ALL)
-	private Set<ProductPriceDescription> descriptions = new HashSet<ProductPriceDescription>();
+    @Column(name = "PRODUCT_PRICE_AMOUNT", nullable = true)
+    private BigDecimal productPriceAmount = new BigDecimal(0);
 
-	@NotEmpty
-	@Pattern(regexp = "^[a-zA-Z0-9_]*$")
-	@Column(name = "PRODUCT_PRICE_CODE", nullable = false)
-	private String code = DEFAULT_PRICE_CODE;
+    @Column(name = "PRODUCT_PRICE_TYPE", length = 20)
+    @Enumerated(value = EnumType.STRING)
+    private ProductPriceType productPriceType = ProductPriceType.ONE_TIME;
 
-	@Column(name = "PRODUCT_PRICE_AMOUNT", nullable = true)
-	private BigDecimal productPriceAmount = new BigDecimal(0);
+    @Column(name = "DEFAULT_PRICE")
+    private boolean defaultPrice = false;
 
-	@Column(name = "PRODUCT_PRICE_TYPE", length = 20)
-	@Enumerated(value = EnumType.STRING)
-	private ProductPriceType productPriceType = ProductPriceType.ONE_TIME;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "PRODUCT_PRICE_SPECIAL_ST_DATE")
+    private Date productPriceSpecialStartDate;
 
-	@Column(name = "DEFAULT_PRICE")
-	private boolean defaultPrice = false;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "PRODUCT_PRICE_SPECIAL_END_DATE")
+    private Date productPriceSpecialEndDate;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name = "PRODUCT_PRICE_SPECIAL_ST_DATE")
-	private Date productPriceSpecialStartDate;
+    @Column(name = "PRODUCT_PRICE_SPECIAL_AMOUNT")
+    private BigDecimal productPriceSpecialAmount;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name = "PRODUCT_PRICE_SPECIAL_END_DATE")
-	private Date productPriceSpecialEndDate;
+    @JsonIgnore
+    @ManyToOne(targetEntity = ProductAvailability.class)
+    @JoinColumn(name = "PRODUCT_AVAIL_ID", nullable = false)
+    private ProductAvailability productAvailability;
 
-	@Column(name = "PRODUCT_PRICE_SPECIAL_AMOUNT")
-	private BigDecimal productPriceSpecialAmount;
+    @Column(name = "PRODUCT_IDENTIFIER_ID", nullable = true)
+    private Long productIdentifierId;
 
-	@JsonIgnore
-	@ManyToOne(targetEntity = ProductAvailability.class)
-	@JoinColumn(name = "PRODUCT_AVAIL_ID", nullable = false)
-	private ProductAvailability productAvailability;
+    public ProductPrice() {
+    }
 
-	@Column(name = "PRODUCT_IDENTIFIER_ID", nullable = true)
-	private Long productIdentifierId;
+    @Override
+    public Long getId() {
+        return this.id;
+    }
 
-	public ProductPrice() {
-	}
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	@Override
-	public Long getId() {
-		return this.id;
-	}
+    public BigDecimal getProductPriceAmount() {
+        return productPriceAmount;
+    }
 
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setProductPriceAmount(BigDecimal productPriceAmount) {
+        this.productPriceAmount = productPriceAmount;
+    }
 
-	public BigDecimal getProductPriceAmount() {
-		return productPriceAmount;
-	}
+    public Date getProductPriceSpecialStartDate() {
+        return CloneUtils.clone(productPriceSpecialStartDate);
+    }
 
-	public void setProductPriceAmount(BigDecimal productPriceAmount) {
-		this.productPriceAmount = productPriceAmount;
-	}
+    public void setProductPriceSpecialStartDate(Date productPriceSpecialStartDate) {
+        this.productPriceSpecialStartDate = CloneUtils.clone(productPriceSpecialStartDate);
+    }
 
-	public Date getProductPriceSpecialStartDate() {
-		return CloneUtils.clone(productPriceSpecialStartDate);
-	}
+    public Date getProductPriceSpecialEndDate() {
+        return CloneUtils.clone(productPriceSpecialEndDate);
+    }
 
-	public void setProductPriceSpecialStartDate(Date productPriceSpecialStartDate) {
-		this.productPriceSpecialStartDate = CloneUtils.clone(productPriceSpecialStartDate);
-	}
+    public void setProductPriceSpecialEndDate(Date productPriceSpecialEndDate) {
+        this.productPriceSpecialEndDate = CloneUtils.clone(productPriceSpecialEndDate);
+    }
 
-	public Date getProductPriceSpecialEndDate() {
-		return CloneUtils.clone(productPriceSpecialEndDate);
-	}
+    public BigDecimal getProductPriceSpecialAmount() {
+        return productPriceSpecialAmount;
+    }
 
-	public void setProductPriceSpecialEndDate(Date productPriceSpecialEndDate) {
-		this.productPriceSpecialEndDate = CloneUtils.clone(productPriceSpecialEndDate);
-	}
+    public void setProductPriceSpecialAmount(BigDecimal productPriceSpecialAmount) {
+        this.productPriceSpecialAmount = productPriceSpecialAmount;
+    }
 
-	public BigDecimal getProductPriceSpecialAmount() {
-		return productPriceSpecialAmount;
-	}
+    public Set<ProductPriceDescription> getDescriptions() {
+        return descriptions;
+    }
 
-	public void setProductPriceSpecialAmount(BigDecimal productPriceSpecialAmount) {
-		this.productPriceSpecialAmount = productPriceSpecialAmount;
-	}
+    public void setDescriptions(Set<ProductPriceDescription> descriptions) {
+        this.descriptions = descriptions;
+    }
 
-	public Set<ProductPriceDescription> getDescriptions() {
-		return descriptions;
-	}
+    public boolean isDefaultPrice() {
+        return defaultPrice;
+    }
 
-	public void setDescriptions(Set<ProductPriceDescription> descriptions) {
-		this.descriptions = descriptions;
-	}
+    public void setDefaultPrice(boolean defaultPrice) {
+        this.defaultPrice = defaultPrice;
+    }
 
-	public boolean isDefaultPrice() {
-		return defaultPrice;
-	}
+    public ProductAvailability getProductAvailability() {
+        return productAvailability;
+    }
 
-	public void setDefaultPrice(boolean defaultPrice) {
-		this.defaultPrice = defaultPrice;
-	}
+    public void setProductAvailability(ProductAvailability productAvailability) {
+        this.productAvailability = productAvailability;
+    }
 
-	public void setProductAvailability(ProductAvailability productAvailability) {
-		this.productAvailability = productAvailability;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public ProductAvailability getProductAvailability() {
-		return productAvailability;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public ProductPriceType getProductPriceType() {
+        return productPriceType;
+    }
 
-	public String getCode() {
-		return code;
-	}
-
-	public void setProductPriceType(ProductPriceType productPriceType) {
-		this.productPriceType = productPriceType;
-	}
-
-	public ProductPriceType getProductPriceType() {
-		return productPriceType;
-	}
+    public void setProductPriceType(ProductPriceType productPriceType) {
+        this.productPriceType = productPriceType;
+    }
 
 
 }

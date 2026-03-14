@@ -5,39 +5,39 @@ import com.salesmanager.shop.model.customer.address.Address;
 
 public class BillingEntity extends Address {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private String email;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	private String countryName;
+    private String email;
 
-	private String provinceName;
+    private String countryName;
 
-	public String getCountryName() {
-		return countryName;
-	}
+    private String provinceName;
 
-	public void setCountryName(String countryName) {
-		this.countryName = countryName;
-	}
+    public String getCountryName() {
+        return countryName;
+    }
 
-	public String getProvinceName() {
-		return provinceName;
-	}
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
+    }
 
-	public void setProvinceName(String provinceName) {
-		this.provinceName = provinceName;
-	}
+    public String getProvinceName() {
+        return provinceName;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
 }

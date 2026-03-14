@@ -2,21 +2,21 @@ package com.salesmanager.core.model.common;
 
 import java.util.List;
 
-public class GenericEntityList<T>  extends EntityList {
+public class GenericEntityList<T> extends EntityList {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	List<T> list;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	public List<T> getList() {
-		return list;
-	}
+    List<T> list;
 
-	public void setList(List<T> list) {
-		this.list = list;
-	}
+    public List<T> getList() {
+        return list;
+    }
+
+    public void setList(List<T> list) {
+        this.list = list;
+    }
 
 }

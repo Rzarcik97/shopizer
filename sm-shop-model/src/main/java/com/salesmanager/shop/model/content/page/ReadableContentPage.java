@@ -4,30 +4,30 @@ import com.salesmanager.shop.model.content.common.ContentDescription;
 
 public class ReadableContentPage extends ContentPage {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-
-	private ContentDescription description ;
-	private String path;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
 
-	public ContentDescription getDescription() {
-		return description;
-	}
+    private ContentDescription description;
+    private String path;
 
-	public void setDescription(ContentDescription description) {
-		this.description = description;
-	}
 
-	public String getPath() {
-		return path;
-	}
+    public ContentDescription getDescription() {
+        return description;
+    }
 
-	public void setPath(String path) {
-		this.path = path;
-	}
+    public void setDescription(ContentDescription description) {
+        this.description = description;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 
 }

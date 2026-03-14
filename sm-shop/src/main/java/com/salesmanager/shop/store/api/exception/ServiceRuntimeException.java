@@ -5,9 +5,9 @@ import org.apache.commons.lang3.StringUtils;
 public class ServiceRuntimeException extends GenericRuntimeException {
 
     /**
-   * 
-   */
-  private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
     public ServiceRuntimeException(String errorCode, String message) {
         super(errorCode, message);
@@ -26,7 +26,7 @@ public class ServiceRuntimeException extends GenericRuntimeException {
     }
 
     public ServiceRuntimeException(String errorCode, String message, Throwable exception) {
-        super(StringUtils.isBlank(errorCode)? "500": errorCode, message, exception);
+        super(StringUtils.isBlank(errorCode) ? "500" : errorCode, message, exception);
     }
 
 

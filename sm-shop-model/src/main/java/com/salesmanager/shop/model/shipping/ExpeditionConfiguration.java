@@ -4,33 +4,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExpeditionConfiguration {
-	
-	private boolean iternationalShipping = false;
-	private boolean taxOnShipping = false;
-	private List<String> shipToCountry = new ArrayList<String>();
 
-	public boolean isIternationalShipping() {
-		return iternationalShipping;
-	}
+    private boolean iternationalShipping = false;
+    private boolean taxOnShipping = false;
+    private List<String> shipToCountry = new ArrayList<String>();
 
-	public void setIternationalShipping(boolean iternationalShipping) {
-		this.iternationalShipping = iternationalShipping;
-	}
+    public boolean isIternationalShipping() {
+        return iternationalShipping;
+    }
 
-	public List<String> getShipToCountry() {
-		return shipToCountry;
-	}
+    public void setIternationalShipping(boolean iternationalShipping) {
+        this.iternationalShipping = iternationalShipping;
+    }
 
-	public void setShipToCountry(List<String> shipToCountry) {
-		this.shipToCountry = shipToCountry;
-	}
+    public List<String> getShipToCountry() {
+        return shipToCountry;
+    }
 
-	public boolean isTaxOnShipping() {
-		return taxOnShipping;
-	}
+    public void setShipToCountry(List<String> shipToCountry) {
+        this.shipToCountry = shipToCountry;
+    }
 
-	public void setTaxOnShipping(boolean taxOnShipping) {
-		this.taxOnShipping = taxOnShipping;
-	}
+    public boolean isTaxOnShipping() {
+        return taxOnShipping;
+    }
+
+    public void setTaxOnShipping(boolean taxOnShipping) {
+        this.taxOnShipping = taxOnShipping;
+    }
 
 }

@@ -5,19 +5,19 @@ import java.util.List;
 /**
  * Contains a list of negative OrderTotal variation
  * that will be shown in the order summary
- * @author carlsamson
  *
+ * @author carlsamson
  */
 public abstract class OrderTotalVariation {
-	
-	List<OrderTotal> variations = null;
 
-	public List<OrderTotal> getVariations() {
-		return variations;
-	}
+    List<OrderTotal> variations = null;
 
-	public void setVariations(List<OrderTotal> variations) {
-		this.variations = variations;
-	}
+    public List<OrderTotal> getVariations() {
+        return variations;
+    }
+
+    public void setVariations(List<OrderTotal> variations) {
+        this.variations = variations;
+    }
 
 }

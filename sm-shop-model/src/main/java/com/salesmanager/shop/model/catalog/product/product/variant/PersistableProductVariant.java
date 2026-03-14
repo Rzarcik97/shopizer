@@ -4,57 +4,55 @@ import com.salesmanager.shop.model.catalog.product.product.PersistableProductInv
 
 public class PersistableProductVariant extends ProductVariant {
 
-	private static final long serialVersionUID = 1L;
-	
-	private Long variation;
-	private Long variationValue;
-	
-	private String variationCode;
-	private String variationValueCode;
-	
-	private PersistableProductInventory inventory;
+    private static final long serialVersionUID = 1L;
 
-	public Long getVariation() {
-		return variation;
-	}
+    private Long variation;
+    private Long variationValue;
 
-	public void setVariation(Long variation) {
-		this.variation = variation;
-	}
+    private String variationCode;
+    private String variationValueCode;
 
-	public Long getVariationValue() {
-		return variationValue;
-	}
+    private PersistableProductInventory inventory;
 
-	public void setVariationValue(Long variationValue) {
-		this.variationValue = variationValue;
-	}
+    public Long getVariation() {
+        return variation;
+    }
 
-	public String getVariationCode() {
-		return variationCode;
-	}
+    public void setVariation(Long variation) {
+        this.variation = variation;
+    }
 
-	public void setVariationCode(String variationCode) {
-		this.variationCode = variationCode;
-	}
+    public Long getVariationValue() {
+        return variationValue;
+    }
 
-	public String getVariationValueCode() {
-		return variationValueCode;
-	}
+    public void setVariationValue(Long variationValue) {
+        this.variationValue = variationValue;
+    }
 
-	public void setVariationValueCode(String variationValueCode) {
-		this.variationValueCode = variationValueCode;
-	}
+    public String getVariationCode() {
+        return variationCode;
+    }
 
-	public PersistableProductInventory getInventory() {
-		return inventory;
-	}
+    public void setVariationCode(String variationCode) {
+        this.variationCode = variationCode;
+    }
 
-	public void setInventory(PersistableProductInventory inventory) {
-		this.inventory = inventory;
-	}
-	
-	
-	
+    public String getVariationValueCode() {
+        return variationValueCode;
+    }
+
+    public void setVariationValueCode(String variationValueCode) {
+        this.variationValueCode = variationValueCode;
+    }
+
+    public PersistableProductInventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(PersistableProductInventory inventory) {
+        this.inventory = inventory;
+    }
+
 
 }

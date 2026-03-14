@@ -1,40 +1,41 @@
 package com.salesmanager.shop.model.order.transaction;
 
-import java.io.Serializable;
 import com.salesmanager.core.model.payments.PaymentType;
 import com.salesmanager.core.model.payments.TransactionType;
 
+import java.io.Serializable;
+
 /**
  * This class is used for writing a transaction in the System
- * @author c.samson
  *
+ * @author c.samson
  */
 public class PersistableTransaction extends TransactionEntity implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	@com.salesmanager.shop.validation.Enum(enumClass=PaymentType.class, ignoreCase=true) 
-	private String paymentType;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@com.salesmanager.shop.validation.Enum(enumClass=TransactionType.class, ignoreCase=true) 
-	private String transactionType;
+    @com.salesmanager.shop.validation.Enum(enumClass = PaymentType.class, ignoreCase = true)
+    private String paymentType;
 
-	public String getPaymentType() {
-		return paymentType;
-	}
+    @com.salesmanager.shop.validation.Enum(enumClass = TransactionType.class, ignoreCase = true)
+    private String transactionType;
 
-	public void setPaymentType(String paymentType) {
-		this.paymentType = paymentType;
-	}
+    public String getPaymentType() {
+        return paymentType;
+    }
 
-	public String getTransactionType() {
-		return transactionType;
-	}
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
+    }
 
-	public void setTransactionType(String transactionType) {
-		this.transactionType = transactionType;
-	}
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(String transactionType) {
+        this.transactionType = transactionType;
+    }
 }

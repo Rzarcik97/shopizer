@@ -1,15 +1,5 @@
 package com.salesmanager.shop.store.controller.security.facade;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.inject.Inject;
-
-import org.jsoup.helper.Validate;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 import com.salesmanager.core.business.exception.ServiceException;
 import com.salesmanager.core.business.services.user.GroupService;
 import com.salesmanager.core.business.services.user.PermissionService;
@@ -18,76 +8,85 @@ import com.salesmanager.core.model.user.PermissionCriteria;
 import com.salesmanager.core.model.user.PermissionList;
 import com.salesmanager.shop.model.security.ReadablePermission;
 import com.salesmanager.shop.store.api.exception.ServiceRuntimeException;
+import jakarta.inject.Inject;
+import org.jsoup.helper.Validate;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service("securityFacade")
 public class SecurityFacadeImpl implements SecurityFacade {
-  
-  private static final String USER_PASSWORD_PATTERN = "((?=.*[a-z])(?=.*\\d)(?=.*[A-Z]).{6,12})";
-  
-  private Pattern userPasswordPattern = Pattern.compile(USER_PASSWORD_PATTERN);
 
-  @Inject
-  private PermissionService permissionService;
+    private static final String USER_PASSWORD_PATTERN = "((?=.*[a-z])(?=.*\\d)(?=.*[A-Z]).{6,12})";
 
-  @Inject
-  private GroupService groupService;
-  
-  @Inject
-  private PasswordEncoder passwordEncoder;
+    private Pattern userPasswordPattern = Pattern.compile(USER_PASSWORD_PATTERN);
 
-  @SuppressWarnings({"rawtypes", "unchecked"})
-  @Override
-  public List<ReadablePermission> getPermissions(List<String> groups) {
+    @Inject
+    private PermissionService permissionService;
 
-    List<Group> userGroups = null;
-    try {
-      userGroups = groupService.listGroupByNames(groups);
+    @Inject
+    private GroupService groupService;
 
-      List<Integer> ids = new ArrayList<Integer>();
-      for (Group g : userGroups) {
-        ids.add(g.getId());
-      }
+    @Inject
+    private PasswordEncoder passwordEncoder;
 
-      PermissionCriteria criteria = new PermissionCriteria();
-      criteria.setGroupIds(new HashSet(ids));
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Override
+    public List<ReadablePermission> getPermissions(List<String> groups) {
 
-      PermissionList permissions = permissionService.listByCriteria(criteria);
-      throw new ServiceRuntimeException("Not implemented");
-    } catch (ServiceException e) {
-      e.printStackTrace();
+        List<Group> userGroups = null;
+        try {
+            userGroups = groupService.listGroupByNames(groups);
+
+            List<Integer> ids = new ArrayList<Integer>();
+            for (Group g : userGroups) {
+                ids.add(g.getId());
+            }
+
+            PermissionCriteria criteria = new PermissionCriteria();
+            criteria.setGroupIds(new HashSet(ids));
+
+            PermissionList permissions = permissionService.listByCriteria(criteria);
+            throw new ServiceRuntimeException("Not implemented");
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
-    return null;
-  }
+    @Override
+    public boolean validateUserPassword(String password) {
 
-  @Override
-  public boolean validateUserPassword(String password) {
+        Matcher matcher = userPasswordPattern.matcher(password);
+        return matcher.matches();
+    }
 
-    Matcher matcher = userPasswordPattern.matcher(password);
-    return matcher.matches();
-  }
+    @Override
+    public String encodePassword(String password) {
+        return passwordEncoder.encode(password);
+    }
 
-  @Override
-  public String encodePassword(String password) {
-    return passwordEncoder.encode(password);
-  }
+    /**
+     * Match non encoded to encoded
+     * Don't use this as a simple raw password check
+     */
+    @Override
+    public boolean matchPassword(String modelPassword, String newPassword) {
+        return passwordEncoder.matches(newPassword, modelPassword);
+    }
 
-  /**
-   * Match non encoded to encoded
-   * Don't use this as a simple raw password check
-   */
-  @Override
-  public boolean matchPassword(String modelPassword, String newPassword) {
-    return passwordEncoder.matches(newPassword, modelPassword);
-  }
+    @Override
+    public boolean matchRawPasswords(String password, String repeatPassword) {
+        Validate.notNull(password, "password is null");
+        Validate.notNull(repeatPassword, "repeat password is null");
+        return password.equals(repeatPassword);
+    }
 
-@Override
-public boolean matchRawPasswords(String password, String repeatPassword) {
-	Validate.notNull(password,"password is null");
-	Validate.notNull(repeatPassword,"repeat password is null");
-	return password.equals(repeatPassword);
-}
-  
-  
 
 }

@@ -1,106 +1,104 @@
 package com.salesmanager.core.model.order.orderaccount;
 
+import com.salesmanager.core.model.generic.SalesManagerEntity;
+import com.salesmanager.core.model.order.Order;
+import com.salesmanager.core.utils.CloneUtils;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.TableGenerator;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import com.salesmanager.core.constants.SchemaConstant;
-import com.salesmanager.core.model.generic.SalesManagerEntity;
-import com.salesmanager.core.model.order.Order;
-import com.salesmanager.core.utils.CloneUtils;
-
 @Entity
 @Table(name = "ORDER_ACCOUNT")
 public class OrderAccount extends SalesManagerEntity<Long, OrderAccount> {
-private static final long serialVersionUID = -2429388347536330540L;
+    private static final long serialVersionUID = -2429388347536330540L;
 
-	@Id
-	@Column(name = "ORDER_ACCOUNT_ID", unique = true, nullable = false)
-	@TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "ORDER_ACCOUNT_ID_NEXT_VALUE")
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
-	private Long id;
+    @Id
+    @Column(name = "ORDER_ACCOUNT_ID", unique = true, nullable = false)
+    @TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "ORDER_ACCOUNT_ID_NEXT_VALUE")
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
+    private Long id;
 
-	@ManyToOne
-	@JoinColumn(name = "ORDER_ID", nullable = false)
-	private Order order;
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "ORDER_ACCOUNT_START_DATE", nullable = false, length = 0)
-	private Date orderAccountStartDate;
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "ORDER_ACCOUNT_END_DATE", length = 0)
-	private Date orderAccountEndDate;
+    @ManyToOne
+    @JoinColumn(name = "ORDER_ID", nullable = false)
+    private Order order;
 
-	@Column(name = "ORDER_ACCOUNT_BILL_DAY", nullable = false)
-	private Integer orderAccountBillDay;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "ORDER_ACCOUNT_START_DATE", nullable = false, length = 0)
+    private Date orderAccountStartDate;
 
-	@OneToMany(mappedBy = "orderAccount", cascade = CascadeType.ALL)
-	private Set<OrderAccountProduct> orderAccountProducts = new HashSet<OrderAccountProduct>();
+    @Temporal(TemporalType.DATE)
+    @Column(name = "ORDER_ACCOUNT_END_DATE", length = 0)
+    private Date orderAccountEndDate;
 
-	public OrderAccount() {
-	}
+    @Column(name = "ORDER_ACCOUNT_BILL_DAY", nullable = false)
+    private Integer orderAccountBillDay;
 
-	public Long getId() {
-		return id;
-	}
+    @OneToMany(mappedBy = "orderAccount", cascade = CascadeType.ALL)
+    private Set<OrderAccountProduct> orderAccountProducts = new HashSet<OrderAccountProduct>();
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public OrderAccount() {
+    }
 
-	public Order getOrder() {
-		return order;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setOrder(Order order) {
-		this.order = order;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public Date getOrderAccountStartDate() {
-		return CloneUtils.clone(orderAccountStartDate);
-	}
+    public Order getOrder() {
+        return order;
+    }
 
-	public void setOrderAccountStartDate(Date orderAccountStartDate) {
-		this.orderAccountStartDate = CloneUtils.clone(orderAccountStartDate);
-	}
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 
-	public Date getOrderAccountEndDate() {
-		return CloneUtils.clone(orderAccountEndDate);
-	}
+    public Date getOrderAccountStartDate() {
+        return CloneUtils.clone(orderAccountStartDate);
+    }
 
-	public void setOrderAccountEndDate(Date orderAccountEndDate) {
-		this.orderAccountEndDate = CloneUtils.clone(orderAccountEndDate);
-	}
+    public void setOrderAccountStartDate(Date orderAccountStartDate) {
+        this.orderAccountStartDate = CloneUtils.clone(orderAccountStartDate);
+    }
 
-	public Integer getOrderAccountBillDay() {
-		return orderAccountBillDay;
-	}
+    public Date getOrderAccountEndDate() {
+        return CloneUtils.clone(orderAccountEndDate);
+    }
 
-	public void setOrderAccountBillDay(Integer orderAccountBillDay) {
-		this.orderAccountBillDay = orderAccountBillDay;
-	}
+    public void setOrderAccountEndDate(Date orderAccountEndDate) {
+        this.orderAccountEndDate = CloneUtils.clone(orderAccountEndDate);
+    }
 
-	public Set<OrderAccountProduct> getOrderAccountProducts() {
-		return orderAccountProducts;
-	}
+    public Integer getOrderAccountBillDay() {
+        return orderAccountBillDay;
+    }
 
-	public void setOrderAccountProducts(
-			Set<OrderAccountProduct> orderAccountProducts) {
-		this.orderAccountProducts = orderAccountProducts;
-	}
+    public void setOrderAccountBillDay(Integer orderAccountBillDay) {
+        this.orderAccountBillDay = orderAccountBillDay;
+    }
+
+    public Set<OrderAccountProduct> getOrderAccountProducts() {
+        return orderAccountProducts;
+    }
+
+    public void setOrderAccountProducts(
+            Set<OrderAccountProduct> orderAccountProducts) {
+        this.orderAccountProducts = orderAccountProducts;
+    }
 }

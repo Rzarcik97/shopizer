@@ -4,16 +4,16 @@ import java.util.List;
 
 public class PersistableProductVariantGroup extends ProductVariantGroup {
 
-	private static final long serialVersionUID = 1L;
-	
-	List<Long> productVariants = null;
+    private static final long serialVersionUID = 1L;
 
-	public List<Long> getproductVariants() {
-		return productVariants;
-	}
+    List<Long> productVariants = null;
 
-	public void setproductVariants(List<Long> productVariants) {
-		this.productVariants = productVariants;
-	}
+    public List<Long> getproductVariants() {
+        return productVariants;
+    }
+
+    public void setproductVariants(List<Long> productVariants) {
+        this.productVariants = productVariants;
+    }
 
 }

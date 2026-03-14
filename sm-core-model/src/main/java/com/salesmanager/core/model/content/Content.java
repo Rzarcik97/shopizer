@@ -1,196 +1,189 @@
 package com.salesmanager.core.model.content;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.UniqueConstraint;
-import javax.validation.Valid;
-
-import javax.validation.constraints.NotEmpty;
-
-import com.salesmanager.core.constants.SchemaConstant;
 import com.salesmanager.core.model.common.audit.AuditListener;
 import com.salesmanager.core.model.common.audit.AuditSection;
 import com.salesmanager.core.model.generic.SalesManagerEntity;
 import com.salesmanager.core.model.merchant.MerchantStore;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.TableGenerator;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
 @EntityListeners(value = AuditListener.class)
 @Table(name = "CONTENT",
-indexes = { @Index(name="CODE_IDX", columnList = "CODE")},
-	uniqueConstraints = @UniqueConstraint(columnNames = {"MERCHANT_ID", "CODE"}) )
+        indexes = {@Index(name = "CODE_IDX", columnList = "CODE")},
+        uniqueConstraints = @UniqueConstraint(columnNames = {"MERCHANT_ID", "CODE"}))
 public class Content extends SalesManagerEntity<Long, Content> implements Serializable {
 
-	
 
-	private static final long serialVersionUID = 1772757159185494620L;
-	
-	@Id
-	@Column(name = "CONTENT_ID", unique=true, nullable=false)
-	@TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "CONTENT_SEQ_NEXT_VAL")
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
-	private Long id;
-	
-	@Embedded
-	private AuditSection auditSection = new AuditSection();
-	
-	@Valid
-	@OneToMany(mappedBy="content", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<ContentDescription> descriptions = new ArrayList<ContentDescription>();
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="MERCHANT_ID", nullable=false)
-	private MerchantStore merchantStore;
-	
-	@NotEmpty
-	@Column(name="CODE", length=100, nullable=false)
-	private String code;
-	
-	@Column(name = "VISIBLE")
-	private boolean visible;
-	
-	@Column(name = "LINK_TO_MENU")
-	private boolean linkToMenu;
+    private static final long serialVersionUID = 1772757159185494620L;
 
-	@Column(name = "CONTENT_POSITION", length=10, nullable=true)
-	@Enumerated(value = EnumType.STRING)
-	private ContentPosition contentPosition;
-	
-	//Used for grouping
-	//BOX, SECTION, PAGE
-	@Column(name = "CONTENT_TYPE", length=10, nullable=true)
-	@Enumerated(value = EnumType.STRING)
-	private ContentType contentType; 
-	
-	@Column(name = "SORT_ORDER")
-	private Integer sortOrder = 0;
-	
-	//A page can contain one product listing
-	@Column(name = "PRODUCT_GROUP", nullable = true)
-	private String productGroup;
+    @Id
+    @Column(name = "CONTENT_ID", unique = true, nullable = false)
+    @TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "CONTENT_SEQ_NEXT_VAL")
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
+    private Long id;
 
-	public String getProductGroup() {
-		return productGroup;
-	}
+    @Embedded
+    private AuditSection auditSection = new AuditSection();
 
-	public void setProductGroup(String productGroup) {
-		this.productGroup = productGroup;
-	}
+    @Valid
+    @OneToMany(mappedBy = "content", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ContentDescription> descriptions = new ArrayList<ContentDescription>();
 
-	@Override
-	public Long getId() {
-		return this.id;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MERCHANT_ID", nullable = false)
+    private MerchantStore merchantStore;
 
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-		
-	}
+    @NotEmpty
+    @Column(name = "CODE", length = 100, nullable = false)
+    private String code;
 
-	public void setAuditSection(AuditSection auditSection) {
-		this.auditSection = auditSection;
-	}
+    @Column(name = "VISIBLE")
+    private boolean visible;
 
-	public AuditSection getAuditSection() {
-		return auditSection;
-	}
+    @Column(name = "LINK_TO_MENU")
+    private boolean linkToMenu;
 
-	public MerchantStore getMerchantStore() {
-		return merchantStore;
-	}
+    @Column(name = "CONTENT_POSITION", length = 10, nullable = true)
+    @Enumerated(value = EnumType.STRING)
+    private ContentPosition contentPosition;
 
-	public void setMerchantStore(MerchantStore merchantStore) {
-		this.merchantStore = merchantStore;
-	}
+    //Used for grouping
+    //BOX, SECTION, PAGE
+    @Column(name = "CONTENT_TYPE", length = 10, nullable = true)
+    @Enumerated(value = EnumType.STRING)
+    private ContentType contentType;
 
-	public String getCode() {
-		return code;
-	}
+    @Column(name = "SORT_ORDER")
+    private Integer sortOrder = 0;
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    //A page can contain one product listing
+    @Column(name = "PRODUCT_GROUP", nullable = true)
+    private String productGroup;
 
-	public boolean isVisible() {
-		return visible;
-	}
+    public String getProductGroup() {
+        return productGroup;
+    }
 
-	public void setVisible(boolean visible) {
-		this.visible = visible;
-	}
+    public void setProductGroup(String productGroup) {
+        this.productGroup = productGroup;
+    }
 
+    @Override
+    public Long getId() {
+        return this.id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+
+    }
+
+    public AuditSection getAuditSection() {
+        return auditSection;
+    }
+
+    public void setAuditSection(AuditSection auditSection) {
+        this.auditSection = auditSection;
+    }
+
+    public MerchantStore getMerchantStore() {
+        return merchantStore;
+    }
+
+    public void setMerchantStore(MerchantStore merchantStore) {
+        this.merchantStore = merchantStore;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
 
 
-	public List<ContentDescription> getDescriptions() {
-		return descriptions;
-	}
+    public List<ContentDescription> getDescriptions() {
+        return descriptions;
+    }
 
-	public void setDescriptions(List<ContentDescription> descriptions) {
-		this.descriptions = descriptions;
-	}
+    public void setDescriptions(List<ContentDescription> descriptions) {
+        this.descriptions = descriptions;
+    }
 
-	public void setContentType(ContentType contentType) {
-		this.contentType = contentType;
-	}
+    public ContentType getContentType() {
+        return contentType;
+    }
 
-	public ContentType getContentType() {
-		return contentType;
-	}
-	
-	public ContentDescription getDescription() {
-		
-		if(this.getDescriptions()!=null && this.getDescriptions().size()>0) {
-			return this.getDescriptions().get(0);
-		}
-		
-		return null;
-		
-	}
+    public void setContentType(ContentType contentType) {
+        this.contentType = contentType;
+    }
 
-	public void setSortOrder(Integer sortOrder) {
-		this.sortOrder = sortOrder;
-	}
+    public ContentDescription getDescription() {
 
-	public Integer getSortOrder() {
-		return sortOrder;
-	}
+        if (this.getDescriptions() != null && this.getDescriptions().size() > 0) {
+            return this.getDescriptions().get(0);
+        }
 
-	public void setContentPosition(ContentPosition contentPosition) {
-		this.contentPosition = contentPosition;
-	}
+        return null;
 
-	public ContentPosition getContentPosition() {
-		return contentPosition;
-	}
-	
+    }
 
+    public Integer getSortOrder() {
+        return sortOrder;
+    }
 
-	public boolean isLinkToMenu() {
-		return linkToMenu;
-	}
+    public void setSortOrder(Integer sortOrder) {
+        this.sortOrder = sortOrder;
+    }
 
-	public void setLinkToMenu(boolean linkToMenu) {
-		this.linkToMenu = linkToMenu;
-	}
+    public ContentPosition getContentPosition() {
+        return contentPosition;
+    }
+
+    public void setContentPosition(ContentPosition contentPosition) {
+        this.contentPosition = contentPosition;
+    }
+
+    public boolean isLinkToMenu() {
+        return linkToMenu;
+    }
+
+    public void setLinkToMenu(boolean linkToMenu) {
+        this.linkToMenu = linkToMenu;
+    }
 
 }

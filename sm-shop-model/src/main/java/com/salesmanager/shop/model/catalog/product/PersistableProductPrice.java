@@ -5,38 +5,38 @@ import java.util.List;
 
 public class PersistableProductPrice extends ProductPriceEntity {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	private String sku;
-	private Long productAvailabilityId;
+    private String sku;
+    private Long productAvailabilityId;
 
-	private List<ProductPriceDescription> descriptions = new ArrayList<ProductPriceDescription>();
+    private List<ProductPriceDescription> descriptions = new ArrayList<ProductPriceDescription>();
 
-	public List<ProductPriceDescription> getDescriptions() {
-		return descriptions;
-	}
+    public List<ProductPriceDescription> getDescriptions() {
+        return descriptions;
+    }
 
-	public void setDescriptions(List<ProductPriceDescription> descriptions) {
-		this.descriptions = descriptions;
-	}
+    public void setDescriptions(List<ProductPriceDescription> descriptions) {
+        this.descriptions = descriptions;
+    }
 
-	public Long getProductAvailabilityId() {
-		return productAvailabilityId;
-	}
+    public Long getProductAvailabilityId() {
+        return productAvailabilityId;
+    }
 
-	public void setProductAvailabilityId(Long productAvailabilityId) {
-		this.productAvailabilityId = productAvailabilityId;
-	}
+    public void setProductAvailabilityId(Long productAvailabilityId) {
+        this.productAvailabilityId = productAvailabilityId;
+    }
 
-	public String getSku() {
-		return sku;
-	}
+    public String getSku() {
+        return sku;
+    }
 
-	public void setSku(String sku) {
-		this.sku = sku;
-	}
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
 
 }

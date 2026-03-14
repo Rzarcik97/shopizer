@@ -1,14 +1,14 @@
 package com.salesmanager.core.business.modules.cms.content;
 
-import java.io.ByteArrayOutputStream;
-import java.io.Serializable;
 import com.salesmanager.core.business.constants.Constants;
 import com.salesmanager.core.business.modules.cms.common.AssetsManager;
 import com.salesmanager.core.business.modules.cms.impl.CMSManager;
 import com.salesmanager.core.model.content.FileContentType;
 import com.salesmanager.core.model.content.OutputContentFile;
-
 import org.apache.commons.lang3.StringUtils;
+
+import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
 
 public interface ContentAssetsManager extends AssetsManager, FileGet, FilePut, FileRemove, FolderPut, FolderList, FolderRemove, Serializable {
     public static final char UNIX_SEPARATOR = '/';
@@ -61,23 +61,22 @@ public interface ContentAssetsManager extends AssetsManager, FileGet, FilePut, F
         return c > 2;
     }
 
-      default String getName(String filename) {
+    default String getName(String filename) {
         if (filename == null) {
-          return null;
+            return null;
         }
         int index = indexOfLastSeparator(filename);
         return filename.substring(index + 1);
-      }
-    
-      default int indexOfLastSeparator(String filename) {
+    }
+
+    default int indexOfLastSeparator(String filename) {
         if (filename == null) {
-          return -1;
+            return -1;
         }
         int lastUnixPos = filename.lastIndexOf(UNIX_SEPARATOR);
         int lastWindowsPos = filename.lastIndexOf(WINDOWS_SEPARATOR);
         return Math.max(lastUnixPos, lastWindowsPos);
-      }
-    
-    
+    }
+
 
 }

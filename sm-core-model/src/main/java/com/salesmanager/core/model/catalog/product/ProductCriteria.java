@@ -1,151 +1,150 @@
 package com.salesmanager.core.model.catalog.product;
 
-import java.util.List;
-
 import com.salesmanager.core.model.catalog.product.attribute.AttributeCriteria;
 import com.salesmanager.core.model.common.Criteria;
 
+import java.util.List;
+
 public class ProductCriteria extends Criteria {
-	
-	public static final String ORIGIN_SHOP = "shop";
-	public static final String ORIGIN_ADMIN = "admin";
-	
-	private String productName;
-	private List<AttributeCriteria> attributeCriteria;
-	private String origin = ORIGIN_SHOP;
 
-	
-	private Boolean available = null;
-	
-	private List<Long> categoryIds;
-	private List<String> availabilities;
-	private List<Long> productIds;
-	private List<Long> optionValueIds;
-	private String sku;
-	
-	//V2
-	private List<String> optionValueCodes;
-	private String option;
-	
-	private String status;
-	
-	private Long manufacturerId = null;
-	
-	private Long ownerId = null;
+    public static final String ORIGIN_SHOP = "shop";
+    public static final String ORIGIN_ADMIN = "admin";
 
-	public String getProductName() {
-		return productName;
-	}
-
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
+    private String productName;
+    private List<AttributeCriteria> attributeCriteria;
+    private String origin = ORIGIN_SHOP;
 
 
-	public List<Long> getCategoryIds() {
-		return categoryIds;
-	}
+    private Boolean available = null;
 
-	public void setCategoryIds(List<Long> categoryIds) {
-		this.categoryIds = categoryIds;
-	}
+    private List<Long> categoryIds;
+    private List<String> availabilities;
+    private List<Long> productIds;
+    private List<Long> optionValueIds;
+    private String sku;
 
-	public List<String> getAvailabilities() {
-		return availabilities;
-	}
+    //V2
+    private List<String> optionValueCodes;
+    private String option;
 
-	public void setAvailabilities(List<String> availabilities) {
-		this.availabilities = availabilities;
-	}
+    private String status;
 
-	public Boolean getAvailable() {
-		return available;
-	}
+    private Long manufacturerId = null;
 
-	public void setAvailable(Boolean available) {
-		this.available = available;
-	}
+    private Long ownerId = null;
 
-	public void setAttributeCriteria(List<AttributeCriteria> attributeCriteria) {
-		this.attributeCriteria = attributeCriteria;
-	}
+    public String getProductName() {
+        return productName;
+    }
 
-	public List<AttributeCriteria> getAttributeCriteria() {
-		return attributeCriteria;
-	}
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
 
-	public void setProductIds(List<Long> productIds) {
-		this.productIds = productIds;
-	}
 
-	public List<Long> getProductIds() {
-		return productIds;
-	}
+    public List<Long> getCategoryIds() {
+        return categoryIds;
+    }
 
-	public void setManufacturerId(Long manufacturerId) {
-		this.manufacturerId = manufacturerId;
-	}
+    public void setCategoryIds(List<Long> categoryIds) {
+        this.categoryIds = categoryIds;
+    }
 
-	public Long getManufacturerId() {
-		return manufacturerId;
-	}
+    public List<String> getAvailabilities() {
+        return availabilities;
+    }
 
-	public String getStatus() {
-		return status;
-	}
+    public void setAvailabilities(List<String> availabilities) {
+        this.availabilities = availabilities;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public Boolean getAvailable() {
+        return available;
+    }
 
-	public Long getOwnerId() {
-		return ownerId;
-	}
+    public void setAvailable(Boolean available) {
+        this.available = available;
+    }
 
-	public void setOwnerId(Long ownerId) {
-		this.ownerId = ownerId;
-	}
+    public List<AttributeCriteria> getAttributeCriteria() {
+        return attributeCriteria;
+    }
 
-	public List<Long> getOptionValueIds() {
-		return optionValueIds;
-	}
+    public void setAttributeCriteria(List<AttributeCriteria> attributeCriteria) {
+        this.attributeCriteria = attributeCriteria;
+    }
 
-	public void setOptionValueIds(List<Long> optionValueIds) {
-		this.optionValueIds = optionValueIds;
-	}
+    public List<Long> getProductIds() {
+        return productIds;
+    }
 
-	public String getOrigin() {
-		return origin;
-	}
+    public void setProductIds(List<Long> productIds) {
+        this.productIds = productIds;
+    }
 
-	public void setOrigin(String origin) {
-		this.origin = origin;
-	}
+    public Long getManufacturerId() {
+        return manufacturerId;
+    }
 
-	public List<String> getOptionValueCodes() {
-		return optionValueCodes;
-	}
+    public void setManufacturerId(Long manufacturerId) {
+        this.manufacturerId = manufacturerId;
+    }
 
-	public void setOptionValueCodes(List<String> optionValueCodes) {
-		this.optionValueCodes = optionValueCodes;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public String getOption() {
-		return option;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	public void setOption(String option) {
-		this.option = option;
-	}
+    public Long getOwnerId() {
+        return ownerId;
+    }
 
-	public String getSku() {
-		return sku;
-	}
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
+    }
 
-	public void setSku(String sku) {
-		this.sku = sku;
-	}
+    public List<Long> getOptionValueIds() {
+        return optionValueIds;
+    }
 
+    public void setOptionValueIds(List<Long> optionValueIds) {
+        this.optionValueIds = optionValueIds;
+    }
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+
+    public List<String> getOptionValueCodes() {
+        return optionValueCodes;
+    }
+
+    public void setOptionValueCodes(List<String> optionValueCodes) {
+        this.optionValueCodes = optionValueCodes;
+    }
+
+    public String getOption() {
+        return option;
+    }
+
+    public void setOption(String option) {
+        this.option = option;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
 
 
 }

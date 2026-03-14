@@ -1,38 +1,36 @@
 package com.salesmanager.shop.model.order;
 
+import com.salesmanager.shop.model.catalog.product.attribute.ProductAttribute;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.salesmanager.shop.model.catalog.product.attribute.ProductAttribute;
-
 
 public class PersistableOrderProduct extends OrderProductEntity implements
-		Serializable {
+        Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private BigDecimal price;//specify final price
-	private List<ProductAttribute> attributes;//may have attributes
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private BigDecimal price;//specify final price
+    private List<ProductAttribute> attributes;//may have attributes
 
+    public List<ProductAttribute> getAttributes() {
+        return attributes;
+    }
 
+    public void setAttributes(List<ProductAttribute> attributes) {
+        this.attributes = attributes;
+    }
 
-	public void setAttributes(List<ProductAttribute> attributes) {
-		this.attributes = attributes;
-	}
+    public BigDecimal getPrice() {
+        return price;
+    }
 
-	public List<ProductAttribute> getAttributes() {
-		return attributes;
-	}
-
-	public BigDecimal getPrice() {
-		return price;
-	}
-
-	public void setPrice(BigDecimal price) {
-		this.price = price;
-	}
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
 
 }

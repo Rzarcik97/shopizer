@@ -1,43 +1,42 @@
 package com.salesmanager.shop.model.catalog.product.type;
 
-import java.io.Serializable;
-
 import com.salesmanager.shop.model.entity.Entity;
+
+import java.io.Serializable;
 
 public class ProductTypeEntity extends Entity implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    boolean allowAddToCart;
+    private String code;
+    private boolean visible;
 
-	private String code;
-	private boolean visible;
-	boolean allowAddToCart;
+    public boolean isAllowAddToCart() {
+        return allowAddToCart;
+    }
 
-	public boolean isAllowAddToCart() {
-		return allowAddToCart;
-	}
+    public void setAllowAddToCart(boolean allowAddToCart) {
+        this.allowAddToCart = allowAddToCart;
+    }
 
-	public void setAllowAddToCart(boolean allowAddToCart) {
-		this.allowAddToCart = allowAddToCart;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public boolean isVisible() {
+        return visible;
+    }
 
-	public boolean isVisible() {
-		return visible;
-	}
-
-	public void setVisible(boolean visible) {
-		this.visible = visible;
-	}
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
 
 
 }

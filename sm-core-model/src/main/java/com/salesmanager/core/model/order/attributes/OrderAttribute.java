@@ -1,81 +1,79 @@
 package com.salesmanager.core.model.order.attributes;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-
-import com.salesmanager.core.constants.SchemaConstant;
 import com.salesmanager.core.model.generic.SalesManagerEntity;
 import com.salesmanager.core.model.order.Order;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.TableGenerator;
 
 /**
  * Entity used for storing various attributes related to an Order
- * @author c.samson
  *
+ * @author c.samson
  */
 @Entity
-@Table (name="ORDER_ATTRIBUTE" )
+@Table(name = "ORDER_ATTRIBUTE")
 public class OrderAttribute extends SalesManagerEntity<Long, OrderAttribute> {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name = "ORDER_ATTRIBUTE_ID", unique=true, nullable=false)
-	@TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "ORDER_ATTR_ID_NEXT_VALUE")
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
-	private Long id;
-	
-	@Column (name ="IDENTIFIER", nullable=false)
-	private String key;
-	
-	@Column (name ="VALUE", nullable=false)
-	private String value;
-	
-	@ManyToOne(targetEntity = Order.class)
-	@JoinColumn(name = "ORDER_ID", nullable=false)
-	private Order order;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	public Order getOrder() {
-		return order;
-	}
+    @Id
+    @Column(name = "ORDER_ATTRIBUTE_ID", unique = true, nullable = false)
+    @TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "ORDER_ATTR_ID_NEXT_VALUE")
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
+    private Long id;
 
-	public void setOrder(Order order) {
-		this.order = order;
-	}
+    @Column(name = "IDENTIFIER", nullable = false)
+    private String key;
 
-	@Override
-	public Long getId() {
-		return id;
-	}
+    @Column(name = "VALUE", nullable = false)
+    private String value;
 
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @ManyToOne(targetEntity = Order.class)
+    @JoinColumn(name = "ORDER_ID", nullable = false)
+    private Order order;
 
-	public String getValue() {
-		return value;
-	}
+    public Order getOrder() {
+        return order;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 
-	public String getKey() {
-		return key;
-	}
+    @Override
+    public Long getId() {
+        return id;
+    }
 
-	public void setKey(String key) {
-		this.key = key;
-	}
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 
 }

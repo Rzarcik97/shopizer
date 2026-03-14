@@ -1,23 +1,26 @@
 package com.salesmanager.shop.model.catalog.product;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.salesmanager.shop.model.entity.ReadableList;
 
-public class ReadableProductList extends ReadableList {
-	
+import java.util.ArrayList;
+import java.util.List;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private List<ReadableProduct> products = new ArrayList<ReadableProduct>();
-	public void setProducts(List<ReadableProduct> products) {
-		this.products = products;
-	}
-	public List<ReadableProduct> getProducts() {
-		return products;
-	}
+public class ReadableProductList extends ReadableList {
+
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
+    private List<ReadableProduct> products = new ArrayList<ReadableProduct>();
+
+    public List<ReadableProduct> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<ReadableProduct> products) {
+        this.products = products;
+    }
 
 }

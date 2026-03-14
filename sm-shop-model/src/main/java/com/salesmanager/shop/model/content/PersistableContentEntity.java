@@ -6,18 +6,18 @@ import java.util.List;
 
 public class PersistableContentEntity extends ContentEntity implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private List<ContentDescriptionEntity> descriptions = new ArrayList<ContentDescriptionEntity>();
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private List<ContentDescriptionEntity> descriptions = new ArrayList<ContentDescriptionEntity>();
 
-	public List<ContentDescriptionEntity> getDescriptions() {
-		return descriptions;
-	}
+    public List<ContentDescriptionEntity> getDescriptions() {
+        return descriptions;
+    }
 
-	public void setDescriptions(List<ContentDescriptionEntity> descriptions) {
-		this.descriptions = descriptions;
-	}
+    public void setDescriptions(List<ContentDescriptionEntity> descriptions) {
+        this.descriptions = descriptions;
+    }
 
 }

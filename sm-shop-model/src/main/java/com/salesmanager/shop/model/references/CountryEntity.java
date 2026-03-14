@@ -4,28 +4,28 @@ import com.salesmanager.shop.model.entity.Entity;
 
 public class CountryEntity extends Entity {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private String code;
-	private boolean supported;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	public String getCode() {
-		return code;
-	}
+    private String code;
+    private boolean supported;
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public boolean isSupported() {
-		return supported;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public void setSupported(boolean supported) {
-		this.supported = supported;
-	}
+    public boolean isSupported() {
+        return supported;
+    }
+
+    public void setSupported(boolean supported) {
+        this.supported = supported;
+    }
 
 }

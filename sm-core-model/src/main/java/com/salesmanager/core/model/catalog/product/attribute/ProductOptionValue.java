@@ -1,160 +1,154 @@
 package com.salesmanager.core.model.catalog.product.attribute;
 
+import com.salesmanager.core.model.generic.SalesManagerEntity;
+import com.salesmanager.core.model.merchant.MerchantStore;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.TableGenerator;
+import jakarta.persistence.Transient;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-
-import org.springframework.web.multipart.MultipartFile;
-
-import com.salesmanager.core.model.generic.SalesManagerEntity;
-import com.salesmanager.core.model.merchant.MerchantStore;
-
 
 @Entity
-@Table(name="PRODUCT_OPTION_VALUE", 
-indexes = { @Index(name="PRD_OPTION_VAL_CODE_IDX", columnList = "PRODUCT_OPTION_VAL_CODE")}, 
-uniqueConstraints=
-	@UniqueConstraint(columnNames = {"MERCHANT_ID", "PRODUCT_OPTION_VAL_CODE"}))
+@Table(name = "PRODUCT_OPTION_VALUE",
+        indexes = {@Index(name = "PRD_OPTION_VAL_CODE_IDX", columnList = "PRODUCT_OPTION_VAL_CODE")},
+        uniqueConstraints =
+        @UniqueConstraint(columnNames = {"MERCHANT_ID", "PRODUCT_OPTION_VAL_CODE"}))
 public class ProductOptionValue extends SalesManagerEntity<Long, ProductOptionValue> {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name="PRODUCT_OPTION_VALUE_ID")
-	@TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "PRODUCT_OPT_VAL_SEQ_NEXT_VAL")
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
-	private Long id;
-	
-	@Column(name="PRODUCT_OPT_VAL_SORT_ORD")
-	private Integer productOptionValueSortOrder;
-	
-	@Column(name="PRODUCT_OPT_VAL_IMAGE")
-	private String productOptionValueImage;
-	
-	@Column(name="PRODUCT_OPT_FOR_DISP")
-	private boolean productOptionDisplayOnly=false;
-	
-	@NotEmpty
-	@Pattern(regexp="^[a-zA-Z0-9_]*$")
-	@Column(name="PRODUCT_OPTION_VAL_CODE")
-	private String code;
+    @Id
+    @Column(name = "PRODUCT_OPTION_VALUE_ID")
+    @TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "PRODUCT_OPT_VAL_SEQ_NEXT_VAL")
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
+    private Long id;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "productOptionValue")
-	private Set<ProductOptionValueDescription> descriptions = new HashSet<ProductOptionValueDescription>();
-	
-	@Transient
-	private MultipartFile image = null;
-	
-	public MultipartFile getImage() {
-		return image;
-	}
+    @Column(name = "PRODUCT_OPT_VAL_SORT_ORD")
+    private Integer productOptionValueSortOrder;
 
-	public void setImage(MultipartFile image) {
-		this.image = image;
-	}
+    @Column(name = "PRODUCT_OPT_VAL_IMAGE")
+    private String productOptionValueImage;
 
-	@Transient
-	private List<ProductOptionValueDescription> descriptionsList = new ArrayList<ProductOptionValueDescription>();
+    @Column(name = "PRODUCT_OPT_FOR_DISP")
+    private boolean productOptionDisplayOnly = false;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="MERCHANT_ID", nullable=false)
-	private MerchantStore merchantStore;
-	
-	public ProductOptionValue() {
-	}
+    @NotEmpty
+    @Pattern(regexp = "^[a-zA-Z0-9_]*$")
+    @Column(name = "PRODUCT_OPTION_VAL_CODE")
+    private String code;
 
-	@Override
-	public Long getId() {
-		return id;
-	}
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "productOptionValue")
+    private Set<ProductOptionValueDescription> descriptions = new HashSet<ProductOptionValueDescription>();
 
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @Transient
+    private MultipartFile image = null;
+    @Transient
+    private List<ProductOptionValueDescription> descriptionsList = new ArrayList<ProductOptionValueDescription>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MERCHANT_ID", nullable = false)
+    private MerchantStore merchantStore;
 
-	public Integer getProductOptionValueSortOrder() {
-		return productOptionValueSortOrder;
-	}
+    public ProductOptionValue() {
+    }
 
-	public void setProductOptionValueSortOrder(Integer productOptionValueSortOrder) {
-		this.productOptionValueSortOrder = productOptionValueSortOrder;
-	}
+    public MultipartFile getImage() {
+        return image;
+    }
 
-	public String getProductOptionValueImage() {
-		return productOptionValueImage;
-	}
+    public void setImage(MultipartFile image) {
+        this.image = image;
+    }
 
-	public void setProductOptionValueImage(String productOptionValueImage) {
-		this.productOptionValueImage = productOptionValueImage;
-	}
+    @Override
+    public Long getId() {
+        return id;
+    }
 
-	public Set<ProductOptionValueDescription> getDescriptions() {
-		return descriptions;
-	}
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setDescriptions(Set<ProductOptionValueDescription> descriptions) {
-		this.descriptions = descriptions;
-	}
+    public Integer getProductOptionValueSortOrder() {
+        return productOptionValueSortOrder;
+    }
 
-	public MerchantStore getMerchantStore() {
-		return merchantStore;
-	}
+    public void setProductOptionValueSortOrder(Integer productOptionValueSortOrder) {
+        this.productOptionValueSortOrder = productOptionValueSortOrder;
+    }
 
-	public void setMerchantStore(MerchantStore merchantStore) {
-		this.merchantStore = merchantStore;
-	}
+    public String getProductOptionValueImage() {
+        return productOptionValueImage;
+    }
 
-	public void setDescriptionsList(List<ProductOptionValueDescription> descriptionsList) {
-		this.descriptionsList = descriptionsList;
-	}
+    public void setProductOptionValueImage(String productOptionValueImage) {
+        this.productOptionValueImage = productOptionValueImage;
+    }
 
-	public List<ProductOptionValueDescription> getDescriptionsList() {
-		return descriptionsList; 
-	}
-	
-	public List<ProductOptionValueDescription> getDescriptionsSettoList() {
-		if(descriptionsList==null || descriptionsList.size()==0) {
-			descriptionsList = new ArrayList<ProductOptionValueDescription>(this.getDescriptions());
-		} 
-		return descriptionsList;
-	}
+    public Set<ProductOptionValueDescription> getDescriptions() {
+        return descriptions;
+    }
 
-	public boolean isProductOptionDisplayOnly() {
-		return productOptionDisplayOnly;
-	}
+    public void setDescriptions(Set<ProductOptionValueDescription> descriptions) {
+        this.descriptions = descriptions;
+    }
 
-	public void setProductOptionDisplayOnly(boolean productOptionDisplayOnly) {
-		this.productOptionDisplayOnly = productOptionDisplayOnly;
-	}
+    public MerchantStore getMerchantStore() {
+        return merchantStore;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public void setMerchantStore(MerchantStore merchantStore) {
+        this.merchantStore = merchantStore;
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public List<ProductOptionValueDescription> getDescriptionsList() {
+        return descriptionsList;
+    }
 
+    public void setDescriptionsList(List<ProductOptionValueDescription> descriptionsList) {
+        this.descriptionsList = descriptionsList;
+    }
 
+    public List<ProductOptionValueDescription> getDescriptionsSettoList() {
+        if (descriptionsList == null || descriptionsList.size() == 0) {
+            descriptionsList = new ArrayList<ProductOptionValueDescription>(this.getDescriptions());
+        }
+        return descriptionsList;
+    }
+
+    public boolean isProductOptionDisplayOnly() {
+        return productOptionDisplayOnly;
+    }
+
+    public void setProductOptionDisplayOnly(boolean productOptionDisplayOnly) {
+        this.productOptionDisplayOnly = productOptionDisplayOnly;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
 
 }

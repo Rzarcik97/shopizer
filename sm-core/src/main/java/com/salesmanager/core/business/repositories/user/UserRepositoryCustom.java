@@ -6,7 +6,7 @@ import com.salesmanager.core.model.common.GenericEntityList;
 import com.salesmanager.core.model.user.User;
 
 public interface UserRepositoryCustom {
-  
-  GenericEntityList<User> listByCriteria(Criteria criteria) throws ServiceException;
+
+    GenericEntityList<User> listByCriteria(Criteria criteria) throws ServiceException;
 
 }

@@ -4,19 +4,19 @@ import com.salesmanager.shop.model.customer.PersistableCustomer;
 
 public class PersistableAnonymousOrder extends PersistableOrder {
 
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 1L;
-  
-  private PersistableCustomer customer;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-  public PersistableCustomer getCustomer() {
-    return customer;
-  }
+    private PersistableCustomer customer;
 
-  public void setCustomer(PersistableCustomer customer) {
-    this.customer = customer;
-  }
+    public PersistableCustomer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(PersistableCustomer customer) {
+        this.customer = customer;
+    }
 
 }

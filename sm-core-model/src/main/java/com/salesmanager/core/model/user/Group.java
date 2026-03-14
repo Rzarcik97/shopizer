@@ -1,120 +1,115 @@
 package com.salesmanager.core.model.user;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.validation.constraints.NotEmpty;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.salesmanager.core.model.common.audit.AuditListener;
 import com.salesmanager.core.model.common.audit.AuditSection;
 import com.salesmanager.core.model.common.audit.Auditable;
 import com.salesmanager.core.model.generic.SalesManagerEntity;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.TableGenerator;
+import jakarta.validation.constraints.NotEmpty;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @EntityListeners(value = AuditListener.class)
 @Table(name = "SM_GROUP", indexes = {
-		@Index(name = "SM_GROUP_GROUP_TYPE", columnList = "GROUP_TYPE") })
+        @Index(name = "SM_GROUP_GROUP_TYPE", columnList = "GROUP_TYPE")})
 public class Group extends SalesManagerEntity<Integer, Group> implements Auditable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	@Id
-	@Column(name = "GROUP_ID", unique = true, nullable = false)
-	@TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "GROUP_SEQ_NEXT_VAL")
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
-	private Integer id;
-
-	public Group() {
-
-	}
-
-	@Column(name = "GROUP_TYPE")
-	@Enumerated(value = EnumType.STRING)
-	private GroupType groupType;
-
-	@NotEmpty
-	@Column(name = "GROUP_NAME", unique = true)
-	private String groupName;
-
-	public Group(String groupName) {
-		this.groupName = groupName;
-	}
-
-	@JsonIgnore
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Column(name = "GROUP_ID", unique = true, nullable = false)
+    @TableGenerator(name = "TABLE_GEN", table = "SM_SEQUENCER", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue = "GROUP_SEQ_NEXT_VAL")
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
+    private Integer id;
+    @Column(name = "GROUP_TYPE")
+    @Enumerated(value = EnumType.STRING)
+    private GroupType groupType;
+    @NotEmpty
+    @Column(name = "GROUP_NAME", unique = true)
+    private String groupName;
+    @JsonIgnore
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
-        })
-        @JoinTable(name = "PERMISSION_GROUP",
+    })
+    @JoinTable(name = "PERMISSION_GROUP",
             joinColumns = @JoinColumn(name = "GROUP_ID"),
             inverseJoinColumns = @JoinColumn(name = "PERMISSION_ID")
-        )
-	private Set<Permission> permissions = new HashSet<Permission>();
+    )
+    private Set<Permission> permissions = new HashSet<Permission>();
+    @Embedded
+    private AuditSection auditSection = new AuditSection();
 
-	public Set<Permission> getPermissions() {
-		return permissions;
-	}
+    public Group() {
 
-	public void setPermissions(Set<Permission> permissions) {
-		this.permissions = permissions;
-	}
+    }
 
-	@Embedded
-	private AuditSection auditSection = new AuditSection();
+    public Group(String groupName) {
+        this.groupName = groupName;
+    }
 
-	@Override
-	public AuditSection getAuditSection() {
-		return this.auditSection;
-	}
+    public Set<Permission> getPermissions() {
+        return permissions;
+    }
 
-	@Override
-	public void setAuditSection(AuditSection audit) {
-		this.auditSection = audit;
-	}
+    public void setPermissions(Set<Permission> permissions) {
+        this.permissions = permissions;
+    }
 
-	@Override
-	public Integer getId() {
-		return this.id;
-	}
+    @Override
+    public AuditSection getAuditSection() {
+        return this.auditSection;
+    }
 
-	@Override
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Override
+    public void setAuditSection(AuditSection audit) {
+        this.auditSection = audit;
+    }
 
-	public String getGroupName() {
-		return groupName;
-	}
+    @Override
+    public Integer getId() {
+        return this.id;
+    }
 
-	public void setGroupName(String groupName) {
-		this.groupName = groupName;
-	}
+    @Override
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setGroupType(GroupType groupType) {
-		this.groupType = groupType;
-	}
+    public String getGroupName() {
+        return groupName;
+    }
 
-	public GroupType getGroupType() {
-		return groupType;
-	}
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public GroupType getGroupType() {
+        return groupType;
+    }
+
+    public void setGroupType(GroupType groupType) {
+        this.groupType = groupType;
+    }
 
 }

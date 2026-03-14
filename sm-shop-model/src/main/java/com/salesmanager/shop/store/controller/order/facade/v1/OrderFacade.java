@@ -7,7 +7,7 @@ import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.shop.model.order.v1.ReadableOrderConfirmation;
 
 public interface OrderFacade {
-	
-	ReadableOrderConfirmation orderConfirmation(Order order, Customer customer, MerchantStore store, Language language);
+
+    ReadableOrderConfirmation orderConfirmation(Order order, Customer customer, MerchantStore store, Language language);
 
 }

@@ -5,50 +5,51 @@ package com.salesmanager.core.model.customer.connection;
 @Deprecated
 public interface RemoteUser { //extends UserIdSource{
 
-	public String getUserId();
-	
-	public void setUserId(String id);
-	/*
-	 * Provider identifier: Facebook, Twitter, LinkedIn etc
-	 */
-	public String getProviderUserId();
+    public String getUserId();
 
-	public void setProviderUserId(String provider);
+    public void setUserId(String id);
 
-	public String getProviderId();
+    /*
+     * Provider identifier: Facebook, Twitter, LinkedIn etc
+     */
+    public String getProviderUserId();
 
-	public void setProviderId(String providerId);
+    public void setProviderUserId(String provider);
 
-	public int getRank();
+    public String getProviderId();
 
-	public void setRank(int rank);
+    public void setProviderId(String providerId);
 
-	public String getSecret();
+    public int getRank();
 
-	public void setSecret(String secret);
+    public void setRank(int rank);
 
-	public String getDisplayName();
+    public String getSecret();
 
-	public void setDisplayName(String displayName);
+    public void setSecret(String secret);
 
-	public String getProfileUrl();
+    public String getDisplayName();
 
-	public void setProfileUrl(String profileUrl);
+    public void setDisplayName(String displayName);
 
-	public String getImageUrl();
+    public String getProfileUrl();
 
-	public void setImageUrl(String imageUrl);
+    public void setProfileUrl(String profileUrl);
 
-	public String getAccessToken();
+    public String getImageUrl();
 
-	public void setAccessToken(String accessToken);
+    public void setImageUrl(String imageUrl);
 
-	public String getRefreshToken();
+    public String getAccessToken();
 
-	public void setRefreshToken(String refreshToken);
+    public void setAccessToken(String accessToken);
 
-	public Long getExpireTime();
+    public String getRefreshToken();
 
-	public void setExpireTime(Long expireTime);
-	
+    public void setRefreshToken(String refreshToken);
+
+    public Long getExpireTime();
+
+    public void setExpireTime(Long expireTime);
+
 }
