@@ -566,7 +566,7 @@ public class PaymentServiceImpl implements PaymentService {
 		orderHistory.setDateAdded(new Date());
         order.getOrderHistory().add(orderHistory);
         
-        orderService.saveOrUpdate(order);
+        orderRepository.save(order);
 
 		return transaction;
 	}
