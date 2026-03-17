@@ -17,7 +17,6 @@ import com.salesmanager.core.business.repositories.catalog.category.CategoryRepo
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -58,9 +57,14 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 
 	ProductRepository productRepository;
 
+
 	/***
-	 * Zamiana CategoryService beana na CategoryRepository
+	 * Zamieniłęm beana CategoryService na CategoryRepository, CategoryService potrzebował
+	 * beana ProductService i na odwrót..
+	 * swoją drogą tylko metoda getListByLineage() korzysta z tgeo beana a ta metoda z kolei
+	 * jest nieużywana
 	 */
+
 	@Inject
 	CategoryRepository categoryRepository;
 
